@@ -1,0 +1,12 @@
+version: "3.7"
+services:
+  core-condition:
+    build: .
+    container_name: core-condition 
+    expose:
+      - "80"
+    environment:
+      - VIRTUAL_HOST=core-condition .test
+    volumes:
+      - .:/var/www/
+    tty: true  
