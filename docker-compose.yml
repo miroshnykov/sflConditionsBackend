@@ -1,7 +1,7 @@
 version: "3.7"
 services:
   core-condition:
-    build: .
+    image: actionmediamtl/sfl-core-condition:release-0.0.1
     container_name: core-condition 
     expose:
       - "80"
