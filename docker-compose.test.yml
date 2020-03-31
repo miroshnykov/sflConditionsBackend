@@ -10,4 +10,4 @@ services:
       dockerfile: Dockerfile
     command: /usr/local/bin/run_docker_tests.sh
     networks:
-      - testing-net
+      - testing-network
