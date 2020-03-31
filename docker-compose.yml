@@ -1,12 +1,12 @@
-version: "3.7"
+version: "3.6"
 services:
   core-condition:
-    image: actionmediamtl/sfl-core-condition:release-0.0.1
+    image: actionmediamtl/sfl-core-condition:release-0.0.5
     container_name: core-condition 
     expose:
       - "80"
     environment:
-      - VIRTUAL_HOST=core-condition .test
+      - VIRTUAL_HOST=core-condition.test
     volumes:
       - .:/var/www/
     tty: true  
