@@ -1,36 +1,44 @@
 # sfl-core-condition
-condition matching
+condition matching module and central project to turn on a chain of services
 
-[Build]
-docker-compose build
+- sfl-core-condition
+    -  sfl-api-advertiser
+    -  sfl-api-publisher
+    -  sfl-platform-advertiser
+    -  sfl-platform-advertiser
 
-[Start Build]
-docker-compose up
+# Docker Instructions
+###  Build 
+> docker-compose build
 
-[Start Build In Background]
-docker-compose up -d
+###  Start Build 
+> docker-compose up
 
-[Start Build With Debug]
-docker-compose --verbose up
+###  Start Build In Background 
+> docker-compose up -d
 
-[Build & Start]
-docker-compose up --build
+###  Start Build With Debug 
+> docker-compose --verbose up
 
-[List Images Created]
-docker Images
+###  Build & Start 
+> docker-compose up --build
 
-[List active containers]
-docker ps
+###  List Images Created 
+> docker Images
 
-[List Inactive containers]
-docker ps -l
+###  List active containers 
+> docker ps
 
-[SSH INTO Container]
-docker exec -it core-condition /bin/bash
+###  List Inactive containers 
+> docker ps -l
 
-[STOP/START Container]
-docker-compose stop
-docker-compose start
+###  SSH INTO Container 
+> docker exec -it core-condition /bin/bash
 
-[Stop All Service & Remove Containers]
-docker-compose  down
+###  STOP/START Container 
+> docker-compose stop
+
+> docker-compose start
+
+###  Stop All Service & Remove Containers 
+> docker-compose  down
