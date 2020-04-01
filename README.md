@@ -21,7 +21,7 @@ condition matching module and central project to turn on a chain of services
 > docker-compose --verbose up
 
 ###  Build & Start 
-> docker-compose up --build
+> docker-compose up --build -e release`=443
 
 ###  List Images Created 
 > docker Images
@@ -42,3 +42,9 @@ condition matching module and central project to turn on a chain of services
 
 ###  Stop All Service & Remove Containers 
 > docker-compose  down
+
+### Remove All Images Without Associated Container
+> docker image prune -a
+
+### Deploy New Release
+> RELEASE=[Replace WIth Release #] docker-compose run core-condition -d
