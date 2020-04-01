@@ -13,7 +13,7 @@ const campaigns = gql`
     budgetTotal: Float
     budgetDaily: Float
     cpc: Float
-    landing_page: String
+    landingPage: String
   }
   
            
