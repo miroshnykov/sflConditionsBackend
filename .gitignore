@@ -1,4 +1,9 @@
 .history
-/conf/local*
 node_modules
-
+.idea
+.application.json
+.env
+/serverless.yaml
+/.idea
+.idea/
+conf/config-local.js
