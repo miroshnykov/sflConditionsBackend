@@ -7,6 +7,7 @@ const campaigns = gql`
   } 
                    
   type Campaigns {
+    id: Int
     name: String    
     user: String
     status: String
