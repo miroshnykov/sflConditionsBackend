@@ -7,6 +7,10 @@ module.exports = {
             checkUser(ctx.user)
             return Campaigns.getCampaigns()
         },
+        campaign: (_, {id}, ctx) => {
+            checkUser(ctx.user)
+            return Campaigns.getCampaign(id)
+        },
     },
     Mutation: {
         addCampaign: async (_, {

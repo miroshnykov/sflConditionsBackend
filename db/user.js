@@ -35,7 +35,7 @@ const setUser = async (data) => {
         console.time('setUser')
 
         let result = await dbMysql.query(` 
-            INSERT IGNORE INTO opti_users (email, google_id, name, given_name, family_name, picture, link, hd) 
+            INSERT IGNORE INTO sfl_users (email, google_id, name, given_name, family_name, picture, link, hd) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         `, [email, id,name, given_name, family_name, picture, link, hd])
         await dbMysql.end()

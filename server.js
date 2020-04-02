@@ -134,7 +134,7 @@ app.get('/health', (req, res, next) => {
 
 app.get('/loginUrl', (req, res) => {
     let url = getAuthUrl()
-    console.log('url:',url)
+    // console.log('url:',url)
     res.json(url)
 })
 
@@ -161,8 +161,8 @@ app.get('/oauthCallback', async (req, res) => {
 
 app.get('/successlogin', async (req, res) => {
 
-    console.log('successlogin')
-    console.log(req.query)
+    // console.log('successlogin')
+    // console.log(req.query)
     let token = jwt.sign({email: req.query.email, id: req.query.id}, config.jwt_secret, {expiresIn: '1h'})
     let bytes = utf8.encode(token);
     let encoded = base64.encode(bytes);
@@ -171,7 +171,7 @@ app.get('/successlogin', async (req, res) => {
 })
 
 app.get('/errorlogin', async (req, res) => {
-    console.log(` *** google auth error by this email:${req.query.email}`)
+    // console.log(` *** google auth error by this email:${req.query.email}`)
     res.redirect(`${config.googleAuth.redirectToOptiPlatformerrorlogin}${req.query.email}`)
     // await getTokenSaveSession(req.query.code, res)
 })
