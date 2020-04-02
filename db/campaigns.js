@@ -1,5 +1,30 @@
 let dbMysql = require('./mysqlDb').get()
 
+const getCampaign = async (id) => {
+
+    try {
+        let result = await dbMysql.query(` 
+            SELECT c.id, 
+                   c.name, 
+                   c.status, 
+                   c.budget_total as budgetTotal, 
+                   c.budget_daily as budgetDaily, 
+                   c.cpc, 
+                   c.user,
+                   c.landing_page as landingPage 
+            FROM   sfl_advertiser_campaigns c
+            WHERE c.id = ${id} 
+            ORDER  BY c.date_added 
+        `)
+        await dbMysql.end()
+
+        console.log('getCampaign ',JSON.stringify(result))
+        return result
+    } catch (e) {
+        console.log(e)
+    }
+}
+
 const getCampaigns = async () => {
 
     try {
@@ -44,6 +69,9 @@ const addCampaign = async (data) => {
         VALUES (?,?,?,?,?,?,?)`, [
             name, budgetTotal, budgetDaily, cpc, landingPage, user, dateAdd])
         await dbMysql.end()
+
+        result.id = result.insertId
+
         return result
     } catch (e) {
         console.log(e)
@@ -52,5 +80,6 @@ const addCampaign = async (data) => {
 
 module.exports = {
     addCampaign,
+    getCampaign,
     getCampaigns
 }

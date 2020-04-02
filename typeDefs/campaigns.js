@@ -3,7 +3,8 @@ const {gql} = require('apollo-server')
 const campaigns = gql`
   
   extend type Query{
-    campaigns: [Campaigns]    
+    campaigns: [Campaigns]
+    campaign(id:Int!): [Campaigns]       
   } 
                    
   type Campaigns {
@@ -33,6 +34,7 @@ const campaigns = gql`
         budgetDaily: Float  
         cpc: Float
         landingPage: String
+        id: Int
     }
       
 `;
