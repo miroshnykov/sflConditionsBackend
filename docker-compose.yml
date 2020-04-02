@@ -3,8 +3,8 @@ services:
   core-condition:
     image: actionmediamtl/sfl-core-condition:release-0.0.14
     container_name: core-condition 
-    expose:
-      - "8084"
+    ports:
+      - "8084:8080"
     environment:
       - VIRTUAL_HOST=core-condition.test
     volumes:
@@ -13,8 +13,8 @@ services:
   sfl-api-advertiser:
     image: actionmediamtl/sfl-api-advertiser:release-0.0.3
     container_name: sfl-api-advertiser 
-    expose:
-      - "8085"
+    ports:
+      - "8085:8080"
     environment:
       - VIRTUAL_HOST=sfl-api-advertiser.test
     volumes:
@@ -23,8 +23,8 @@ services:
   sfl-api-publisher:
     image: actionmediamtl/sfl-api-publisher:release-0.0.3
     container_name: sfl-api-publisher 
-    expose:
-      - "8086"
+    ports:
+      - "8086:8080"
     environment:
       - VIRTUAL_HOST=sfl-api-publisher.test
     volumes:
@@ -33,8 +33,8 @@ services:
   sfl-platform-advertiser:
     image: actionmediamtl/sfl-platform-advertiser:release-0.0.5
     container_name: sfl-platform-advertiser 
-    expose:
-      - "8087"
+    ports:
+      - "8087:8080"
     environment:
       - VIRTUAL_HOST=sfl-platform-advertiser.test
     volumes:
@@ -43,8 +43,8 @@ services:
   sfl-platform-publisher:
     image: actionmediamtl/sfl-platform-publisher:release-0.0.3
     container_name: sfl-platform-publisher 
-    expose:
-      - "8088"
+    ports:
+      - "8088:8080"
     environment:
       - VIRTUAL_HOST=sfl-platform-publisher.test
     volumes:

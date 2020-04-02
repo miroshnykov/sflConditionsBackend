@@ -17,5 +17,5 @@ services:
 
 
 # [Launch All Containers at once]
-# RELEASECORE=0.0.13 RELEASEAPIP=0.0.3 RELEASEAPIA=0.0.3 RELEASEPLATA=0.0.5 RELEASEPLATP=0.0.3 docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --no-deps
+# RELEASECORE=0.0.14 RELEASEAPIP=0.0.3 RELEASEAPIA=0.0.3 RELEASEPLATA=0.0.5 RELEASEPLATP=0.0.3 docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --no-deps
 
