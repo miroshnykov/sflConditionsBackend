@@ -1,4 +1,4 @@
-const {getCampaigns, addCampaign, getCampaign} = require('../db/campaigns')
+const {getCampaigns, addCampaign, getCampaign, updateCampaign} = require('../db/campaigns')
 
 class Campaigns {
     static async getCampaign(id) {
@@ -9,6 +9,9 @@ class Campaigns {
     }
     static async addCampaign(data) {
         return await addCampaign(data)
+    }
+    static async updateCampaign(data) {
+        return await updateCampaign(data)
     }
 }
 
