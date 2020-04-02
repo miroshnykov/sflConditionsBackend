@@ -18,7 +18,7 @@ const getCampaign = async (id) => {
         `)
         await dbMysql.end()
 
-        console.log('getCampaign ',JSON.stringify(result))
+        console.log('getCampaign ', JSON.stringify(result))
         return result
     } catch (e) {
         console.log(e)
@@ -52,7 +52,7 @@ const getCampaigns = async () => {
 const addCampaign = async (data) => {
 
     try {
-        const {name, budgetTotal, budgetDaily, cpc, landingPage, user } = data
+        const {name, budgetTotal, budgetDaily, cpc, landingPage, user} = data
 
         let date = new Date()
         let dateAdd = ~~(date.getTime() / 1000)
@@ -78,8 +78,32 @@ const addCampaign = async (data) => {
     }
 }
 
+const updateCampaign = async (data) => {
+
+    try {
+        const {id, name, budgetTotal, budgetDaily, cpc, landingPage, user} = data
+
+        let result = await dbMysql.query(`
+            UPDATE sfl_advertiser_campaigns SET
+                name = '${name}',
+                budget_total = ${budgetTotal},
+                budget_daily= ${budgetDaily}, 
+                cpc = ${cpc}, 
+                landing_page='${landingPage}',
+                user = '${user}'
+            WHERE id = ${id}        
+        `)
+        await dbMysql.end()
+
+        return result
+    } catch (e) {
+        console.log(e)
+    }
+}
+
 module.exports = {
     addCampaign,
+    updateCampaign,
     getCampaign,
     getCampaigns
 }
