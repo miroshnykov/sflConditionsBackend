@@ -1,7 +1,7 @@
 version: "3.6"
 services:
   core-condition:
-    image: actionmediamtl/sfl-core-condition:release-0.0.8
+    image: actionmediamtl/sfl-core-condition:release-0.0.12
     container_name: core-condition 
     expose:
       - "8084"
@@ -11,7 +11,7 @@ services:
       - .:/var/www/core
     tty: true  
   sfl-api-advertiser:
-    image: actionmediamtl/sfl-api-advertiser:release-0.0.1
+    image: actionmediamtl/sfl-api-advertiser:release-0.0.2
     container_name: sfl-api-advertiser 
     expose:
       - "8085"
@@ -21,7 +21,7 @@ services:
       - .:/var/www/api-adv
     tty: true  
   sfl-api-publisher:
-    image: actionmediamtl/sfl-api-publisher:release-0.0.1
+    image: actionmediamtl/sfl-api-publisher:release-0.0.2
     container_name: sfl-api-publisher 
     expose:
       - "8086"
@@ -31,7 +31,7 @@ services:
       - .:/var/www/api-pub
     tty: true  
   sfl-platform-advertiser:
-    image: actionmediamtl/sfl-platform-advertiser:release-0.0.3
+    image: actionmediamtl/sfl-platform-advertiser:release-0.0.4
     container_name: sfl-platform-advertiser 
     expose:
       - "8087"
@@ -41,7 +41,7 @@ services:
       - .:/var/www/plat-adv
     tty: true  
   sfl-platform-publisher:
-    image: actionmediamtl/sfl-platform-publisher:release-0.0.1
+    image: actionmediamtl/sfl-platform-publisher:release-0.0.2
     container_name: sfl-platform-publisher 
     expose:
       - "8088"
