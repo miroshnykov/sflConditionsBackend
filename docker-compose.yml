@@ -1,7 +1,7 @@
 version: "3.6"
 services:
   core-condition:
-    image: actionmediamtl/sfl-core-condition:release-0.0.12
+    image: actionmediamtl/sfl-core-condition:release-0.0.13
     container_name: core-condition 
     expose:
       - "8084"

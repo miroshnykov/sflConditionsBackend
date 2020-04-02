@@ -14,3 +14,8 @@ services:
 services:
   sfl-platform-publisher:
     image: actionmediamtl/sfl-platform-publisher:release-$RELEASEPLATP
+
+
+# [Launch All Containers at once]
+# RELEASECORE=0.0.12 RELEASEAPIP=0.0.2 RELEASEAPIA=0.0.2 RELEASEPLATA=0.0.2 RELEASEPLATP=0.0.2 docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --no-deps
+
