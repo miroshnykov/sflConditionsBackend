@@ -31,7 +31,7 @@ services:
       - .:/var/www/api-pub
     tty: true  
   sfl-platform-advertiser:
-    image: actionmediamtl/sfl-platform-advertiser:release-0.0.4
+    image: actionmediamtl/sfl-platform-advertiser:release-0.0.5
     container_name: sfl-platform-advertiser 
     expose:
       - "8087"
