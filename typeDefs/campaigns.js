@@ -26,6 +26,14 @@ const campaigns = gql`
         budgetDaily: Float!,
         cpc: Float!,
         landingPage: String!): addCampaign
+        
+     updateCampaign(
+        id: Int!,
+        name: String!, 
+        budgetTotal: Float!,
+        budgetDaily: Float!,
+        cpc: Float!,
+        landingPage: String!): addCampaign
   }
   
     type addCampaign {

@@ -31,5 +31,25 @@ module.exports = {
             campaign.user = ctx.user.email
             return await Campaigns.addCampaign(campaign)
         },
+        updateCampaign: async (_, {
+            id,
+            name,
+            budgetTotal,
+            budgetDaily,
+            cpc,
+            landingPage
+        }, ctx) => {
+            checkUser(ctx.user)
+
+            let campaign = {}
+            campaign.id = id
+            campaign.name = name
+            campaign.budgetTotal = budgetTotal
+            campaign.budgetDaily = budgetDaily
+            campaign.cpc = cpc
+            campaign.landingPage = landingPage
+            campaign.user = ctx.user.email
+            return await Campaigns.updateCampaign(campaign)
+        },
     }
 }
