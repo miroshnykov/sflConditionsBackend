@@ -1,7 +1,7 @@
 version: "3.6"
 
 networks:
-  testing-network:
+  sfl-network-testing:
 
 services:
   sut:
@@ -10,4 +10,9 @@ services:
       dockerfile: Dockerfile
     command: /usr/local/bin/run_docker_tests.sh
     networks:
-      - testing-network
+      - sfl-network-testing
+
+
+# network create sfl-network-testing
+
+# docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d --no-deps

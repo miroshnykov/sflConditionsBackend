@@ -46,5 +46,18 @@ condition matching module and central project to turn on a chain of services
 ### Remove All Images Without Associated Container
 > docker image prune -a
 
-### Deploy New Release
-> RELEASE=[Replace WIth Release #] docker-compose run core-condition -d
+### Deploy New Release Specific Service
+> RELEASE=[TAG] docker-compose up -d --no-deps --build core-condition
+
+# [PRODUCTION COMMANDS]
+
+### [RUN With Production File]
+> RELEASE=[TAG] docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --no-deps --build core-condition
+
+# [STAGING COMMANDS]
+
+### [RUN With Production File]
+> RELEASE=[TAG] docker-compose -f docker-compose.yml -f docker-compose.stage.yml up -d --no-deps --build core-condition
+
+### [TURN ON ALL SERVICES AT ONCE]
+> RELEASE-CORE=0.0.11 RELEASE-API-A=0.0.11 RELEASE-API-P=0.0.1 RELEASE-PLATFORM-A=0.0.1 RELEASE-PLATFORM-P=0.0.1 docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --no-deps --build core-condition
