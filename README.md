@@ -5,7 +5,7 @@
     -  sfl-api-advertiser
     -  sfl-api-publisher
     -  sfl-platform-advertiser
-    -  sfl-platform-advertiser
+    -  sfl-platform-publisher
 
 # Steps to turn on container with build
 > 1. Authenticate with DockerHub
@@ -45,7 +45,8 @@ Note: take note of the IMAGE ID
 >
     - RUN: docker rmi [IMAGE ID]
 3. push to github you changes
-4. create a release for a build to be ready.
+4. create a release for a build to be triggered.
+5. deploy once build ready
 
  # Common Docker Commands
 
