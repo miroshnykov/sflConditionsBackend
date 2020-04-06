@@ -17,6 +17,7 @@ const {v4} = require('uuid')
 const base64 = require('base-64')
 const utf8 = require('utf8')
 const {setUser} = require('./db/user')
+const axios = require('axios')
 
 const cors = require('cors')
 const server = new ApolloServer({
@@ -137,6 +138,36 @@ app.get('/loginUrl', (req, res) => {
     // console.log('url:',url)
     res.json(url)
 })
+
+app.get('/verifyLP', async (req, res) => {
+    let response
+    try {
+        let domain = req.query.domain
+
+        let prefix = 'http://'
+        if (domain.substr(0, prefix.length) !== prefix) {
+            domain = prefix + domain
+        }
+
+        let requestValidate = axios.create({
+            baseURL: domain,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            timeout: 5000
+        });
+        let params = {
+            method: 'get'
+        }
+
+        const response = await requestValidate(params)
+        res.json(response.status)
+    } catch (e) {
+
+    }
+    res.json(response)
+})
+
 
 app.get('/verifyToken', (req, res) => {
     let response
