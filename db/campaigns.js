@@ -94,7 +94,8 @@ const updateCampaign = async (data) => {
             WHERE id = ${id}        
         `)
         await dbMysql.end()
-
+        console.log(`updated campaign data to `, JSON.stringify(data))
+        result.id = id
         return result
     } catch (e) {
         console.log(e)
