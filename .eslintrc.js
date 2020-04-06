@@ -38,8 +38,5 @@ module.exports = {
     parserOptions: {
         parser: 'babel-eslint',
         'ecmaVersion': 2017
-    },
-    "standard": {
-        "env": [ "mocha" ]
     }
 }

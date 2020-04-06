@@ -101,9 +101,30 @@ const updateCampaign = async (data) => {
     }
 }
 
+const updateCampaignName = async (data) => {
+
+    try {
+        const {id, name, user} = data
+
+        let result = await dbMysql.query(`
+            UPDATE sfl_advertiser_campaigns SET
+                name = '${name}',                
+                user = '${user}'
+            WHERE id = ${id}        
+        `)
+        await dbMysql.end()
+        console.log(`updated campaign name to ${name}`)
+        result.id = id
+        return result
+    } catch (e) {
+        console.log(e)
+    }
+}
+
 module.exports = {
     addCampaign,
     updateCampaign,
+    updateCampaignName,
     getCampaign,
     getCampaigns
 }
