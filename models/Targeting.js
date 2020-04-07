@@ -1,6 +1,7 @@
 const {
     get,
-    add
+    add,
+    del
 } = require('../db/targrting')
 
 class Targeting {
@@ -12,6 +13,9 @@ class Targeting {
         return await add(data)
     }
 
+    static async del(campaignId) {
+        return await del(campaignId)
+    }
 }
 
 module.exports = {

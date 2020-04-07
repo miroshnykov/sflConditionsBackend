@@ -32,10 +32,18 @@ const targeting = gql`
         cpc: Float!, 
         filterTypeId: Int!
      ): addTargeting
-        
+     
+     deleteTargeting(
+        campaignId: Int!
+     ): DeleteTargeting
              
   }
   
+    type DeleteTargeting {
+        id: Int,
+        affectedRows:Int  
+    }
+      
     type addTargeting {
         id: Int
         campaignId: Int 
@@ -46,8 +54,6 @@ const targeting = gql`
         cpc: Float
         filterTypeId: String
     }
-    
-        
       
 `;
 

@@ -33,6 +33,9 @@ module.exports = {
 
             return await Targeting.add(targeting)
         },
-
+        deleteTargeting: async (_, {campaignId}, ctx) => {
+            checkUser(ctx.user)
+            return await Targeting.del(campaignId)
+        },
     }
 }
