@@ -64,7 +64,7 @@ CREATE TABLE `sfl_advertiser_targeting` (
 	`platform` VARCHAR(10) NOT NULL DEFAULT '',
 	`source_type` VARCHAR(10) NOT NULL DEFAULT '',
 	`cpc` DECIMAL(16,8) NOT NULL,
-	`match_type_id` TINYINT(3) UNSIGNED NOT NULL,
+	`filter_type_id` TINYINT(3) UNSIGNED NOT NULL,
 	`date_added` INT(11) NOT NULL,
 	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`),

@@ -16,7 +16,7 @@ const targeting = gql`
     platform: String
     sourceType: String
     cpc: Float
-    matchTypeId: Float
+    filterTypeId: Int
     position: Int
     dateAdded: Int
   }
