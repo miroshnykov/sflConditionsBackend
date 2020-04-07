@@ -59,6 +59,7 @@ INSERT INTO `sfl_source_type` (`id`, `name`) VALUES (2, 'VOD');
 CREATE TABLE `sfl_advertiser_targeting` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`sfl_advertiser_campaign_id` INT(10) UNSIGNED NOT NULL,
+	`position` INT(10) NOT NULL DEFAULT '0',
 	`geo` VARCHAR(10) NOT NULL,
 	`platform` VARCHAR(10) NOT NULL DEFAULT '',
 	`source_type` VARCHAR(10) NOT NULL DEFAULT '',
@@ -73,4 +74,5 @@ CREATE TABLE `sfl_advertiser_targeting` (
 COLLATE='utf8_general_ci'
 ENGINE=InnoDB
 ;
+
 
