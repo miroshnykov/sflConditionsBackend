@@ -1,6 +1,6 @@
 let dbMysql = require('./mysqlDb').get()
 
-const getTargeting = async (campaignId) => {
+const get = async (campaignId) => {
 
     try {
         let result = await dbMysql.query(` 
@@ -27,7 +27,49 @@ const getTargeting = async (campaignId) => {
     }
 }
 
+const add = async (data) => {
+
+    try {
+
+        const {campaignId, position, geo, platform, sourceType, cpc, filterTypeId, user} = data
+        let date = new Date()
+        let dateAdd = ~~(date.getTime() / 1000)
+
+        let result = await dbMysql.query(` 
+            INSERT INTO sfl_advertiser_targeting (
+                sfl_advertiser_campaign_id, 
+                position, 
+                geo, 
+                platform, 
+                source_type, 
+                cpc, 
+                user,
+                filter_type_id, 
+                date_added)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+        `, [
+            campaignId,
+            position,
+            geo,
+            platform,
+            sourceType,
+            cpc,
+            user,
+            filterTypeId,
+            dateAdd
+        ])
+        await dbMysql.end()
+        result.id = result.insertId || 0
+
+        console.log('addTargeting ', JSON.stringify(data))
+        return result
+    } catch (e) {
+        console.log(e)
+    }
+}
+
 
 module.exports = {
-    getTargeting
+    get,
+    add
 }

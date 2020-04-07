@@ -1,10 +1,15 @@
 const {
-    getTargeting,
+    get,
+    add
 } = require('../db/targrting')
 
 class Targeting {
-    static async getTargeting(id) {
-        return await getTargeting(id)
+    static async get(id) {
+        return await get(id)
+    }
+
+    static async add(data) {
+        return await add(data)
     }
 
 }

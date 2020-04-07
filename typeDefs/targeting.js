@@ -24,14 +24,27 @@ const targeting = gql`
            
   extend type Mutation {
     addTargeting(
-        name: String!, 
-        ): addTargeting
+        campaignId: Int!, 
+        position: Int!, 
+        geo: String!, 
+        platform: String!, 
+        sourceType: String!, 
+        cpc: Float!, 
+        filterTypeId: Int!
+     ): addTargeting
         
              
   }
   
     type addTargeting {
         id: Int
+        campaignId: Int 
+        position: Int
+        geo: String
+        platform: String 
+        sourceType: String 
+        cpc: Float
+        filterTypeId: String
     }
     
         
