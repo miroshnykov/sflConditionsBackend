@@ -10,7 +10,7 @@ const getTargeting = async (campaignId) => {
                    t.platform, 
                    t.source_type as sourceType, 
                    t.cpc, 
-                   t.match_type_id as matchTypeId, 
+                   t.filter_type_id as filterTypeId, 
                    t.position, 
                    t.date_added as dateAdded 
             FROM   sfl_advertiser_targeting t, 
