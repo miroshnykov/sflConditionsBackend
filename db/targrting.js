@@ -7,8 +7,11 @@ const get = async (campaignId) => {
             SELECT c.name as name, 
                    t.sfl_advertiser_campaign_id as campaignId, 
                    t.geo as geo, 
-                   t.platform, 
-                   t.source_type as sourceType, 
+                   t.platform_android as platformAndroid,                   
+                   t.platform_ios as platformIos,                   
+                   t.platform_windows as platformWindows,                   
+                   t.source_type_sweepstakes as sourceTypeSweepstakes, 
+                   t.source_type_vod as sourceTypeVod, 
                    t.cpc, 
                    t.filter_type_id as filterTypeId, 
                    t.position, 
@@ -31,28 +34,47 @@ const add = async (data) => {
 
     try {
 
-        const {campaignId, position, geo, platform, sourceType, cpc, filterTypeId, user} = data
+        const {
+            campaignId,
+            position,
+            geo,
+            cpc,
+            filterTypeId,
+            user,
+            platformAndroid,
+            platformIos,
+            platformWindows,
+            sourceTypeSweepstakes,
+            sourceTypeVod
+        } = data
+
         let date = new Date()
         let dateAdd = ~~(date.getTime() / 1000)
 
-        let result = await dbMysql.query(` 
+            let result = await dbMysql.query(` 
             INSERT INTO sfl_advertiser_targeting (
                 sfl_advertiser_campaign_id, 
                 position, 
                 geo, 
-                platform, 
-                source_type, 
+                platform_android,
+                platform_ios,
+                platform_windows,
+                source_type_sweepstakes,
+                source_type_vod,
                 cpc, 
                 user,
                 filter_type_id, 
                 date_added)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
         `, [
             campaignId,
             position,
             geo,
-            platform,
-            sourceType,
+            platformAndroid,
+            platformIos,
+            platformWindows,
+            sourceTypeSweepstakes,
+            sourceTypeVod,
             cpc,
             user,
             filterTypeId,

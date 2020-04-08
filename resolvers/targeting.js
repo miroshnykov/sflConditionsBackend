@@ -14,8 +14,11 @@ module.exports = {
             campaignId,
             position,
             geo,
-            platform,
-            sourceType,
+            platformAndroid,
+            platformIos,
+            platformWindows,
+            sourceTypeSweepstakes,
+            sourceTypeVod,
             cpc,
             filterTypeId
         }, ctx) => {
@@ -25,12 +28,14 @@ module.exports = {
             targeting.campaignId = campaignId
             targeting.position = position
             targeting.geo = geo
-            targeting.platform = platform
-            targeting.sourceType = sourceType
+            targeting.platformAndroid = platformAndroid
+            targeting.platformIos = platformIos
+            targeting.platformWindows = platformWindows
+            targeting.sourceTypeSweepstakes = sourceTypeSweepstakes
+            targeting.sourceTypeVod = sourceTypeVod
             targeting.cpc = cpc
             targeting.filterTypeId = filterTypeId
             targeting.user = ctx.user.email
-
             return await Targeting.add(targeting)
         },
         deleteTargeting: async (_, {campaignId}, ctx) => {

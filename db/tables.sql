@@ -61,8 +61,12 @@ CREATE TABLE `sfl_advertiser_targeting` (
 	`sfl_advertiser_campaign_id` INT(10) UNSIGNED NOT NULL,
 	`position` INT(10) NOT NULL DEFAULT '0',
 	`geo` VARCHAR(10) NOT NULL,
-	`platform` VARCHAR(10) NOT NULL DEFAULT '',
-	`source_type` VARCHAR(10) NOT NULL DEFAULT '',
+	`user` VARCHAR(45) NOT NULL,
+	`platform_android` TINYINT(1) NOT NULL DEFAULT '0',
+	`platform_ios` TINYINT(1) NOT NULL DEFAULT '0',
+	`platform_windows` TINYINT(1) NOT NULL DEFAULT '0',
+	`source_type_sweepstakes` TINYINT(1) NOT NULL DEFAULT '0',
+	`source_type_vod` TINYINT(1) NOT NULL DEFAULT '0',
 	`cpc` DECIMAL(16,8) NOT NULL,
 	`filter_type_id` TINYINT(3) UNSIGNED NOT NULL,
 	`date_added` INT(11) NOT NULL,
@@ -74,5 +78,3 @@ CREATE TABLE `sfl_advertiser_targeting` (
 COLLATE='utf8_general_ci'
 ENGINE=InnoDB
 ;
-
-
