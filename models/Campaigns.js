@@ -3,7 +3,8 @@ const {
     addCampaign,
     getCampaign,
     updateCampaign,
-    updateCampaignName
+    updateCampaignName,
+    del
 } = require('../db/campaigns')
 
 class Campaigns {
@@ -21,6 +22,9 @@ class Campaigns {
     }
     static async updateCampaignName(data) {
         return await updateCampaignName(data)
+    }
+    static async del(id) {
+        return await del(id)
     }
 }
 

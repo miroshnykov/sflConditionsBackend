@@ -37,9 +37,18 @@ const campaigns = gql`
         
      updateCampaignName(
         id: Int!,
-        name: String!): updCampaignName        
+        name: String!): updCampaignName
+              
+     deleteCampaign(
+        id: Int!
+     ): DeleteCampaign  
   }
   
+    type DeleteCampaign {
+        id: Int,
+        affectedRows:Int  
+    }
+    
     type addCampaign {
         name: String, 
         budgetTotal: Float  
