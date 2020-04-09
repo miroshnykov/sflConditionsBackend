@@ -94,7 +94,7 @@ const del = async (campaignId) => {
 
     try {
         let result = await dbMysql.query(` 
-            DELETE FROM sfl_advertiser_targeting WHERE  sfl_advertiser_campaign_id=${campaignId} 
+            DELETE FROM sfl_advertiser_targeting WHERE  sfl_advertiser_campaign_id=? 
         `, [campaignId])
         await dbMysql.end()
 

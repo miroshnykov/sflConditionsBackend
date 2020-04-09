@@ -63,5 +63,11 @@ module.exports = {
             campaign.user = ctx.user.email
             return await Campaigns.updateCampaignName(campaign)
         },
+        deleteCampaign: async (_, {
+            id
+        }, ctx) => {
+            checkUser(ctx.user)
+            return await Campaigns.del(id)
+        },
     }
 }

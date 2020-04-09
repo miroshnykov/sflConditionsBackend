@@ -122,10 +122,27 @@ const updateCampaignName = async (data) => {
     }
 }
 
+const del = async (id) => {
+
+    try {
+        let result = await dbMysql.transaction()
+            .query(`DELETE FROM sfl_advertiser_targeting WHERE sfl_advertiser_campaign_id=${id}`)
+            .query(`DELETE FROM sfl_advertiser_campaigns WHERE id=${id}`)
+            .commit()
+
+        console.log(` deleteCampaign by id:${id}`)
+        result.id = id
+        return result
+    } catch (e) {
+        console.log(e)
+    }
+}
+
 module.exports = {
     addCampaign,
     updateCampaign,
     updateCampaignName,
     getCampaign,
-    getCampaigns
+    getCampaigns,
+    del
 }
