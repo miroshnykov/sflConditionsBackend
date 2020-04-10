@@ -19,8 +19,8 @@ const get = async (campaignId) => {
             FROM   sfl_advertiser_targeting t, 
                    sfl_advertiser_campaigns c 
             WHERE  c.id = t.sfl_advertiser_campaign_id 
-                   AND t.sfl_advertiser_campaign_id = ${campaignId} 
-        `)
+                   AND t.sfl_advertiser_campaign_id = ? 
+        `,[campaignId])
         await dbMysql.end()
 
         console.log(`\ngetTargeting by id ${campaignId}, ${JSON.stringify(result)} `)
@@ -51,7 +51,7 @@ const add = async (data) => {
         let date = new Date()
         let dateAdd = ~~(date.getTime() / 1000)
 
-            let result = await dbMysql.query(` 
+        let result = await dbMysql.query(` 
             INSERT INTO sfl_advertiser_targeting (
                 sfl_advertiser_campaign_id, 
                 position, 
