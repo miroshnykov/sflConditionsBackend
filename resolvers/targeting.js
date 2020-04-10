@@ -1,4 +1,4 @@
-const {Targeting: Targeting} = require('../models')
+const {Targeting} = require('../models')
 const checkUser = require('../helper/perm')
 
 module.exports = {

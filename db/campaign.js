@@ -18,7 +18,7 @@ const get = async (id) => {
         `)
         await dbMysql.end()
 
-        console.log('getCampaign ', JSON.stringify(result))
+        console.log(`\ngetCampaign:${JSON.stringify(result)}`)
         return result
     } catch (e) {
         console.log(e)
@@ -47,7 +47,7 @@ const add = async (data) => {
         await dbMysql.end()
 
         result.id = result.insertId
-
+        console.log(`\naddCampaign:${JSON.stringify(data)}`)
         return result
     } catch (e) {
         console.log(e)
@@ -70,7 +70,7 @@ const update = async (data) => {
             WHERE id = ${id}        
         `)
         await dbMysql.end()
-        console.log(`updated campaign data to `, JSON.stringify(data))
+        console.log(`\nupdated Campaign:${JSON.stringify(data)}`)
         result.id = id
         return result
     } catch (e) {
@@ -90,7 +90,7 @@ const updateName = async (data) => {
             WHERE id = ${id}        
         `)
         await dbMysql.end()
-        console.log(`updated campaign name to ${name}`)
+        console.log(`\nupdated Campaign name to :${JSON.stringify(data)}`)
         result.id = id
         return result
     } catch (e) {
@@ -105,8 +105,7 @@ const del = async (id) => {
             .query(`DELETE FROM sfl_advertiser_targeting WHERE sfl_advertiser_campaign_id=${id}`)
             .query(`DELETE FROM sfl_advertiser_campaigns WHERE id=${id}`)
             .commit()
-
-        console.log(` deleteCampaign by id:${id}`)
+        console.log(`\ndelete Campaign:${id}`)
         result.id = id
         return result
     } catch (e) {

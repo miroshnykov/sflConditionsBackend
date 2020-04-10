@@ -23,7 +23,7 @@ const get = async (campaignId) => {
         `)
         await dbMysql.end()
 
-        console.log('getTargeting ', JSON.stringify(result))
+        console.log(`\ngetTargeting by id ${campaignId}, ${JSON.stringify(result)} `)
         return result
     } catch (e) {
         console.log(e)
@@ -83,7 +83,7 @@ const add = async (data) => {
         await dbMysql.end()
         result.id = result.insertId || 0
 
-        console.log('addTargeting ', JSON.stringify(data))
+        console.log(`addTargeting: ${JSON.stringify(data)} `)
         return result
     } catch (e) {
         console.log(e)
@@ -98,7 +98,7 @@ const del = async (id) => {
         `, [id])
         await dbMysql.end()
 
-        console.log(` deleteTargeting by id:${id}  affectRows:`, result.affectedRows)
+        console.log(`\ndeleteTargeting by id:${id} affectRows:${result.affectedRows}`)
         result.id = id
         return result
     } catch (e) {

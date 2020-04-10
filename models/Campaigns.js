@@ -7,9 +7,8 @@ class Campaigns {
     static async all() {
         return await all()
     }
-
 }
 
 module.exports = {
-    Campaigns: Campaigns,
+    Campaigns,
 };
