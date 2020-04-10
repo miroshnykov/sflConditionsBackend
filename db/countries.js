@@ -3,7 +3,6 @@ let dbMysql = require('./mysqlDb').get()
 const all = async () => {
 
     try {
-        console.time('getCountries')
         let result = await dbMysql.query(` 
             SELECT c.code, 
                    c.name 
@@ -17,9 +16,7 @@ const all = async () => {
         `)
         await dbMysql.end()
 
-
-        console.timeEnd('getCountries')
-        console.log(`getCountries count:${result.length}\n`)
+        console.log(`\ngetCountries count:${result.length}`)
         return result
     } catch (e) {
         console.log(e)

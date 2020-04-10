@@ -17,7 +17,7 @@ const all = async () => {
         `)
         await dbMysql.end()
 
-        console.log('getHistoryBySegmentId count:', result.length)
+        console.log(`\nget all Campaigns count: ${result.length}`)
         return result
     } catch (e) {
         console.log(e)

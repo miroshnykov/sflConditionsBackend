@@ -19,5 +19,5 @@ class Targeting {
 }
 
 module.exports = {
-    Targeting: Targeting,
+    Targeting,
 };

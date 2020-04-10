@@ -1,4 +1,4 @@
-const {Campaign: Campaign} = require('../models')
+const {Campaign} = require('../models')
 const checkUser = require('../helper/perm')
 
 module.exports = {

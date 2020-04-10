@@ -4,7 +4,7 @@ const config =  require('plain-config')()
 module.exports = {
     Query: {
         login: async (_, {email, password}, ctx) => {
-            console.log(' login  email:', email)
+            console.log(`\nlogin email:${email}`)
             let jwtAuthSecret = config.jwt_secret
             let token = ''
             if (email === 'admin@admin.com' && password === 'admin@admin.comadmin@admin.com'){
