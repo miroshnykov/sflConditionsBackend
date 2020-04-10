@@ -1,6 +1,6 @@
 let dbMysql = require('./mysqlDb').get()
 
-const getCountries = async () => {
+const all = async () => {
 
     try {
         console.time('getCountries')
@@ -27,5 +27,5 @@ const getCountries = async () => {
 }
 
 module.exports = {
-    getCountries
+    all
 }

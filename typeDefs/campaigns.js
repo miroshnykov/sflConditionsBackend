@@ -4,7 +4,6 @@ const campaigns = gql`
   
   extend type Query{
     campaigns: [Campaigns]
-    campaign(id:Int!): [Campaigns]       
   } 
                    
   type Campaigns {
@@ -16,52 +15,7 @@ const campaigns = gql`
     budgetDaily: Float
     cpc: Float
     landingPage: String
-  }
-  
-           
-  extend type Mutation {
-    addCampaign(
-        name: String!, 
-        budgetTotal: Float!,
-        budgetDaily: Float!,
-        cpc: Float!,
-        landingPage: String!): addCampaign
-        
-     updateCampaign(
-        id: Int!,
-        name: String!, 
-        budgetTotal: Float!,
-        budgetDaily: Float!,
-        cpc: Float!,
-        landingPage: String!): addCampaign
-        
-     updateCampaignName(
-        id: Int!,
-        name: String!): updCampaignName
-              
-     deleteCampaign(
-        id: Int!
-     ): DeleteCampaign  
-  }
-  
-    type DeleteCampaign {
-        id: Int,
-        affectedRows:Int  
-    }
-    
-    type addCampaign {
-        name: String, 
-        budgetTotal: Float  
-        budgetDaily: Float  
-        cpc: Float
-        landingPage: String
-        id: Int
-    }
-    
-    type updCampaignName {
-        name: String,
-        id: Int
-    }    
+  } 
       
 `;
 
