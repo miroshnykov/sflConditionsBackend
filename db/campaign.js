@@ -13,9 +13,9 @@ const get = async (id) => {
                    c.user,
                    c.landing_page as landingPage 
             FROM   sfl_advertiser_campaigns c
-            WHERE c.id = ${id} 
+            WHERE c.id = ? 
             ORDER  BY c.date_added 
-        `)
+        `, [id])
         await dbMysql.end()
 
         console.log(`\ngetCampaign:${JSON.stringify(result)}`)
@@ -42,7 +42,7 @@ const add = async (data) => {
             user, 
             date_added
         )
-        VALUES (?,?,?,?,?,?,?)`, [
+        VALUES (?, ?, ?, ?, ?, ?, ?)`, [
             name, budgetTotal, budgetDaily, cpc, landingPage, user, dateAdd])
         await dbMysql.end()
 
@@ -61,14 +61,14 @@ const update = async (data) => {
 
         let result = await dbMysql.query(`
             UPDATE sfl_advertiser_campaigns SET
-                name = '${name}',
-                budget_total = ${budgetTotal},
-                budget_daily= ${budgetDaily}, 
-                cpc = ${cpc}, 
-                landing_page='${landingPage}',
-                user = '${user}'
-            WHERE id = ${id}        
-        `)
+                name = ?,
+                budget_total = ?,
+                budget_daily= ?, 
+                cpc = ?, 
+                landing_page=?,
+                user = ?
+            WHERE id = ?        
+        `, [name, budgetTotal, budgetDaily, cpc, landingPage, user, id])
         await dbMysql.end()
         console.log(`\nupdated Campaign:${JSON.stringify(data)}`)
         result.id = id
@@ -85,10 +85,10 @@ const updateName = async (data) => {
 
         let result = await dbMysql.query(`
             UPDATE sfl_advertiser_campaigns SET
-                name = '${name}',                
-                user = '${user}'
-            WHERE id = ${id}        
-        `)
+                name = ?,                
+                user = ?
+            WHERE id = ?        
+        `, [name, user, id])
         await dbMysql.end()
         console.log(`\nupdated Campaign name to :${JSON.stringify(data)}`)
         result.id = id
