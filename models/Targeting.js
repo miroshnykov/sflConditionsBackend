@@ -13,8 +13,8 @@ class Targeting {
         return await add(data)
     }
 
-    static async del(campaignId) {
-        return await del(campaignId)
+    static async del(id) {
+        return await del(id)
     }
 }
 

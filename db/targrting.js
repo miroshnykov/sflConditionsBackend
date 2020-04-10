@@ -90,16 +90,16 @@ const add = async (data) => {
     }
 }
 
-const del = async (campaignId) => {
+const del = async (id) => {
 
     try {
         let result = await dbMysql.query(` 
             DELETE FROM sfl_advertiser_targeting WHERE  sfl_advertiser_campaign_id=? 
-        `, [campaignId])
+        `, [id])
         await dbMysql.end()
 
-        console.log(` deleteTargeting by id:${campaignId}  affectRows:`, result.affectedRows)
-        result.id = campaignId
+        console.log(` deleteTargeting by id:${id}  affectRows:`, result.affectedRows)
+        result.id = id
         return result
     } catch (e) {
         console.log(e)

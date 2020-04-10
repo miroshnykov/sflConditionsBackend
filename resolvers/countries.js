@@ -5,7 +5,7 @@ module.exports = {
     Query: {
         countries: (_, { }, ctx) => {
             checkUser(ctx.user)
-            return Countries.getCountries()
+            return Countries.all()
         },
     },
 }

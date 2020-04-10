@@ -1,8 +1,8 @@
-const {getCountries} = require('../db/countries')
+const {all} = require('../db/countries')
 
 class Countries {
-    static async getCountries() {
-        return await getCountries()
+    static async all() {
+        return await all()
     }
 }
 
