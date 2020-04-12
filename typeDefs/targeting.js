@@ -12,11 +12,11 @@ const targeting = gql`
     user: String
     campaignId: Int
     geo: String
-    platformAndroid: Int
-    platformIos: Int
-    platformWindows: Int
-    sourceTypeSweepstakes: Int
-    sourceTypeVod: Int    
+    platformAndroid: Boolean
+    platformIos: Boolean
+    platformWindows: Boolean
+    sourceTypeSweepstakes: Boolean
+    sourceTypeVod: Boolean    
     cpc: Float
     filterTypeId: Int
     position: Int
@@ -29,11 +29,11 @@ const targeting = gql`
         campaignId: Int!, 
         position: Int!, 
         geo: String!, 
-        platformAndroid: Int!,
-        platformIos: Int!,
-        platformWindows: Int!,
-        sourceTypeSweepstakes: Int!,
-        sourceTypeVod: Int!,          
+        platformAndroid: Boolean!,
+        platformIos: Boolean!,
+        platformWindows: Boolean!,
+        sourceTypeSweepstakes: Boolean!,
+        sourceTypeVod: Boolean!,          
         cpc: Float!, 
         filterTypeId: Int!
      ): addTargeting
@@ -54,11 +54,11 @@ const targeting = gql`
         campaignId: Int 
         position: Int
         geo: String
-        platformAndroid: Int
-        platformIos: Int
-        platformWindows: Int
-        sourceTypeSweepstakes: Int
-        sourceTypeVod: Int    
+        platformAndroid: Boolean
+        platformIos: Boolean
+        platformWindows: Boolean
+        sourceTypeSweepstakes: Boolean
+        sourceTypeVod: Boolean    
         cpc: Float
         filterTypeId: String
     }
