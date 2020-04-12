@@ -13,7 +13,7 @@ const all = async () => {
                    c.user,
                    c.landing_page as landingPage 
             FROM   sfl_advertiser_campaigns c 
-            ORDER  BY c.date_added 
+            ORDER  BY c.date_added DESC
         `)
         await dbMysql.end()
 
