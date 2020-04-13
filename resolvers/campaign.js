@@ -14,7 +14,8 @@ module.exports = {
             budgetTotal,
             budgetDaily,
             cpc,
-            landingPage
+            landingPage,
+            landingPageValid
         }, ctx) => {
             checkUser(ctx.user)
 
@@ -24,6 +25,7 @@ module.exports = {
             campaign.budgetDaily = budgetDaily
             campaign.cpc = cpc
             campaign.landingPage = landingPage
+            campaign.landingPageValid = landingPageValid || false
             campaign.user = ctx.user.email
             return await Campaign.add(campaign)
         },
@@ -33,7 +35,8 @@ module.exports = {
             budgetTotal,
             budgetDaily,
             cpc,
-            landingPage
+            landingPage,
+            landingPageValid
         }, ctx) => {
             checkUser(ctx.user)
 
@@ -44,6 +47,7 @@ module.exports = {
             campaign.budgetDaily = budgetDaily
             campaign.cpc = cpc
             campaign.landingPage = landingPage
+            campaign.landingPageValid = landingPageValid || false
             campaign.user = ctx.user.email
             return await Campaign.update(campaign)
         },

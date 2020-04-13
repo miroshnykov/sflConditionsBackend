@@ -15,6 +15,7 @@ const campaigns = gql`
     budgetDaily: Float
     cpc: Float
     landingPage: String
+    landingPageValid: Boolean
   } 
       
 `;
