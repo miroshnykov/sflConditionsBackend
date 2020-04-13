@@ -11,7 +11,8 @@ const all = async () => {
                    c.budget_daily as budgetDaily, 
                    c.cpc, 
                    c.user,
-                   c.landing_page as landingPage 
+                   c.landing_page as landingPage, 
+                   c.landing_page_valid as landingPageValid 
             FROM   sfl_advertiser_campaigns c 
             ORDER  BY c.date_added DESC
         `)
