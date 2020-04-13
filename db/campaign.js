@@ -29,7 +29,16 @@ const get = async (id) => {
 const add = async (data) => {
 
     try {
-        const {name, budgetTotal, budgetDaily, cpc, landingPage, user, landingPageValid} = data
+        const {
+            name,
+            budgetTotal,
+            budgetDaily,
+            cpc,
+            landingPage,
+            user,
+            landingPageValid,
+            status
+        } = data
 
         let date = new Date()
         let dateAdd = ~~(date.getTime() / 1000)
@@ -39,13 +48,22 @@ const add = async (data) => {
             budget_total,
             budget_daily, 
             cpc, 
+            status,
             landing_page,
             landing_page_valid,
             user, 
             date_added
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`, [
-            name, budgetTotal, budgetDaily, cpc, landingPage, landingPageValid, user, dateAdd])
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`, [
+            name,
+            budgetTotal,
+            budgetDaily,
+            cpc,
+            status || 'inactive',
+            landingPage,
+            landingPageValid,
+            user,
+            dateAdd])
         await dbMysql.end()
 
         result.id = result.insertId
@@ -59,7 +77,17 @@ const add = async (data) => {
 const update = async (data) => {
 
     try {
-        const {id, name, budgetTotal, budgetDaily, cpc, landingPage, user, landingPageValid} = data
+        const {
+            id,
+            name,
+            budgetTotal,
+            budgetDaily,
+            cpc,
+            landingPage,
+            user,
+            landingPageValid,
+            status
+        } = data
 
         let result = await dbMysql.query(`
             UPDATE sfl_advertiser_campaigns SET
@@ -67,11 +95,21 @@ const update = async (data) => {
                 budget_total = ?,
                 budget_daily= ?, 
                 cpc = ?, 
-                landing_page=?,
-                landing_page_valid=?,
+                status = ?,
+                landing_page = ?,
+                landing_page_valid = ?,
                 user = ?
             WHERE id = ?        
-        `, [name, budgetTotal, budgetDaily, cpc, landingPage, landingPageValid, user, id])
+        `, [
+            name,
+            budgetTotal,
+            budgetDaily,
+            cpc,
+            status,
+            landingPage,
+            landingPageValid,
+            user,
+            id])
         await dbMysql.end()
         console.log(`\nupdated Campaign:${JSON.stringify(data)}`)
         result.id = id

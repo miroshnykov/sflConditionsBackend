@@ -26,6 +26,7 @@ const campaign = gql`
         budgetDaily: Float!,
         cpc: Float!,
         landingPage: String!
+        status: String
         landingPageValid: Boolean): addCampaign
         
      updateCampaign(
@@ -33,6 +34,7 @@ const campaign = gql`
         name: String!, 
         budgetTotal: Float!,
         budgetDaily: Float!,
+        status: String,
         cpc: Float!,
         landingPage: String!
         landingPageValid: Boolean): addCampaign
@@ -56,6 +58,7 @@ const campaign = gql`
         budgetTotal: Float  
         budgetDaily: Float  
         cpc: Float
+        status: String
         landingPage: String
         landingPageValid: Boolean
         id: Int

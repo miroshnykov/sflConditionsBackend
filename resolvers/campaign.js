@@ -35,6 +35,7 @@ module.exports = {
             budgetTotal,
             budgetDaily,
             cpc,
+            status,
             landingPage,
             landingPageValid
         }, ctx) => {
@@ -47,6 +48,7 @@ module.exports = {
             campaign.budgetDaily = budgetDaily
             campaign.cpc = cpc
             campaign.landingPage = landingPage
+            campaign.status = status
             campaign.landingPageValid = landingPageValid || false
             campaign.user = ctx.user.email
             return await Campaign.update(campaign)
