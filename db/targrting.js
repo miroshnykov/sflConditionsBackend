@@ -19,8 +19,9 @@ const get = async (campaignId) => {
             FROM   sfl_advertiser_targeting t, 
                    sfl_advertiser_campaigns c 
             WHERE  c.id = t.sfl_advertiser_campaign_id 
-                   AND t.sfl_advertiser_campaign_id = ? 
-        `,[campaignId])
+                   AND t.sfl_advertiser_campaign_id = ?
+                   AND t.soft_delete = false 
+        `, [campaignId])
         await dbMysql.end()
 
         console.log(`\ngetTargeting by id ${campaignId}, ${JSON.stringify(result)} `)
@@ -90,15 +91,33 @@ const add = async (data) => {
     }
 }
 
-const del = async (id) => {
+const del = async (id, softDelete) => {
 
     try {
+        let res
+        if (softDelete) {
+            res = await softDel(id)
+        } else {
+            res = await deleteCompletely(id)
+        }
+
+        return res
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+
+const deleteCompletely = async (id) => {
+
+    try {
+
         let result = await dbMysql.query(` 
-            DELETE FROM sfl_advertiser_targeting WHERE  sfl_advertiser_campaign_id=? 
+            DELETE FROM sfl_advertiser_targeting WHERE  sfl_advertiser_campaign_id=? and soft_delete = true
         `, [id])
         await dbMysql.end()
 
-        console.log(`\ndeleteTargeting by id:${id} affectRows:${result.affectedRows}`)
+        console.log(`\ndeleteTargeting completely by id:${id} affectRows:${result.affectedRows}`)
         result.id = id
         return result
     } catch (e) {
@@ -106,9 +125,43 @@ const del = async (id) => {
     }
 }
 
+const softDel = async (id) => {
+
+    try {
+
+        let result = await dbMysql.query(` 
+            UPDATE sfl_advertiser_targeting SET soft_delete=true WHERE  sfl_advertiser_campaign_id=?; 
+        `, [id])
+        await dbMysql.end()
+
+        console.log(`\nsoft deleteTargeting by id:${id} affectRows:${result.affectedRows}`)
+        result.id = id
+        return result
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+const restoreSoftDelete = async (id) => {
+
+    try {
+
+        let result = await dbMysql.query(` 
+            UPDATE sfl_advertiser_targeting SET soft_delete=false WHERE  sfl_advertiser_campaign_id=?; 
+        `, [id])
+        await dbMysql.end()
+
+        console.log(`\nsoft deleteTargeting restore by id:${id} affectRows:${result.affectedRows}`)
+        result.id = id
+        return result
+    } catch (e) {
+        console.log(e)
+    }
+}
 
 module.exports = {
     get,
     add,
-    del
+    del,
+    restoreSoftDelete
 }

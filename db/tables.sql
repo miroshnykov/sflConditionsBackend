@@ -69,6 +69,7 @@ CREATE TABLE `sfl_advertiser_targeting` (
 	`source_type_vod` TINYINT(1) NOT NULL DEFAULT '0',
 	`cpc` DECIMAL(16,8) NOT NULL,
 	`filter_type_id` TINYINT(3) UNSIGNED NOT NULL,
+	`soft_delete` TINYINT(1) NOT NULL DEFAULT '0',
 	`date_added` INT(11) NOT NULL,
 	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`),

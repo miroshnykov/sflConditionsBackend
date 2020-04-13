@@ -1,7 +1,8 @@
 const {
     get,
     add,
-    del
+    del,
+    restoreSoftDelete
 } = require('../db/targrting')
 
 class Targeting {
@@ -13,8 +14,12 @@ class Targeting {
         return await add(data)
     }
 
-    static async del(id) {
-        return await del(id)
+    static async del(id, softDelete) {
+        return await del(id, softDelete)
+    }
+
+    static async restoreSoftDelete(id) {
+        return await restoreSoftDelete(id)
     }
 }
 

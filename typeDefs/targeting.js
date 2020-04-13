@@ -17,12 +17,12 @@ const targeting = gql`
     platformWindows: Boolean
     sourceTypeSweepstakes: Boolean
     sourceTypeVod: Boolean    
+    softDelete:Boolean
     cpc: Float
     filterTypeId: Int
     position: Int
     dateAdded: Int
   }
-  
            
   extend type Mutation {
     addTargeting(
@@ -38,9 +38,14 @@ const targeting = gql`
         filterTypeId: Int!
      ): addTargeting
      
-     deleteTargeting(
+    deleteTargeting(
         campaignId: Int!
-     ): DeleteTargeting
+        softDelete: Boolean!
+    ): DeleteTargeting
+     
+    restoreSoftDelete(
+        campaignId: Int!
+    ): DeleteTargeting
              
   }
   

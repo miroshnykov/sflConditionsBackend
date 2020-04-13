@@ -38,9 +38,13 @@ module.exports = {
             targeting.user = ctx.user.email
             return await Targeting.add(targeting)
         },
-        deleteTargeting: async (_, {campaignId}, ctx) => {
+        deleteTargeting: async (_, {campaignId, softDelete}, ctx) => {
             checkUser(ctx.user)
-            return await Targeting.del(campaignId)
+            return await Targeting.del(campaignId, softDelete)
+        },
+        restoreSoftDelete: async (_, {campaignId}, ctx) => {
+            checkUser(ctx.user)
+            return await Targeting.restoreSoftDelete(campaignId)
         },
     }
 }
