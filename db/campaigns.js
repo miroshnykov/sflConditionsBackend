@@ -7,14 +7,17 @@ const all = async () => {
             SELECT c.id, 
                    c.name, 
                    c.status, 
-                   c.budget_total as budgetTotal, 
-                   c.budget_daily as budgetDaily, 
+                   c.budget_total       AS budgetTotal, 
+                   c.budget_daily       AS budgetDaily, 
                    c.cpc, 
-                   c.user,
-                   c.landing_page as landingPage, 
-                   c.landing_page_valid as landingPageValid 
-            FROM   sfl_advertiser_campaigns c 
-            ORDER  BY c.date_added DESC
+                   u.name as userName, 
+                   c.user as userEmail, 
+                   c.landing_page       AS landingPage, 
+                   c.landing_page_valid AS landingPageValid 
+            FROM   sfl_advertiser_campaigns c, 
+                   sfl_users u 
+            WHERE  u.email = c.USER 
+            ORDER  BY c.date_added DESC 
         `)
         await dbMysql.end()
 

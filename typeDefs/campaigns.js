@@ -11,6 +11,8 @@ const campaigns = gql`
     name: String    
     user: String
     status: String
+    userName: String
+    userEmail: String
     budgetTotal: Float
     budgetDaily: Float
     cpc: Float
