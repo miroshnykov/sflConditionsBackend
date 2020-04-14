@@ -25,4 +25,4 @@ class Targeting {
 
 module.exports = {
     Targeting,
-};
+}

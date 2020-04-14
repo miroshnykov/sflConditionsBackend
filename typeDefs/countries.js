@@ -10,8 +10,8 @@ const countries = gql`
     code: String
     name: String    
   }
-`;
+`
 
 module.exports = {
     countries,
-};
+}

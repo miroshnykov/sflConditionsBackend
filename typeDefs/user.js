@@ -16,8 +16,8 @@ const user = gql`
     link: String
     hd: String
   }
-`;
+`
 
 module.exports = {
     user: user,
-};
+}

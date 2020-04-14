@@ -18,8 +18,8 @@ const campaigns = gql`
     landingPageValid: Boolean
   } 
       
-`;
+`
 
 module.exports = {
     campaigns: campaigns,
-};
+}

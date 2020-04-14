@@ -69,8 +69,8 @@ const campaign = gql`
         id: Int
     }    
       
-`;
+`
 
 module.exports = {
     campaign: campaign,
-};
+}

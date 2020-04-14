@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const config =  require('plain-config')()
+const config = require('plain-config')()
 
 module.exports = {
     Query: {
