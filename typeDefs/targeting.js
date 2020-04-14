@@ -68,8 +68,8 @@ const targeting = gql`
         filterTypeId: String
     }
       
-`;
+`
 
 module.exports = {
     targeting: targeting,
-};
+}
