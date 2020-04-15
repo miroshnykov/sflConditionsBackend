@@ -13,7 +13,7 @@ const getUser = async (email) => {
                 u.picture as picture,
                 u.link as link,
                 u.hd as hd 
-            from opti_users u 
+            from sfl_users u 
             where u.email = '${email}'
         `)
         await dbMysql.end()
