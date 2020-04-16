@@ -66,6 +66,7 @@ CREATE TABLE `sfl_advertiser_targeting` (
 	`platform_android` TINYINT(1) NOT NULL DEFAULT '0',
 	`platform_ios` TINYINT(1) NOT NULL DEFAULT '0',
 	`platform_windows` TINYINT(1) NOT NULL DEFAULT '0',
+	`platform_linux` TINYINT(1) NOT NULL DEFAULT '0',
 	`source_type_sweepstakes` TINYINT(1) NOT NULL DEFAULT '0',
 	`source_type_vod` TINYINT(1) NOT NULL DEFAULT '0',
 	`cpc` DECIMAL(16,8) NOT NULL,
