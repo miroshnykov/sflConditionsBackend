@@ -20,5 +20,5 @@ RUN npm install
 
 EXPOSE 4001
 
-CMD [ "npm", "start" ]
+ENTRYPOINT [ "node", "node server.js --conf=/home/conf/config.js" ]
 
