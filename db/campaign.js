@@ -15,6 +15,7 @@ const get = async (id) => {
                    c.landing_page_valid as landingPageValid 
             FROM   sfl_advertiser_campaigns c
             WHERE c.id = ? 
+                  and c.soft_delete = false
             ORDER  BY c.date_added 
         `, [id])
         await dbMysql.end()
@@ -154,10 +155,27 @@ const del = async (id) => {
     }
 }
 
+const softDel = async (id) => {
+
+    try {
+
+        let result = await dbMysql.query(` 
+            UPDATE sfl_advertiser_campaigns SET soft_delete=true WHERE  id=?; 
+        `, [id])
+        await dbMysql.end()
+        console.log(`\nsoft delete Campaign:${id}`)
+        result.id = id
+        return result
+    } catch (e) {
+        console.log(e)
+    }
+}
+
 module.exports = {
     add,
     update,
     updateName,
     get,
-    del
+    del,
+    softDel
 }

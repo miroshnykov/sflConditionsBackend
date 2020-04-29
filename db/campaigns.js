@@ -17,6 +17,7 @@ const all = async () => {
             FROM   sfl_advertiser_campaigns c, 
                    sfl_users u 
             WHERE  u.email = c.USER 
+                   AND c.soft_delete = false 
             ORDER  BY c.date_added DESC 
         `)
         await dbMysql.end()

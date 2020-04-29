@@ -9,6 +9,7 @@ CREATE TABLE `sfl_advertiser_campaigns` (
 	`cpc` DECIMAL(10,2) NOT NULL DEFAULT '0.00',
 	`landing_page` TEXT NOT NULL,
 	`landing_page_valid` TINYINT(1) NOT NULL DEFAULT '0',
+	`soft_delete` TINYINT(1) NOT NULL DEFAULT '0',
 	`date_added` INT(11) NOT NULL,
 	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`),
