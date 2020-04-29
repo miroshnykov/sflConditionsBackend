@@ -18,6 +18,8 @@ const campaigns = gql`
     cpc: Float
     landingPage: String
     landingPageValid: Boolean
+    dateAdded: Int
+    dateUpdated: String
   } 
       
 `

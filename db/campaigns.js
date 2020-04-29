@@ -13,7 +13,9 @@ const all = async () => {
                    u.name as userName, 
                    c.user as userEmail, 
                    c.landing_page       AS landingPage, 
-                   c.landing_page_valid AS landingPageValid 
+                   c.landing_page_valid AS landingPageValid,
+                   c.date_added AS dateAdded,
+                   c.date_updated As dateUpdated
             FROM   sfl_advertiser_campaigns c, 
                    sfl_users u 
             WHERE  u.email = c.USER 
