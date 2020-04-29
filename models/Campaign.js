@@ -3,7 +3,8 @@ const {
     add,
     update,
     updateName,
-    del
+    del,
+    softDel
 } = require('../db/campaign')
 
 class Campaign {
@@ -24,7 +25,7 @@ class Campaign {
     }
 
     static async del(id) {
-        return await del(id)
+        return await softDel(id)
     }
 }
 
