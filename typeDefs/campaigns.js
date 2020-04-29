@@ -20,8 +20,10 @@ const campaigns = gql`
     landingPageValid: Boolean
     dateAdded: Int
     dateUpdated: String
-  } 
-      
+    spentDaily: Float
+    spentTotal: Float
+  }     
+    
 `
 
 module.exports = {
