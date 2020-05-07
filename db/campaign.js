@@ -13,14 +13,14 @@ const get = async (id) => {
                    c.user,
                    c.landing_page as landingPage,
                    c.landing_page_valid as landingPageValid,
-                   (SELECT t.count_click * c.cpc 
+                   IFNULL((SELECT t.sum_spent 
                     FROM   sfl_traffic_history t 
                     WHERE  t.sfl_advertiser_campaign_id = c.id 
-                           AND t.date_by_days = Curdate())  AS spentDaily, 
-                   (SELECT Sum(t.count_click) * c.cpc AS totalClick 
+                           AND t.date_by_days = Curdate()),0 ) AS spentDaily, 
+                   IFNULL((SELECT Sum(t.sum_spent)  
                     FROM   sfl_traffic_history t 
                     WHERE  t.sfl_advertiser_campaign_id = c.id 
-                    GROUP  BY t.sfl_advertiser_campaign_id) AS spentTotal
+                    GROUP  BY t.sfl_advertiser_campaign_id),0) AS spentTotal  
             FROM   sfl_advertiser_campaigns c
             WHERE c.id = ? 
                   and c.soft_delete = false
