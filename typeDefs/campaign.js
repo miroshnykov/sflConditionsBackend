@@ -18,6 +18,8 @@ const campaign = gql`
     landingPageValid: Boolean
     spentDaily: Float
     spentTotal: Float
+    countClickTotal: Int
+    countClickDaily: Int
   }
   
            
