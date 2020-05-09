@@ -16,6 +16,14 @@ const all = async () => {
                    c.landing_page_valid                     AS landingPageValid, 
                    c.date_added                             AS dateAdded, 
                    c.date_updated                           AS dateUpdated, 
+                   IFNULL((SELECT t.count_click  
+                    FROM   sfl_traffic_history t 
+                    WHERE  t.sfl_advertiser_campaign_id = c.id 
+                           AND t.date_by_days = Curdate()),0 ) AS countClickDaily, 
+                   IFNULL((SELECT Sum(t.count_click)  
+                    FROM   sfl_traffic_history t 
+                    WHERE  t.sfl_advertiser_campaign_id = c.id 
+                    GROUP  BY t.sfl_advertiser_campaign_id),0) AS countClickTotal,                     
                    IFNULL((SELECT t.sum_spent 
                     FROM   sfl_traffic_history t 
                     WHERE  t.sfl_advertiser_campaign_id = c.id 

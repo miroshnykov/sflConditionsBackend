@@ -22,6 +22,8 @@ const campaigns = gql`
     dateUpdated: String
     spentDaily: Float
     spentTotal: Float
+    countClickTotal: Int
+    countClickDaily: Int
   }     
     
 `
