@@ -92,6 +92,7 @@ const getTokenSaveSession = async (code, res) => {
 
                 if (info.hd === 'actionmediamtl.com' ||
                     info.hd === 'grindstonecapital.ca' ||
+                    info.hd === 'adsurge.com' ||
                     info.hd === 'hyuna.bb'
                 ) {
 
