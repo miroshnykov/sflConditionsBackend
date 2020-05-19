@@ -50,7 +50,6 @@ module.exports = {
             campaign.landingPage = landingPage
             campaign.status = status
             campaign.landingPageValid = landingPageValid || false
-            campaign.user = ctx.user.email
             return await Campaign.update(campaign)
         },
         updateCampaignName: async (_, {
@@ -62,7 +61,6 @@ module.exports = {
             let campaign = {}
             campaign.id = id
             campaign.name = name
-            campaign.user = ctx.user.email
             return await Campaign.updateName(campaign)
         },
         deleteCampaign: async (_, {
