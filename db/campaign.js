@@ -101,7 +101,6 @@ const update = async (data) => {
             budgetDaily,
             cpc,
             landingPage,
-            user,
             landingPageValid,
             status
         } = data
@@ -114,8 +113,7 @@ const update = async (data) => {
                 cpc = ?, 
                 status = ?,
                 landing_page = ?,
-                landing_page_valid = ?,
-                user = ?
+                landing_page_valid = ?
             WHERE id = ?        
         `, [
             name,
@@ -125,7 +123,6 @@ const update = async (data) => {
             status,
             landingPage,
             landingPageValid,
-            user,
             id])
         await dbMysql.end()
         console.log(`\nupdated Campaign:${JSON.stringify(data)}`)
@@ -139,14 +136,13 @@ const update = async (data) => {
 const updateName = async (data) => {
 
     try {
-        const {id, name, user} = data
+        const {id, name} = data
 
         let result = await dbMysql.query(`
             UPDATE sfl_advertiser_campaigns SET
-                name = ?,                
-                user = ?
+                name = ?                
             WHERE id = ?        
-        `, [name, user, id])
+        `, [name, id])
         await dbMysql.end()
         console.log(`\nupdated Campaign name to :${JSON.stringify(data)}`)
         result.id = id
