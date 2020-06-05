@@ -145,9 +145,9 @@ app.get('/verifyLP', async (req, res) => {
     try {
         let domain = req.query.domain
 
-        let prefix = 'http://'
+        let prefix = 'http'
         if (domain.substr(0, prefix.length) !== prefix) {
-            domain = prefix + domain
+            domain = prefix + '://'+ domain
         }
 
         let requestValidate = axios.create({
@@ -155,7 +155,7 @@ app.get('/verifyLP', async (req, res) => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            timeout: 5000
+            // timeout: 10000
         });
         let params = {
             method: 'get'
@@ -164,7 +164,10 @@ app.get('/verifyLP', async (req, res) => {
         const response = await requestValidate(params)
         res.json(response.status)
     } catch (e) {
-
+        console.log(`\nERROR here \x1b[33m  \x1b[0m details:\n  ${String(e) || ''}\n${e.config && JSON.stringify(e.config) || ''}`)
+        console.log(`${e.syscall && e.syscall || ''} ${e.address && e.address || ''} ${e.port && e.port || ''} ${e.code && e.code || ''} ${e.errno && e.errno || ''}`)
+        console.log(`${e.response && e.response.status || ''} `)
+        console.log(`${e.response && e.response.statusText || ''}`)
     }
     res.json(response)
 })
