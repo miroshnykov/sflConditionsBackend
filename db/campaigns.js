@@ -14,6 +14,7 @@ const all = async () => {
                    c.user                                   AS userEmail, 
                    c.landing_page                           AS landingPage, 
                    c.landing_page_valid                     AS landingPageValid, 
+                   c.no_limit                               AS noLimit, 
                    c.date_added                             AS dateAdded, 
                    c.date_updated                           AS dateUpdated, 
                    IFNULL((SELECT t.count_click  

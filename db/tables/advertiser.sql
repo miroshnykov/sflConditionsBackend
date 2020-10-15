@@ -4,16 +4,16 @@ CREATE TABLE `sfl_advertiser_campaigns` (
 	`user` VARCHAR(40) NOT NULL,
 	`status` ENUM('active','inactive') NOT NULL DEFAULT 'active',
 	`position` INT(10) NOT NULL,
-	`budget_total` DECIMAL(10,2) NOT NULL DEFAULT '0.00',
-	`budget_daily` DECIMAL(10,2) NOT NULL DEFAULT '0.00',
-	`cpc` DECIMAL(10,2) NOT NULL DEFAULT '0.00',
+	`budget_total` DECIMAL(16,8) NOT NULL DEFAULT '0.00000000',
+	`budget_daily` DECIMAL(16,8) NOT NULL DEFAULT '0.00000000',
+	`cpc` DECIMAL(16,8) NOT NULL DEFAULT '0.00000000',
 	`landing_page` TEXT NOT NULL,
 	`landing_page_valid` TINYINT(1) NOT NULL DEFAULT '0',
+	`no_limit` TINYINT(1) NOT NULL DEFAULT '0',
 	`soft_delete` TINYINT(1) NOT NULL DEFAULT '0',
 	`date_added` INT(11) NOT NULL,
 	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	PRIMARY KEY (`id`),
-	UNIQUE INDEX `name_UNIQUE` (`name`)
+	PRIMARY KEY (`id`)
 )
 COLLATE='utf8_general_ci'
 ENGINE=InnoDB
