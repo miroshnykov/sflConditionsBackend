@@ -13,6 +13,7 @@ const get = async (id) => {
                    c.user,
                    c.landing_page as landingPage,
                    c.landing_page_valid as landingPageValid,
+                   c.no_limit as noLimit,
                    IFNULL((SELECT t.count_click  
                     FROM   sfl_traffic_history t 
                     WHERE  t.sfl_advertiser_campaign_id = c.id 
@@ -54,6 +55,7 @@ const add = async (data) => {
             landingPage,
             user,
             landingPageValid,
+            noLimit,
             status
         } = data
 
@@ -69,9 +71,10 @@ const add = async (data) => {
             landing_page,
             landing_page_valid,
             user, 
+            no_limit, 
             date_added
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`, [
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [
             name,
             budgetTotal,
             budgetDaily,
@@ -80,6 +83,7 @@ const add = async (data) => {
             landingPage,
             landingPageValid,
             user,
+            noLimit,
             dateAdd])
         await dbMysql.end()
 
@@ -102,6 +106,7 @@ const update = async (data) => {
             cpc,
             landingPage,
             landingPageValid,
+            noLimit,
             status
         } = data
 
@@ -113,7 +118,8 @@ const update = async (data) => {
                 cpc = ?, 
                 status = ?,
                 landing_page = ?,
-                landing_page_valid = ?
+                landing_page_valid = ?,
+                no_limit = ?
             WHERE id = ?        
         `, [
             name,
@@ -123,6 +129,7 @@ const update = async (data) => {
             status,
             landingPage,
             landingPageValid,
+            noLimit,
             id])
         await dbMysql.end()
         console.log(`\nupdated Campaign:${JSON.stringify(data)}`)

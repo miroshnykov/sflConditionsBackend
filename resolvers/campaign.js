@@ -15,7 +15,8 @@ module.exports = {
             budgetDaily,
             cpc,
             landingPage,
-            landingPageValid
+            landingPageValid,
+            noLimit,
         }, ctx) => {
             checkUser(ctx.user)
 
@@ -26,6 +27,7 @@ module.exports = {
             campaign.cpc = cpc
             campaign.landingPage = landingPage
             campaign.landingPageValid = landingPageValid || false
+            campaign.noLimit = noLimit
             campaign.user = ctx.user.email
             return await Campaign.add(campaign)
         },
@@ -37,7 +39,8 @@ module.exports = {
             cpc,
             status,
             landingPage,
-            landingPageValid
+            landingPageValid,
+            noLimit
         }, ctx) => {
             checkUser(ctx.user)
 
@@ -50,6 +53,7 @@ module.exports = {
             campaign.landingPage = landingPage
             campaign.status = status
             campaign.landingPageValid = landingPageValid || false
+            campaign.noLimit = noLimit
             return await Campaign.update(campaign)
         },
         updateCampaignName: async (_, {

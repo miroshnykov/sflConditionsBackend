@@ -18,6 +18,7 @@ const campaigns = gql`
     cpc: Float
     landingPage: String
     landingPageValid: Boolean
+    noLimit: Boolean
     dateAdded: Int
     dateUpdated: String
     spentDaily: Float
