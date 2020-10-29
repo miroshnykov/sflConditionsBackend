@@ -5,6 +5,7 @@ const campaigns = require('./campaigns')
 const targeting = require('./targeting')
 const publisherTargeting = require('./publisherTargeting')
 const countries = require('./countries')
+const segments = require('./segments')
 
 const resolvers = [
     login,
@@ -13,7 +14,8 @@ const resolvers = [
     campaigns,
     targeting,
     publisherTargeting,
-    countries
+    countries,
+    segments
 ]
 
 module.exports = {resolvers}
