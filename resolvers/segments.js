@@ -21,8 +21,8 @@ module.exports = {
             //     }
             // }
 
-            console.log('message id:',data)
-            console.log(' message ctx:',ctx)
+            // console.log('message id:',data)
+            // console.log(' message ctx:',ctx)
 
             return await Segments.reordering(data)
         },
