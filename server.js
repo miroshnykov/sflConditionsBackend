@@ -126,9 +126,14 @@ const getUserInfo = async (tokens) => {
     return info.data
 }
 
+const {ExpressCurrentUser} = require('am-components-backend')
+
+const currentUser = ExpressCurrentUser(config.googleSso.url, config.am_app_key)
 const app = express()
 
 app.use(cors())
+
+app.use(currentUser);
 
 app.get('/health', (req, res, next) => {
     res.send('Ok')

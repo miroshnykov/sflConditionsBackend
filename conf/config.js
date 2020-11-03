@@ -23,6 +23,10 @@ config = {
         access_key: '',
         region: ''
     },
+    googleSso: {
+        url: 'http://localhost:9080/'
+    },
+    am_app_key: 'hqu89vxp4izs',
     googleAuth: {
         oauthCallback: '',
         redirectToOptiPlatformsuccesslogin: '',
