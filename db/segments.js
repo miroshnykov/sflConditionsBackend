@@ -23,6 +23,35 @@ const get = async (campaignId) => {
     }
 }
 
+const create = async (data) => {
+
+    let {name, user} = data
+
+    let date = new Date()
+    let dateAdd = ~~(date.getTime() / 1000)
+
+    try {
+
+        let maxPosition = await dbMysql.query(` 
+        SELECT MAX(s.position) maxPosition FROM sfl_segment s
+        `)
+        await dbMysql.end()
+
+        let position = maxPosition[0].maxPosition + 1
+
+        let result = await dbMysql.query(` 
+            INSERT INTO sfl_segment (name,user, position, date_added) VALUES (?,?,?,?);
+        `, [name, user, position, dateAdd])
+        await dbMysql.end()
+        result.id = result.insertId || 0
+
+        console.log(`\ncreate segment ${JSON.stringify(result)} `)
+        return result
+    } catch (e) {
+        console.log(e)
+    }
+}
+
 const reordering = async (data) => {
 
     try {
@@ -52,8 +81,8 @@ const reordering = async (data) => {
 }
 
 
-
 module.exports = {
     get,
+    create,
     reordering
 }

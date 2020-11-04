@@ -26,6 +26,16 @@ module.exports = {
 
             return await Segments.reordering(data)
         },
+        createSegment: async (_, {
+            name
+        }, ctx) => {
+            checkUser(ctx.user)
+            let data = {}
+            data.name = name
+            data.user = ctx.user.email
+            console.log(data)
+            return await Segments.createSegment(data)
+        },
         // reordering: async (_, {
         //     id,
         //     position

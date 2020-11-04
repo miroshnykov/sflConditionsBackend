@@ -1,6 +1,7 @@
 const {
     get,
-    reordering
+    reordering,
+    create
 } = require('../db/segments')
 
 class Segments {
@@ -9,6 +10,10 @@ class Segments {
     }
     static async reordering(data) {
         return await reordering(data)
+    }
+
+    static async createSegment(data) {
+        return await create(data)
     }
 
 }

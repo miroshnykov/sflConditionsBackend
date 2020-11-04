@@ -16,7 +16,16 @@ const segments = gql`
   }  
   
   extend type Mutation {
-    ordering(reordering: [OrderInput]): [Order]            
+    ordering(reordering: [OrderInput]): [Order]
+        
+    createSegment(
+        name: String!
+    ): CreateSegment        
+  }
+   
+  type CreateSegment {
+        name: String
+        id: Int
   }
    
   type Order {
