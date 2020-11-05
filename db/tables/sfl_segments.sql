@@ -12,12 +12,12 @@ COLLATE='utf8_general_ci'
 ENGINE=InnoDB
 ;
 
-
 CREATE TABLE `sfl_segment` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(128) NOT NULL,
 	`status` ENUM('active','inactive') NOT NULL DEFAULT 'inactive',
 	`position` INT(10) NOT NULL,
+	`user` VARCHAR(50) NOT NULL DEFAULT '0',
 	`date_added` INT(11) NOT NULL,
 	`date_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`),

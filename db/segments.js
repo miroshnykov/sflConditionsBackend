@@ -80,9 +80,48 @@ const reordering = async (data) => {
     }
 }
 
+const deleteSegment = async (id) => {
+
+    try {
+        let result = await dbMysql.query(`
+            DELETE FROM sfl_segment WHERE id=?
+        `, [id])
+        await dbMysql.end()
+
+        console.log(`deleteSegment id ${id} affectRows:${result.affectedRows}`)
+
+        let segments = await dbMysql.query(` 
+            SELECT 
+                s.id,
+                s.position AS position
+            FROM sfl_segment s
+            order by s.position ASC 
+        `)
+        await dbMysql.end()
+        let count = 0
+        for (const item of segments) {
+            // console.log(`new position:${count} item:`,item)
+
+            let updPosition = await dbMysql.query(` 
+                UPDATE sfl_segment SET position=${count} WHERE id=${item.id} 
+            `)
+            console.log(`update id ${item.id} to position ${count} affectRows:${updPosition.affectedRows}`)
+            await dbMysql.end()
+            count++
+        }
+
+        result.id = id
+        return result
+    } catch (e) {
+        console.log(e)
+        return e
+    }
+}
+
 
 module.exports = {
     get,
     create,
+    deleteSegment,
     reordering
 }

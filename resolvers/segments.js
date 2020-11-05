@@ -36,6 +36,10 @@ module.exports = {
             console.log(data)
             return await Segments.createSegment(data)
         },
+        deleteSegment: async (_, {id}, ctx) => {
+            checkUser(ctx.user)
+            return await Segments.deleteSegment(id)
+        },
         // reordering: async (_, {
         //     id,
         //     position

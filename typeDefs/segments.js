@@ -20,7 +20,12 @@ const segments = gql`
         
     createSegment(
         name: String!
-    ): CreateSegment        
+    ): CreateSegment   
+    
+    deleteSegment(
+        id: Int!
+    ): SegmentDelete
+                 
   }
    
   type CreateSegment {
@@ -28,6 +33,10 @@ const segments = gql`
         id: Int
   }
    
+  type SegmentDelete {
+    id: Int  
+  }
+     
   type Order {
       id:Int
       position:Int
