@@ -7,6 +7,10 @@ const { targeting } = require('./targeting')
 const { publisherTargeting } = require('./publisherTargeting')
 const { countries } = require('./countries')
 const { segments } = require('./segments')
+const { segment } = require('./segment')
+
+const { affiliates } = require('./affiliates')
+const { dimensions } = require('./dimensions')
 
 const typeDefs = [
     query,
@@ -17,7 +21,10 @@ const typeDefs = [
     targeting,
     publisherTargeting,
     countries,
-    segments
+    segments,
+    segment,
+    dimensions,
+    affiliates,
 ]
 
 module.exports = {

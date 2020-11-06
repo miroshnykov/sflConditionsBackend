@@ -5,6 +5,10 @@ const {Targeting} = require('./Targeting')
 const {PublisherTargeting} = require('./PublisherTargeting')
 const {Countries} = require('./Countries')
 const {Segments} = require('./Segments')
+const {Segment} = require('./Segment')
+const {Affiliates} = require('./Affiliates')
+const {Dimensions} = require('./Dimensions')
+
 
 module.exports = {
     User,
@@ -13,5 +17,8 @@ module.exports = {
     Targeting,
     PublisherTargeting,
     Countries,
-    Segments
+    Segments,
+    Segment,
+    Affiliates,
+    Dimensions,
 }
