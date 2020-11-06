@@ -104,22 +104,22 @@ module.exports = {
             await delSegmentsCache()
             return await Segment.deleteSegmentConditions(segmentId)
         },
-        createSegment: async (_, {segmentName, weight, multiplier, status}, ctx) => {
-            checkUser(ctx.user)
-            let statusCache = status || 'inactive'
-            await delDataCache(`segments-${statusCache}`)
-            segmentValidations(segmentName, weight, multiplier)
-            return await Segment.createSegment(segmentName, weight, multiplier, ctx.user.email, status)
-        },
+        // createSegment: async (_, {segmentName, weight, multiplier, status}, ctx) => {
+        //     checkUser(ctx.user)
+        //     let statusCache = status || 'inactive'
+        //     await delDataCache(`segments-${statusCache}`)
+        //     segmentValidations(segmentName, weight, multiplier)
+        //     return await Segment.createSegment(segmentName, weight, multiplier, ctx.user.email, status)
+        // },
         updateSegment: async (_, {segmentId, segmentName, weight, multiplier}, ctx) => {
             checkUser(ctx.user)
             await delSegmentsCache()
             return await Segment.updateSegment(segmentId, segmentName, weight, multiplier, ctx.user.email)
         },
-        deleteSegment: async (_, {segmentId}, ctx) => {
-            checkUser(ctx.user)
-            await delSegmentsCache()
-            return await Segment.deleteSegment(segmentId, ctx.user.email)
-        }
+        // deleteSegment: async (_, {segmentId}, ctx) => {
+        //     checkUser(ctx.user)
+        //     await delSegmentsCache()
+        //     return await Segment.deleteSegment(segmentId, ctx.user.email)
+        // }
     }
 }
