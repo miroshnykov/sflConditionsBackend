@@ -23,6 +23,6 @@ COPY . .
 RUN npm install
 # RUN npm run build
 EXPOSE 4001
-ENTRYPOINT redis-server --daemonize yes && npm run startBackend
+ENTRYPOINT redis-server --daemonize yes && npm run start
 #CMD [ "node", "server.js" ]
 
