@@ -23,6 +23,10 @@ config = {
         access_key: '',
         region: ''
     },
+    googleSso: {
+        url: 'https://am-ssoauth.surge.systems/'
+    },
+    am_app_key: '',
     googleAuth: {
         oauthCallback: '',
         redirectToOptiPlatformsuccesslogin: '',

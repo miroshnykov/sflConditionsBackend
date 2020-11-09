@@ -5,13 +5,14 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js --conf=/run/secrets/sfl-core-condition.js" 
+    "start": "node server.js --conf=/run/secrets/sfl-core-condition.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "apollo-server": "^2.12.0",
     "apollo-server-express": "^2.9.16",
+    "am-components-backend": "git+https://e6aa619486e35d6af0364fd1d700efc15fd59b72@github.com/jomedia/am-components-backend.git",
     "async-redis": "^1.1.7",
     "aws-sdk": "^2.584.0",
     "axios": "^0.19.2",
