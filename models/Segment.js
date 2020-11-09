@@ -9,6 +9,7 @@ const {
     createSegment,
     deleteSegment,
     updateSegment,
+    updateLandingPage,
     updatePositionSegments,
     updateStatusSegment
 } = require('../db/segment')
@@ -17,6 +18,10 @@ class Segment {
 
     static async updatePositionSegments(oldPosition, oldId, event) {
         return await updatePositionSegments(oldPosition, oldId, event)
+    }
+
+    static async updateLandingPage(segmentId, landingPageId) {
+        return await updateLandingPage(segmentId, landingPageId)
     }
 
     static async updateStatusSegment(segmentId, status) {

@@ -80,6 +80,10 @@ module.exports = {
             ruleData.user = ctx.user.email
             return await Segment.createRule(ruleData)
         },
+        updateLandingPage: async (_, {segmentId, landingPageId}, ctx) => {
+            checkUser(ctx.user)
+            return await Segment.updateLandingPage(segmentId, landingPageId)
+        },
         updatePositionSegments: async (_, {oldPosition, oldId, event}, ctx) => {
             checkUser(ctx.user)
             await delSegmentsCache()
