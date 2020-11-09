@@ -8,6 +8,7 @@ const {Segments} = require('./Segments')
 const {Segment} = require('./Segment')
 const {Affiliates} = require('./Affiliates')
 const {Dimensions} = require('./Dimensions')
+const {Lp} = require('./Lp')
 
 
 module.exports = {
@@ -21,4 +22,5 @@ module.exports = {
     Segment,
     Affiliates,
     Dimensions,
+    Lp,
 }

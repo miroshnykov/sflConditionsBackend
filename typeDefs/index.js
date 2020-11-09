@@ -11,6 +11,7 @@ const { segment } = require('./segment')
 
 const { affiliates } = require('./affiliates')
 const { dimensions } = require('./dimensions')
+const { lp } = require('./lp')
 
 const typeDefs = [
     query,
@@ -25,6 +26,7 @@ const typeDefs = [
     segment,
     dimensions,
     affiliates,
+    lp
 ]
 
 module.exports = {

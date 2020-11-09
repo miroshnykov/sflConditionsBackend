@@ -9,6 +9,7 @@ const segments = require('./segments')
 const segment = require('./segment')
 const affiliates = require('./affiliates')
 const dimensions = require('./dimensions')
+const lp = require('./lp')
 
 const resolvers = [
     login,
@@ -21,7 +22,8 @@ const resolvers = [
     segments,
     segment,
     dimensions,
-    affiliates
+    affiliates,
+    lp
 ]
 
 module.exports = {resolvers}
