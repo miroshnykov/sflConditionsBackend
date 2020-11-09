@@ -24,9 +24,9 @@ config = {
         region: ''
     },
     googleSso: {
-        url: 'http://localhost:9080/'
+        url: 'https://am-ssoauth.surge.systems/'
     },
-    am_app_key: 'hqu89vxp4izs',
+    am_app_key: '',
     googleAuth: {
         oauthCallback: '',
         redirectToOptiPlatformsuccesslogin: '',
