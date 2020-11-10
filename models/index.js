@@ -9,7 +9,7 @@ const {Segment} = require('./Segment')
 const {Affiliates} = require('./Affiliates')
 const {Dimensions} = require('./Dimensions')
 const {Lp} = require('./Lp')
-
+const {Prod} = require('./Prod')
 
 module.exports = {
     User,
@@ -23,4 +23,5 @@ module.exports = {
     Affiliates,
     Dimensions,
     Lp,
+    Prod,
 }
