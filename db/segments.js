@@ -1,23 +1,45 @@
 let dbMysql = require('./mysqlDb').get()
 
-const get = async (campaignId) => {
+const all = async () => {
 
     try {
-        let result = await dbMysql.query(` 
-            SELECT 
-                s.id,
-                s.name AS name,
-                s.\`status\` AS status,
-                s.position AS position,
-                s.date_added AS dateAddedUnixTime,
-                FROM_UNIXTIME(s.date_added) AS dateAdded
-            FROM sfl_segment s
-            order by s.position ASC 
+        let segments = await dbMysql.query(` 
+            SELECT s.id, 
+                   s.name                      AS name, 
+                   s.\`status\` as            status, 
+                   s.position                  AS position, 
+                   s.date_added                AS dateAddedUnixTime,                    
+                   From_unixtime(s.date_added) AS dateAdded 
+            FROM   sfl_segment s 
+            ORDER  BY s.position ASC 
         `)
         await dbMysql.end()
 
-        console.log(`\ngetSegments ${JSON.stringify(result)} `)
-        return result
+        let lp = []
+
+        let ids = ''
+        for (const segment of segments) {
+            ids += segment.id + ','
+            lp.push(segment)
+        }
+        let idsString = ids.slice(0, -1)
+
+        let lpList = await dbMysql.query(`
+            SELECT sl.sfl_segment_id, sl.landing_pages_id as id,l.name from sfl_segment_landing_page sl , landing_pages l
+            WHERE l.id = sl.landing_pages_id AND sl.sfl_segment_id IN (${idsString})
+        `)
+        await dbMysql.end()
+
+
+        let segmentLp = []
+        for (const segment of segments) {
+            let sLp = lpList.filter(item => (item.sfl_segment_id === segment.id))
+            segment.lp = sLp
+            segmentLp.push(segment)
+        }
+
+        console.log(`\ngetSegments ${JSON.stringify(segmentLp)} `)
+        return segmentLp
     } catch (e) {
         console.log(e)
     }
@@ -120,7 +142,7 @@ const deleteSegment = async (id) => {
 
 
 module.exports = {
-    get,
+    all,
     create,
     deleteSegment,
     reordering

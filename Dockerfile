@@ -18,6 +18,8 @@ RUN apt-get install \
 RUN curl --silent --location https://deb.nodesource.com/setup_12.x | bash -
 RUN apt-get install --yes nodejs
 
+RUN apt-get install --yes git
+
 WORKDIR /home/app
 COPY . .
 RUN npm install

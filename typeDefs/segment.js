@@ -20,6 +20,11 @@ const segment = gql`
                 matchTypeId: Int!,
                 dateAdded: Int!,
                 segmentRuleIndex:Int!): CreateSegmentCondition
+                
+                updateLandingPage(
+                    segmentId: Int!,
+                    landingPageId: Int!
+                ):UpdateLandingPage
 
             createRule(
                 segmentId: Int!, 
@@ -176,7 +181,11 @@ const segment = gql`
             dateAdded: Int
             segmentRuleIndex: Int
       }
-                
+          
+      type UpdateLandingPage {
+            id: Int
+      }              
+  
       type CreateRule {
             segmentId: Int, 
             dimensionId: Int  
