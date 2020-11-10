@@ -13,8 +13,14 @@ const segments = gql`
     position: Int
     dateAddedUnixTime: Int
     dateAdded: String
+    lp:[LandingPages]
   }  
-  
+
+  type LandingPages {
+        id: Int
+        name: String
+  }
+    
   extend type Mutation {
     ordering(reordering: [OrderInput]): [Order]
         

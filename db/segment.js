@@ -124,6 +124,23 @@ const getSegments1 = async (status) => {
     }
 }
 
+const updateLandingPage = async (segmentId, landingPageId) => {
+
+    try {
+        let result = await dbMysql.query(`
+             
+            INSERT INTO sfl_segment_landing_page (sfl_segment_id, landing_pages_id) VALUES (?, ?) ON DUPLICATE KEY UPDATE landing_pages_id = ?
+        `, [segmentId,landingPageId,landingPageId])
+        await dbMysql.end()
+        result.id = segmentId || 0
+
+        console.log(`updateLandingPage ${segmentId} to landingPageId ${landingPageId} affectRows:`, result.affectedRows)
+        return result
+    } catch (e) {
+        console.log(e)
+    }
+}
+
 const updatePositionSegments = async (oldPosition, oldId, event) => {
 
 
@@ -637,6 +654,7 @@ module.exports = {
     deleteSegmentCondition,
     deleteSegmentConditions,
     deleteSegment,
+    updateLandingPage,
     updateSegment,
     updateStatusSegment
 }

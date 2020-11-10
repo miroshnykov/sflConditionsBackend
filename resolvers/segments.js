@@ -5,7 +5,7 @@ module.exports = {
     Query: {
         segments: (_, {}, ctx) => {
             checkUser(ctx.user)
-            return Segments.get()
+            return Segments.all()
         }
     },
     Mutation: {
