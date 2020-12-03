@@ -25,6 +25,16 @@ COPY . .
 RUN npm install
 # RUN npm run build
 EXPOSE 4001
-ENTRYPOINT redis-server --daemonize yes && npm run start
-#CMD [ "node", "server.js" ]
+
+# Required to push into different branchs.
+ARG branch
+ENV BRANCH=${branch}
+
+ENTRYPOINT redis-server --daemonize yes && if [ "$BRANCH" = "stage1" ] ; then \
+        npm run stage1 ; \
+    elif [ "$BRANCH" = "stage2" ] ; then \
+        npm run stage2 ; \
+    else \
+        npm run prod ; \
+    fi
 
