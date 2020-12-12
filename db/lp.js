@@ -24,6 +24,54 @@ const all = async () => {
     }
 }
 
+const create = async (data) => {
+
+    try {
+        const {segmentId, lpId, weight} = data
+        console.log(data)
+        let date = new Date()
+        let dateAdd = ~~(date.getTime() / 1000)
+        let result = await dbMysql.query(` 
+                INSERT INTO sfl_segment_landing_page (sfl_segment_id, landing_pages_id, weight, date_added) VALUES (?,?,?,?);
+        `, [segmentId, lpId, weight, dateAdd])
+        await dbMysql.end()
+
+        let res = {}
+        res.segmentId = segmentId || 0
+
+        console.log(`\nCreateLp, data:{ ${JSON.stringify(data)} },  affectRows:${result.affectedRows}`)
+        return res
+    }
+    catch (e) {
+        console.log('createLpError:',e)
+    }
+
+}
+
+const del = async (data) => {
+
+    try {
+        const {segmentId, lpId} = data
+        console.log(data)
+        let result = await dbMysql.query(` 
+            DELETE FROM sfl_segment_landing_page WHERE  sfl_segment_id=? AND landing_pages_id=?
+        `, [segmentId, lpId])
+        await dbMysql.end()
+
+        let res = {}
+        res.segmentId = segmentId || 0
+
+        console.log(`\ndelLp, data:{ ${JSON.stringify(data)} },  affectRows:${result.affectedRows}`)
+        return res
+    }
+    catch (e) {
+        console.log('deleteLpError:',e)
+    }
+
+}
+
 module.exports = {
-    all
+    all,
+    create,
+    del
 }
