@@ -19,6 +19,7 @@ const segments = gql`
   type LandingPages {
         id: Int
         name: String
+        weight: Int
   }
     
   extend type Mutation {

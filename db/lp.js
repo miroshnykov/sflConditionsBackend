@@ -7,7 +7,7 @@ const all = async () => {
         let result = await dbMysql.query(` 
             SELECT  
                 id, 
-                NAME as name, 
+                name as name, 
                 product_id as productId,
                 forced_landing_url as forcedLandingUrl,
                 static_url as staticUrl
