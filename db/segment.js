@@ -128,9 +128,8 @@ const updateLandingPage = async (segmentId, landingPageId) => {
 
     try {
         let result = await dbMysql.query(`
-             
             INSERT INTO sfl_segment_landing_page (sfl_segment_id, landing_pages_id) VALUES (?, ?) ON DUPLICATE KEY UPDATE landing_pages_id = ?
-        `, [segmentId,landingPageId,landingPageId])
+        `, [segmentId, landingPageId, landingPageId])
         await dbMysql.end()
         result.id = segmentId || 0
 
@@ -248,6 +247,24 @@ const getSegment = async (id) => {
         console.timeEnd('getSegment')
         console.log(`getSegment count:${result.length}`)
         // console.log('getSegment :', result)
+        return result
+    } catch (e) {
+        console.log(e)
+        return e
+    }
+}
+
+const getSegmentStatus = async (id) => {
+
+    try {
+        let result = await dbMysql.query(` 
+                SELECT s.name, s.status, s.date_added as dateUpdated
+                FROM sfl_segment s 
+                WHERE s.id = ?
+        `, [id])
+        await dbMysql.end()
+
+        console.log(`getSegmentStatus :${JSON.stringify(result)}`)
         return result
     } catch (e) {
         console.log(e)
@@ -645,6 +662,7 @@ const deleteSegmentConditions = async (segmentId) => {
 module.exports = {
     getSegment,
     getSegments1,
+    getSegmentStatus,
     updatePositionSegments,
     getSegmentCountFilters,
     createSegment,

@@ -6,6 +6,8 @@ const segment = gql`
             
             segment(id:Int!): [Segment]
             
+            segmentStatus(id:Int!): [SegmentStatus]
+            
             getSegmentCountFilters(id:Int!) : [SegmentCountFilters]
       }
   
@@ -85,7 +87,14 @@ const segment = gql`
       type updateStatusSegment{
             segmentId: Int,
             status: String 
-      }      
+      }    
+      
+      type SegmentStatus {
+            name: String
+            status: String
+            dateUpdated: String
+      }
+       
       type Segment {
             id: Int
             dimensionName: String

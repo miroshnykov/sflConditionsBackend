@@ -25,6 +25,10 @@ module.exports = {
             checkUser(ctx.user)
             return await Segment.getSegment(id)
         },
+        segmentStatus: async (_, {id}, ctx) => {
+            checkUser(ctx.user)
+            return await Segment.getSegmentStatus(id)
+        },
         getSegmentCountFilters: async (_, {id}, ctx) => {
             checkUser(ctx.user)
             return await Segment.getSegmentCountFilters(id)

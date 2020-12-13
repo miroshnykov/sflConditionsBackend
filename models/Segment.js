@@ -1,5 +1,6 @@
 const {
     getSegment,
+    getSegmentStatus,
     getSegmentCountFilters,
     createSegmentCondition,
     createRule,
@@ -30,6 +31,10 @@ class Segment {
 
     static async getSegment(id) {
         return await getSegment(id)
+    }
+
+    static async getSegmentStatus(id) {
+        return await getSegmentStatus(id)
     }
 
     static async getSegmentCountFilters(id) {
