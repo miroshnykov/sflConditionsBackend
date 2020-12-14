@@ -18,16 +18,20 @@ const lp = gql`
         lpId: Int!, 
         weight: Int!
      ): CreateLp
-     deleteSegmentLp(
+    updateLp(
+        id: Int!,
         segmentId: Int!, 
         lpId: Int!, 
+        weight: Int!
+     ): UpdateLp     
+     deleteSegmentLp(
+        id: Int!, 
      ): DeleteSegmentLp    
             
   }
   
     type DeleteSegmentLp {
-        segmentId: Int,
-        lpId:Int  
+        id:Int  
     }
       
     type CreateLp {
@@ -35,6 +39,12 @@ const lp = gql`
         lpId: Int 
         weight: Int
     }
+    type UpdateLp {
+        id:Int
+        segmentId: Int
+        lpId: Int 
+        weight: Int
+    }    
 `;
 
 module.exports = {

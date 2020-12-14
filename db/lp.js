@@ -32,7 +32,7 @@ const create = async (data) => {
         let date = new Date()
         let dateAdd = ~~(date.getTime() / 1000)
         let result = await dbMysql.query(` 
-                INSERT INTO sfl_segment_landing_page (sfl_segment_id, landing_pages_id, weight, date_added) VALUES (?,?,?,?);
+            INSERT INTO sfl_segment_landing_page (sfl_segment_id, landing_pages_id, weight, date_added) VALUES (?,?,?,?);
         `, [segmentId, lpId, weight, dateAdd])
         await dbMysql.end()
 
@@ -41,9 +41,29 @@ const create = async (data) => {
 
         console.log(`\nCreateLp, data:{ ${JSON.stringify(data)} },  affectRows:${result.affectedRows}`)
         return res
+    } catch (e) {
+        console.log('createLpError:', e)
     }
-    catch (e) {
-        console.log('createLpError:',e)
+
+}
+
+const update = async (data) => {
+
+    try {
+        const {id, segmentId, lpId, weight} = data
+        console.log(data)
+        let result = await dbMysql.query(` 
+                UPDATE sfl_segment_landing_page SET landing_pages_id=?, weight=? WHERE id=? 
+        `, [lpId, weight, id])
+        await dbMysql.end()
+
+        let res = {}
+        res.segmentId = segmentId || 0
+
+        console.log(`\nUpdate, data:{ ${JSON.stringify(data)} },  affectRows:${result.affectedRows}`)
+        return res
+    } catch (e) {
+        console.log('updateLpError:', e)
     }
 
 }
@@ -51,21 +71,20 @@ const create = async (data) => {
 const del = async (data) => {
 
     try {
-        const {segmentId, lpId} = data
+        const {id} = data
         console.log(data)
         let result = await dbMysql.query(` 
-            DELETE FROM sfl_segment_landing_page WHERE  sfl_segment_id=? AND landing_pages_id=?
-        `, [segmentId, lpId])
+            DELETE FROM sfl_segment_landing_page WHERE id=? 
+        `, [id])
         await dbMysql.end()
 
         let res = {}
-        res.segmentId = segmentId || 0
+        res.id = id || 0
 
         console.log(`\ndelLp, data:{ ${JSON.stringify(data)} },  affectRows:${result.affectedRows}`)
         return res
-    }
-    catch (e) {
-        console.log('deleteLpError:',e)
+    } catch (e) {
+        console.log('deleteLpError:', e)
     }
 
 }
@@ -73,5 +92,6 @@ const del = async (data) => {
 module.exports = {
     all,
     create,
+    update,
     del
 }

@@ -31,11 +31,25 @@ module.exports = {
             return await Lp.create(obj)
 
         },
-        deleteSegmentLp: async (_, {segmentId, lpId}, ctx) => {
+        updateLp: async (_, {
+            id,
+            segmentId,
+            lpId,
+            weight
+        }, ctx) => {
             checkUser(ctx.user)
             let obj = {}
+            obj.id = id
             obj.segmentId = segmentId
             obj.lpId = lpId
+            obj.weight = weight
+            return await Lp.update(obj)
+
+        },
+        deleteSegmentLp: async (_, {id}, ctx) => {
+            checkUser(ctx.user)
+            let obj = {}
+            obj.id = id
             return await Lp.del(obj)
         },
     }

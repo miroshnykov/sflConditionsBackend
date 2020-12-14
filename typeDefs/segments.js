@@ -18,6 +18,8 @@ const segments = gql`
 
   type LandingPages {
         id: Int
+        segmentId: Int
+        lpId: Int
         name: String
         weight: Int
   }

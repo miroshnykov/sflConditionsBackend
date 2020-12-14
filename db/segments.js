@@ -25,7 +25,13 @@ const all = async () => {
         let idsString = ids.slice(0, -1)
 
         let lpList = await dbMysql.query(`
-            SELECT sl.sfl_segment_id, sl.landing_pages_id as id,l.name, sl.weight as weight from sfl_segment_landing_page sl , landing_pages l
+            SELECT 
+                sl.id as id,
+                sl.sfl_segment_id as segmentId, 
+                sl.landing_pages_id as lpId,
+                l.name as name, 
+                sl.weight as weight 
+            from sfl_segment_landing_page sl , landing_pages l
             WHERE l.id = sl.landing_pages_id AND sl.sfl_segment_id IN (${idsString})
         `)
         await dbMysql.end()
@@ -33,7 +39,7 @@ const all = async () => {
 
         let segmentLp = []
         for (const segment of segments) {
-            let sLp = lpList.filter(item => (item.sfl_segment_id === segment.id))
+            let sLp = lpList.filter(item => (item.segmentId === segment.id))
             segment.lp = sLp
             segmentLp.push(segment)
         }

@@ -24,6 +24,7 @@ const segment = gql`
                 segmentRuleIndex:Int!): CreateSegmentCondition
                 
                 updateLandingPage(
+                    id: Int!,
                     segmentId: Int!,
                     landingPageId: Int!
                 ):UpdateLandingPage
