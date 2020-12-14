@@ -272,6 +272,24 @@ const getSegmentStatus = async (id) => {
     }
 }
 
+const updateSegmentStatus = async (data) => {
+
+    const {segmentId, name, status} = data
+    try {
+        let result = await dbMysql.query(` 
+            UPDATE sfl_segment SET name= "${name}", status= "${status}" WHERE id=?
+        `, [segmentId])
+        await dbMysql.end()
+
+        let res = {}
+        res.segmentId = segmentId
+        console.log(`updateSegmentStatus:${JSON.stringify(result)}`)
+        return res
+    } catch (e) {
+        console.log('updateSegmentStatusError:', e)
+    }
+}
+
 const createSegment = async (segmentName, weight, multiplier, user, status = 'inactive') => {
 
     try {
@@ -663,6 +681,7 @@ module.exports = {
     getSegment,
     getSegments1,
     getSegmentStatus,
+    updateSegmentStatus,
     updatePositionSegments,
     getSegmentCountFilters,
     createSegment,

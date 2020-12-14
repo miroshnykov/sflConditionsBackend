@@ -46,7 +46,12 @@ const segment = gql`
             updateStatusSegment(
                 segmentId: Int!
                 status: String!): updateStatusSegment   
-                                
+
+            updateSegmentStatus(
+                segmentId: Int!
+                name: String!
+                status: String!): updateSegmentStatus   
+                                                
             deleteSegmentCondition(
                 segmentId: Int!,
                 position: Int!
@@ -88,7 +93,12 @@ const segment = gql`
             segmentId: Int,
             status: String 
       }    
-      
+
+      type updateSegmentStatus{
+            segmentId: Int,
+            status: String 
+            name: String 
+      }      
       type SegmentStatus {
             name: String
             status: String
