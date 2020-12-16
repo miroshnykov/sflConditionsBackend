@@ -1,5 +1,7 @@
 const {
     getSegment,
+    getSegmentStatus,
+    updateSegmentStatus,
     getSegmentCountFilters,
     createSegmentCondition,
     createRule,
@@ -32,6 +34,10 @@ class Segment {
         return await getSegment(id)
     }
 
+    static async getSegmentStatus(id) {
+        return await getSegmentStatus(id)
+    }
+
     static async getSegmentCountFilters(id) {
         return await getSegmentCountFilters(id)
     }
@@ -56,7 +62,7 @@ class Segment {
         return await deleteSegmentConditions(segmentId)
     }
 
-    static async createSegment(segmentName,weight, multiplier, user, status) {
+    static async createSegment(segmentName, weight, multiplier, user, status) {
         return await createSegment(segmentName, weight, multiplier, user, status)
     }
     static async deleteSegment(segmentId, user) {
@@ -65,6 +71,10 @@ class Segment {
 
     static async updateSegment(segmentId, segmentName, weight, multiplier, user) {
         return await updateSegment(segmentId, segmentName, weight, multiplier, user)
+    }
+
+    static async updateSegmentStatus(data) {
+        return await updateSegmentStatus(data)
     }
 }
 

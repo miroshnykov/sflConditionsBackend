@@ -17,4 +17,40 @@ module.exports = {
 
         },
     },
+    Mutation: {
+        createLp: async (_, {
+            segmentId,
+            lpId,
+            weight
+        }, ctx) => {
+            checkUser(ctx.user)
+            let obj = {}
+            obj.segmentId = segmentId
+            obj.lpId = lpId
+            obj.weight = weight
+            return await Lp.create(obj)
+
+        },
+        updateLp: async (_, {
+            id,
+            segmentId,
+            lpId,
+            weight
+        }, ctx) => {
+            checkUser(ctx.user)
+            let obj = {}
+            obj.id = id
+            obj.segmentId = segmentId
+            obj.lpId = lpId
+            obj.weight = weight
+            return await Lp.update(obj)
+
+        },
+        deleteSegmentLp: async (_, {id}, ctx) => {
+            checkUser(ctx.user)
+            let obj = {}
+            obj.id = id
+            return await Lp.del(obj)
+        },
+    }
 }

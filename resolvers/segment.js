@@ -25,6 +25,10 @@ module.exports = {
             checkUser(ctx.user)
             return await Segment.getSegment(id)
         },
+        segmentStatus: async (_, {id}, ctx) => {
+            checkUser(ctx.user)
+            return await Segment.getSegmentStatus(id)
+        },
         getSegmentCountFilters: async (_, {id}, ctx) => {
             checkUser(ctx.user)
             return await Segment.getSegmentCountFilters(id)
@@ -93,6 +97,15 @@ module.exports = {
             checkUser(ctx.user)
             await delSegmentsCache()
             return await Segment.updateStatusSegment(segmentId, status)
+        },
+        updateSegmentStatus: async (_, {segmentId, name, status}, ctx) => {
+            checkUser(ctx.user)
+            let obj = {}
+            obj.segmentId = segmentId
+            obj.name = name
+            obj.status = status
+            console.log('obj:', obj)
+            return await Segment.updateSegmentStatus(obj)
         },
         deleteSegmentCondition: async (_, {segmentId, position}, ctx) => {
             checkUser(ctx.user)

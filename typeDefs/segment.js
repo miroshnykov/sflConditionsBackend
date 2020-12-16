@@ -6,6 +6,8 @@ const segment = gql`
             
             segment(id:Int!): [Segment]
             
+            segmentStatus(id:Int!): [SegmentStatus]
+            
             getSegmentCountFilters(id:Int!) : [SegmentCountFilters]
       }
   
@@ -22,6 +24,7 @@ const segment = gql`
                 segmentRuleIndex:Int!): CreateSegmentCondition
                 
                 updateLandingPage(
+                    id: Int!,
                     segmentId: Int!,
                     landingPageId: Int!
                 ):UpdateLandingPage
@@ -44,7 +47,12 @@ const segment = gql`
             updateStatusSegment(
                 segmentId: Int!
                 status: String!): updateStatusSegment   
-                                
+
+            updateSegmentStatus(
+                segmentId: Int!
+                name: String!
+                status: String!): updateSegmentStatus   
+                                                
             deleteSegmentCondition(
                 segmentId: Int!,
                 position: Int!
@@ -85,7 +93,19 @@ const segment = gql`
       type updateStatusSegment{
             segmentId: Int,
             status: String 
+      }    
+
+      type updateSegmentStatus{
+            segmentId: Int,
+            status: String 
+            name: String 
       }      
+      type SegmentStatus {
+            name: String
+            status: String
+            dateUpdated: String
+      }
+       
       type Segment {
             id: Int
             dimensionName: String
