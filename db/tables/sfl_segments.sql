@@ -22,6 +22,7 @@ CREATE TABLE `sfl_segment` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(128) NOT NULL,
 	`status` ENUM('active','inactive') NOT NULL DEFAULT 'inactive',
+	`type` ENUM('standard','block') NULL DEFAULT 'standard',
 	`position` INT(10) NOT NULL,
 	`user` VARCHAR(50) NOT NULL DEFAULT '0',
 	`date_added` INT(11) NOT NULL,

@@ -3,7 +3,7 @@ const {gql} = require('apollo-server')
 const segments = gql`
   
   extend type Query{
-    segments: [Segments]
+    segments(type:String!): [Segments]
   } 
 
   type Segments {
@@ -25,20 +25,26 @@ const segments = gql`
   }
     
   extend type Mutation {
-    ordering(reordering: [OrderInput]): [Order]
+  
+    ordering(
+        segmentType: String!,
+        reordering: [OrderInput]): [Order]
         
     createSegment(
         name: String!
+        type: String!
     ): CreateSegment   
     
     deleteSegment(
         id: Int!
+        segmentType: String!
     ): SegmentDelete
                  
   }
    
   type CreateSegment {
         name: String
+        type: String
         id: Int
   }
    

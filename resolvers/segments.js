@@ -3,9 +3,9 @@ const checkUser = require('../helper/perm')
 
 module.exports = {
     Query: {
-        segments: (_, {}, ctx) => {
+        segments: (_, {type}, ctx) => {
             checkUser(ctx.user)
-            return Segments.all()
+            return Segments.all(type)
         }
     },
     Mutation: {
@@ -27,18 +27,21 @@ module.exports = {
             return await Segments.reordering(data)
         },
         createSegment: async (_, {
-            name
+            name,
+            type
         }, ctx) => {
             checkUser(ctx.user)
             let data = {}
             data.name = name
+            data.type = type
             data.user = ctx.user.email
             console.log(data)
             return await Segments.createSegment(data)
         },
-        deleteSegment: async (_, {id}, ctx) => {
+        deleteSegment: async (_, data, ctx) => {
             checkUser(ctx.user)
-            return await Segments.deleteSegment(id)
+
+            return await Segments.deleteSegment(data)
         },
         // reordering: async (_, {
         //     id,

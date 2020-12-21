@@ -1,6 +1,6 @@
 let dbMysql = require('./mysqlDb').get()
 
-const all = async () => {
+const all = async (type) => {
 
     try {
         let segments = await dbMysql.query(` 
@@ -11,6 +11,7 @@ const all = async () => {
                    s.date_added                AS dateAddedUnixTime,                    
                    From_unixtime(s.date_added) AS dateAdded 
             FROM   sfl_segment s 
+            WHERE s.type ='${type}'
             ORDER  BY s.position ASC 
         `)
         await dbMysql.end()
@@ -53,7 +54,7 @@ const all = async () => {
 
 const create = async (data) => {
 
-    let {name, user} = data
+    let {name, user, type} = data
 
     let date = new Date()
     let dateAdd = ~~(date.getTime() / 1000)
@@ -61,17 +62,18 @@ const create = async (data) => {
     try {
 
         let maxPosition = await dbMysql.query(` 
-        SELECT MAX(s.position) maxPosition FROM sfl_segment s
+        SELECT MAX(s.position) maxPosition FROM sfl_segment s where s.type='${type}'
         `)
         await dbMysql.end()
 
         let position = maxPosition[0].maxPosition + 1
 
         let result = await dbMysql.query(` 
-            INSERT INTO sfl_segment (name,user, position, date_added) VALUES (?,?,?,?);
-        `, [name, user, position, dateAdd])
+            INSERT INTO sfl_segment (name,user, position, type, date_added) VALUES (?,?,?,?,?);
+        `, [name, user, position, type, dateAdd])
         await dbMysql.end()
         result.id = result.insertId || 0
+        result.type = type
 
         console.log(`\ncreate segment ${JSON.stringify(result)} `)
         return result
@@ -82,11 +84,12 @@ const create = async (data) => {
 
 const reordering = async (data) => {
 
+    console.log('\nreordering!!!!', data)
     try {
 
         for (const item of data.reordering) {
             let update = await dbMysql.query(`
-            UPDATE sfl_segment SET position=${item.position} WHERE id=${item.id}
+            UPDATE sfl_segment SET position=${item.position} WHERE id=${item.id} and type = '${data.segmentType}' 
              
         `)
             await dbMysql.end()
@@ -98,6 +101,7 @@ const reordering = async (data) => {
                 s.id,
                 s.position AS position
             FROM sfl_segment s
+            WHERE type = '${data.segmentType}'
             order by s.position ASC 
         `)
         await dbMysql.end()
@@ -108,8 +112,9 @@ const reordering = async (data) => {
     }
 }
 
-const deleteSegment = async (id) => {
+const deleteSegment = async (data) => {
 
+    const {id, segmentType} = data
     try {
         let result = await dbMysql.transaction()
             .query(`DELETE FROM sfl_segment_landing_page WHERE sfl_segment_id=${id} `)
@@ -123,6 +128,7 @@ const deleteSegment = async (id) => {
                 s.id,
                 s.position AS position
             FROM sfl_segment s
+            WHERE s.type = '${segmentType}'
             order by s.position ASC 
         `)
         await dbMysql.end()
