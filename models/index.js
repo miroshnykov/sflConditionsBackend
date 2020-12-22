@@ -2,6 +2,7 @@ const {User} = require('./User')
 const {AdvCampaign} = require('./AdvCampaign')
 const {AdvCampaigns} = require('./AdvCampaigns')
 const {Campaigns} = require('./Campaigns')
+const {Offers} = require('./Offers')
 const {Targeting} = require('./Targeting')
 const {PublisherTargeting} = require('./PublisherTargeting')
 const {Countries} = require('./Countries')
@@ -17,6 +18,7 @@ module.exports = {
     AdvCampaign,
     AdvCampaigns,
     Campaigns,
+    Offers,
     Targeting,
     PublisherTargeting,
     Countries,
