@@ -12,11 +12,11 @@ COLLATE='utf8_general_ci'
 ENGINE=InnoDB
 ;
 
-INSERT INTO `sfl_dimension` (`id`, `name`, `displayed_name`, ) VALUES (1, 'affiliate', 'Affiliate');
-INSERT INTO `sfl_dimension` (`id`, `name`, `displayed_name`, ) VALUES (2, 'country', 'Country');
-INSERT INTO `sfl_dimension` (`id`, `name`, `displayed_name`, ) VALUES (3, 'affiliate_country', 'Affileate / Country');
-INSERT INTO `sfl_dimension` (`id`, `name`, `displayed_name`, ) VALUES (4, 'prod', 'Prod');
-INSERT INTO `sfl_dimension` (`id`, `name`, `displayed_name`, ) VALUES (5, 'affiliate_campaign', 'Affiliate / Campaign');
+INSERT INTO `sfl_dimension` (`id`, `name`, `displayed_name` ) VALUES (1, 'affiliate', 'Affiliate');
+INSERT INTO `sfl_dimension` (`id`, `name`, `displayed_name` ) VALUES (2, 'country', 'Country');
+INSERT INTO `sfl_dimension` (`id`, `name`, `displayed_name` ) VALUES (3, 'affiliate_country', 'Affileate / Country');
+INSERT INTO `sfl_dimension` (`id`, `name`, `displayed_name` ) VALUES (4, 'prod', 'Prod');
+INSERT INTO `sfl_dimension` (`id`, `name`, `displayed_name` ) VALUES (5, 'affiliate_campaign', 'Affiliate / Campaign');
 
 
 
