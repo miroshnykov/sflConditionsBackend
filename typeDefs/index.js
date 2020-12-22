@@ -1,7 +1,8 @@
 const { query } = require('./query')
 const { login } = require('./login')
 const { user } = require('./user')
-const { campaign } = require('./campaign')
+const { advCampaign } = require('./advCampaign')
+const { advCampaigns } = require('./advCampaigns')
 const { campaigns } = require('./campaigns')
 const { targeting } = require('./targeting')
 const { publisherTargeting } = require('./publisherTargeting')
@@ -18,8 +19,9 @@ const typeDefs = [
     query,
     login,
     user,
-    campaign,
     campaigns,
+    advCampaign,
+    advCampaigns,
     targeting,
     publisherTargeting,
     countries,

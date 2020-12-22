@@ -3,32 +3,21 @@ const {gql} = require('apollo-server')
 const campaigns = gql`
   
   extend type Query{
-    campaigns: [Campaigns]
+        getCampaign(affiliateId:Int!): [Campaign]    
+        getCampaigns: [Campaigns]  
   } 
-                   
+  
+  type Campaign {
+        id: Int
+        name: String    
+  }
   type Campaigns {
-    id: Int
-    name: String    
-    user: String
-    status: String
-    userName: String
-    userEmail: String
-    budgetTotal: Float
-    budgetDaily: Float
-    cpc: Float
-    landingPage: String
-    landingPageValid: Boolean
-    noLimit: Boolean
-    dateAdded: Int
-    dateUpdated: String
-    spentDaily: Float
-    spentTotal: Float
-    countClickTotal: Int
-    countClickDaily: Int
-  }     
-    
-`
+        id: Int
+        name: String 
+        affiliateId: Int   
+  }
+`;
 
 module.exports = {
-    campaigns: campaigns,
-}
+    campaigns,
+};

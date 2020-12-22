@@ -11,10 +11,12 @@ CREATE TABLE `sfl_dimension` (
 COLLATE='utf8_general_ci'
 ENGINE=InnoDB
 ;
-INSERT INTO `sfl_dimension` (`id`, `name`, `displayed_name`, `date_added`, `date_updated`) VALUES (1, 'affiliate', 'Affiliate', '0000-00-00 00:00:00', '2020-01-15 10:53:55');
-INSERT INTO `sfl_dimension` (`id`, `name`, `displayed_name`, `date_added`, `date_updated`) VALUES (2, 'country', 'Country', '0000-00-00 00:00:00', '2020-01-15 10:51:44');
-INSERT INTO `sfl_dimension` (`id`, `name`, `displayed_name`, `date_added`, `date_updated`) VALUES (3, 'affiliate_country', 'Affileate / Country', '0000-00-00 00:00:00', '2020-11-10 13:51:38');
-INSERT INTO `sfl_dimension` (`id`, `name`, `displayed_name`, `date_added`, `date_updated`) VALUES (4, 'prod', 'Prod', '0000-00-00 00:00:00', '2020-11-10 13:51:38');
+
+INSERT INTO `sfl_dimension` (`id`, `name`, `displayed_name`, ) VALUES (1, 'affiliate', 'Affiliate');
+INSERT INTO `sfl_dimension` (`id`, `name`, `displayed_name`, ) VALUES (2, 'country', 'Country');
+INSERT INTO `sfl_dimension` (`id`, `name`, `displayed_name`, ) VALUES (3, 'affiliate_country', 'Affileate / Country');
+INSERT INTO `sfl_dimension` (`id`, `name`, `displayed_name`, ) VALUES (4, 'prod', 'Prod');
+INSERT INTO `sfl_dimension` (`id`, `name`, `displayed_name`, ) VALUES (5, 'affiliate_campaign', 'Affiliate / Campaign');
 
 
 

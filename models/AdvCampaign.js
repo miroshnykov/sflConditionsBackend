@@ -5,9 +5,9 @@ const {
     updateName,
     del,
     softDel
-} = require('../db/campaign')
+} = require('../db/advCampaign')
 
-class Campaign {
+class AdvCampaign {
     static async get(id) {
         return await get(id)
     }
@@ -30,5 +30,5 @@ class Campaign {
 }
 
 module.exports = {
-    Campaign,
+    AdvCampaign: AdvCampaign,
 }

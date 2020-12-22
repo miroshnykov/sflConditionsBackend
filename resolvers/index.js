@@ -1,6 +1,7 @@
 const login = require('./login')
 const user = require('./user')
-const campaign = require('./campaign')
+const advCampaign = require('./advCampaign')
+const advCampaigns = require('./advCampaigns')
 const campaigns = require('./campaigns')
 const targeting = require('./targeting')
 const publisherTargeting = require('./publisherTargeting')
@@ -15,7 +16,8 @@ const prod = require('./prod')
 const resolvers = [
     login,
     user,
-    campaign,
+    advCampaign,
+    advCampaigns,
     campaigns,
     targeting,
     publisherTargeting,

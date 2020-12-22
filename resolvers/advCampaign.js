@@ -1,11 +1,11 @@
-const {Campaign} = require('../models')
+const {Campaign: AdvCampaign} = require('../models')
 const checkUser = require('../helper/perm')
 
 module.exports = {
     Query: {
         campaign: (_, {id}, ctx) => {
             checkUser(ctx.user)
-            return Campaign.get(id)
+            return AdvCampaign.get(id)
         },
     },
     Mutation: {
@@ -29,7 +29,7 @@ module.exports = {
             campaign.landingPageValid = landingPageValid || false
             campaign.noLimit = noLimit
             campaign.user = ctx.user.email
-            return await Campaign.add(campaign)
+            return await AdvCampaign.add(campaign)
         },
         updateCampaign: async (_, {
             id,
@@ -54,7 +54,7 @@ module.exports = {
             campaign.status = status
             campaign.landingPageValid = landingPageValid || false
             campaign.noLimit = noLimit
-            return await Campaign.update(campaign)
+            return await AdvCampaign.update(campaign)
         },
         updateCampaignName: async (_, {
             id,
@@ -65,13 +65,13 @@ module.exports = {
             let campaign = {}
             campaign.id = id
             campaign.name = name
-            return await Campaign.updateName(campaign)
+            return await AdvCampaign.updateName(campaign)
         },
         deleteCampaign: async (_, {
             campaignId
         }, ctx) => {
             checkUser(ctx.user)
-            return await Campaign.del(campaignId)
+            return await AdvCampaign.del(campaignId)
         },
     }
 }

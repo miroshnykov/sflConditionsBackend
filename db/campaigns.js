@@ -1,54 +1,46 @@
 let dbMysql = require('./mysqlDb').get()
 
-const all = async () => {
+const getCampaign = async (affiliateId) => {
 
     try {
         let result = await dbMysql.query(` 
-            SELECT c.id, 
-                   c.name, 
-                   c.status, 
-                   c.budget_total                           AS budgetTotal, 
-                   c.budget_daily                           AS budgetDaily, 
-                   c.cpc, 
-                   u.name                                   AS userName, 
-                   c.user                                   AS userEmail, 
-                   c.landing_page                           AS landingPage, 
-                   c.landing_page_valid                     AS landingPageValid, 
-                   c.no_limit                               AS noLimit, 
-                   c.date_added                             AS dateAdded, 
-                   c.date_updated                           AS dateUpdated, 
-                   IFNULL((SELECT t.count_click  
-                    FROM   sfl_traffic_history t 
-                    WHERE  t.sfl_advertiser_campaign_id = c.id 
-                           AND t.date_by_days = Curdate()),0 ) AS countClickDaily, 
-                   IFNULL((SELECT Sum(t.count_click)  
-                    FROM   sfl_traffic_history t 
-                    WHERE  t.sfl_advertiser_campaign_id = c.id 
-                    GROUP  BY t.sfl_advertiser_campaign_id),0) AS countClickTotal,                     
-                   IFNULL((SELECT t.sum_spent 
-                    FROM   sfl_traffic_history t 
-                    WHERE  t.sfl_advertiser_campaign_id = c.id 
-                           AND t.date_by_days = Curdate()),0 ) AS spentDaily, 
-                   IFNULL((SELECT Sum(t.sum_spent)  
-                    FROM   sfl_traffic_history t 
-                    WHERE  t.sfl_advertiser_campaign_id = c.id 
-                    GROUP  BY t.sfl_advertiser_campaign_id),0) AS spentTotal  
-            FROM   sfl_advertiser_campaigns c, 
-                   sfl_users u 
-            WHERE  u.email = c.USER 
-                   AND c.soft_delete = false 
-            ORDER  BY c.date_added DESC 
+            SELECT id, name FROM campaigns WHERE affiliate_id ="${affiliateId}"
         `)
         await dbMysql.end()
 
-        console.log(`\nget all Campaigns count: ${result.length}`)
+        console.log('getCampaign count :', result.length, ' by affiliateId:', affiliateId)
         return result
     } catch (e) {
         console.log(e)
     }
 }
 
+const getCampaigns = async () => {
+
+    try {
+        console.time('getCampaigns')
+        let result = await dbMysql.query(` 
+            SELECT c.id           AS id, 
+                   c.NAME         AS name, 
+                   c.affiliate_id AS affiliateId 
+            FROM   campaigns c, 
+                   affiliates a 
+            WHERE  a.id = c.affiliate_id 
+                   AND c.status = 'active' 
+                   AND a.status = 'active' 
+                   AND a.salesforce_id <> 0         
+        `)
+        await dbMysql.end()
+
+        console.timeEnd('getCampaigns')
+        console.log(`getCampaigns count:${result.length}\n`)
+        return result
+    } catch (e) {
+        console.log(e)
+    }
+}
 
 module.exports = {
-    all,
+    getCampaign,
+    getCampaigns
 }
