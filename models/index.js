@@ -12,6 +12,7 @@ const {Affiliates} = require('./Affiliates')
 const {Dimensions} = require('./Dimensions')
 const {Lp} = require('./Lp')
 const {Prod} = require('./Prod')
+const {AffiliateWebsites} = require('./AffiliateWebsites')
 
 module.exports = {
     User,
@@ -28,4 +29,5 @@ module.exports = {
     Dimensions,
     Lp,
     Prod,
+    AffiliateWebsites
 }

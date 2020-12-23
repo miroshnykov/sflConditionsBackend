@@ -13,6 +13,7 @@ const affiliates = require('./affiliates')
 const dimensions = require('./dimensions')
 const lp = require('./lp')
 const prod = require('./prod')
+const affiliateWebsites = require('./affiliateWebsites')
 
 const resolvers = [
     login,
@@ -29,7 +30,8 @@ const resolvers = [
     dimensions,
     affiliates,
     lp,
-    prod
+    prod,
+    affiliateWebsites
 ]
 
 module.exports = {resolvers}
