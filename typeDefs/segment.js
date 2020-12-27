@@ -103,6 +103,7 @@ const segment = gql`
       type SegmentStatus {
             name: String
             status: String
+            dateAdded: String
             dateUpdated: String
       }
        

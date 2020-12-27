@@ -258,7 +258,11 @@ const getSegmentStatus = async (id) => {
 
     try {
         let result = await dbMysql.query(` 
-                SELECT s.name, s.status, s.date_added as dateUpdated
+                SELECT 
+                    s.name, 
+                    s.status, 
+                    s.date_added as dateAdded,
+                    s.date_updated as dateUpdated
                 FROM sfl_segment s 
                 WHERE s.id = ?
         `, [id])
