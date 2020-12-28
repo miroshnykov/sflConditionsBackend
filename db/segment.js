@@ -214,24 +214,24 @@ const saveConditions = async (data) => {
     const {id, name, status, filters, email} = data
 
     console.log(`\nsaveConditions data:${JSON.stringify(data)}`)
+    let result = []
+    const db = dbTransaction()
     try {
-        const db = dbTransaction()
-        try {
-            await db.beginTransaction()
+        await db.beginTransaction()
 
 
-            const deleteSegmentsConditions = await db.query(`DELETE FROM sfl_segment_dimension WHERE sfl_segment_id = ?`, [id])
+        const deleteSegmentsConditions = await db.query(`DELETE FROM sfl_segment_dimension WHERE sfl_segment_id = ?`, [id])
 
-            console.log(`\ndeleteSegmentsConditions:${JSON.stringify(deleteSegmentsConditions)}`)
-            const updateSegmentsNameStatus = await db.query(`UPDATE sfl_segment SET name= ?, status= ? WHERE id=?`, [name, status, id])
-            console.log(`\nupdateSegmentsNameStatus:${JSON.stringify(updateSegmentsNameStatus)}`)
+        console.log(`\ndeleteSegmentsConditions:${JSON.stringify(deleteSegmentsConditions)}`)
+        const updateSegmentsNameStatus = await db.query(`UPDATE sfl_segment SET name= ?, status= ? WHERE id=?`, [name, status, id])
+        console.log(`\nupdateSegmentsNameStatus:${JSON.stringify(updateSegmentsNameStatus)}`)
 
-            for (const item of filters) {
-                // console.log(`Item:${JSON.stringify(item)}`)
-                const {segmentId, dimensionId, value, position, segmentRuleIndex, user, filterTypeId, matchTypeId} = item
-                let date = new Date()
-                let dateAdded = ~~(date.getTime() / 1000)
-                const filterItemResult = await db.query(`
+        for (const item of filters) {
+            // console.log(`Item:${JSON.stringify(item)}`)
+            const {segmentId, dimensionId, value, position, segmentRuleIndex, user, filterTypeId, matchTypeId} = item
+            let date = new Date()
+            let dateAdded = ~~(date.getTime() / 1000)
+            const filterItemResult = await db.query(`
                     INSERT INTO sfl_segment_dimension (
                         sfl_segment_id,
                         sfl_dimension_id,
@@ -244,35 +244,34 @@ const saveConditions = async (data) => {
                         date_added)
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
                     `, [
-                    segmentId,
-                    dimensionId,
-                    value,
-                    position,
-                    segmentRuleIndex,
-                    email,
-                    filterTypeId,
-                    matchTypeId,
-                    dateAdded
-                ])
-                console.log(`\nfilterItemResult:${JSON.stringify(filterItemResult)}`)
-            }
-
-            await db.commit()
-        } catch (err) {
-            console.log('saveConditionsError Rollback err:', err)
-            await db.rollback()
-        } finally {
-            await db.close()
+                segmentId,
+                dimensionId,
+                value,
+                position,
+                segmentRuleIndex,
+                email,
+                filterTypeId,
+                matchTypeId,
+                dateAdded
+            ])
+            console.log(`\nfilterItemResult:${JSON.stringify(filterItemResult)}`)
         }
 
+        await db.commit()
 
-        let result = []
         result.segmentId = id
-        console.log(`\nSaveConditions result:`,result,`\n`)
+        console.log(`\nSaveConditions result:`, result, `\n`)
         return result
-    } catch (e) {
-        console.log(e)
+
+    } catch (err) {
+        console.log('saveConditionsError Rollback err:', err)
+        await db.rollback()
+        return result
+    } finally {
+        await db.close()
     }
+
+
 }
 
 module.exports = {
