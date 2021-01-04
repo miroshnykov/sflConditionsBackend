@@ -1,6 +1,8 @@
 const {User} = require('./User')
-const {Campaign} = require('./Campaign')
+const {AdvCampaign} = require('./AdvCampaign')
+const {AdvCampaigns} = require('./AdvCampaigns')
 const {Campaigns} = require('./Campaigns')
+const {Offers} = require('./Offers')
 const {Targeting} = require('./Targeting')
 const {PublisherTargeting} = require('./PublisherTargeting')
 const {Countries} = require('./Countries')
@@ -10,11 +12,14 @@ const {Affiliates} = require('./Affiliates')
 const {Dimensions} = require('./Dimensions')
 const {Lp} = require('./Lp')
 const {Prod} = require('./Prod')
+const {AffiliateWebsites} = require('./AffiliateWebsites')
 
 module.exports = {
     User,
-    Campaign,
+    AdvCampaign,
+    AdvCampaigns,
     Campaigns,
+    Offers,
     Targeting,
     PublisherTargeting,
     Countries,
@@ -24,4 +29,5 @@ module.exports = {
     Dimensions,
     Lp,
     Prod,
+    AffiliateWebsites
 }

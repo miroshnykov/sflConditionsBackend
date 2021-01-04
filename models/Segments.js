@@ -6,9 +6,10 @@ const {
 } = require('../db/segments')
 
 class Segments {
-    static async all() {
-        return await all()
+    static async all(type) {
+        return await all(type)
     }
+
     static async reordering(data) {
         return await reordering(data)
     }
@@ -17,8 +18,8 @@ class Segments {
         return await create(data)
     }
 
-    static async deleteSegment(id) {
-        return await deleteSegment(id)
+    static async deleteSegment(data) {
+        return await deleteSegment(data)
     }
 
 }

@@ -1,12 +1,12 @@
 const {gql} = require('apollo-server')
 
-const campaign = gql`
+const advCampaign = gql`
   
   extend type Query{
-    campaign(id:Int!): [Campaign]       
+    campaign(id:Int!): [AdvCampaign]       
   } 
                    
-  type Campaign {
+  type AdvCampaign {
     id: Int
     name: String    
     user: String
@@ -80,5 +80,5 @@ const campaign = gql`
 `
 
 module.exports = {
-    campaign: campaign,
+    advCampaign: advCampaign,
 }

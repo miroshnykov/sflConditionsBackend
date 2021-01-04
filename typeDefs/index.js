@@ -1,8 +1,10 @@
 const { query } = require('./query')
 const { login } = require('./login')
 const { user } = require('./user')
-const { campaign } = require('./campaign')
+const { advCampaign } = require('./advCampaign')
+const { advCampaigns } = require('./advCampaigns')
 const { campaigns } = require('./campaigns')
+const { offers } = require('./offers')
 const { targeting } = require('./targeting')
 const { publisherTargeting } = require('./publisherTargeting')
 const { countries } = require('./countries')
@@ -13,13 +15,16 @@ const { affiliates } = require('./affiliates')
 const { dimensions } = require('./dimensions')
 const { lp } = require('./lp')
 const { prod } = require('./prod')
+const { affiliateWebsites } = require('./affiliateWebsites')
 
 const typeDefs = [
     query,
     login,
     user,
-    campaign,
     campaigns,
+    offers,
+    advCampaign,
+    advCampaigns,
     targeting,
     publisherTargeting,
     countries,
@@ -28,7 +33,8 @@ const typeDefs = [
     dimensions,
     affiliates,
     lp,
-    prod
+    prod,
+    affiliateWebsites
 ]
 
 module.exports = {

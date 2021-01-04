@@ -1,7 +1,7 @@
 const {getDimensions} = require('../db/dimensions')
 const {getAffiliates} = require('../db/affiliates')
 const {getCountries} = require('../db/countries')
-const {getCampaigns} = require('../db/campaigns')
+const {getCampaigns} = require('../db/advCampaigns')
 
 const segmentValidations = (segmentName, weight, multiplier) => {
 

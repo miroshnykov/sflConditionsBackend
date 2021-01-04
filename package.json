@@ -11,9 +11,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "am-components-backend": "git+https://e6aa619486e35d6af0364fd1d700efc15fd59b72@github.com/jomedia/am-components-backend.git",
     "apollo-server": "^2.12.0",
     "apollo-server-express": "^2.9.16",
-    "am-components-backend": "git+https://e6aa619486e35d6af0364fd1d700efc15fd59b72@github.com/jomedia/am-components-backend.git",
     "async-redis": "^1.1.7",
     "aws-sdk": "^2.584.0",
     "axios": "^0.19.2",
@@ -30,6 +30,7 @@
     "graphql": "^14.5.8",
     "jsonwebtoken": "^8.5.1",
     "md5": "^2.2.1",
+    "mysql": "^2.18.1",
     "plain-config": "^0.1.3",
     "rootpath": "^0.1.2",
     "serverless-mysql": "^1.5.1",
