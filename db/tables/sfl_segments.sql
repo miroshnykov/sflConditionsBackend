@@ -17,6 +17,7 @@ INSERT INTO `sfl_dimension` (`id`, `name`, `displayed_name` ) VALUES (2, 'countr
 INSERT INTO `sfl_dimension` (`id`, `name`, `displayed_name` ) VALUES (3, 'affiliate_country', 'Affileate / Country');
 INSERT INTO `sfl_dimension` (`id`, `name`, `displayed_name` ) VALUES (4, 'prod', 'Prod');
 INSERT INTO `sfl_dimension` (`id`, `name`, `displayed_name` ) VALUES (5, 'affiliate_campaign', 'Affiliate / Campaign');
+INSERT INTO `sfl_dimension` (`id`, `name`, `displayed_name` ) VALUES (6, 'website', 'Website');
 
 
 
@@ -57,22 +58,5 @@ CREATE TABLE `sfl_segment_dimension` (
 COLLATE='utf8_general_ci'
 ENGINE=InnoDB
 ;
-
-CREATE TABLE `sfl_segment_landing_page` (
-	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`sfl_segment_id` INT(10) UNSIGNED NOT NULL,
-	`landing_pages_id` INT(11) NOT NULL,
-	`weight` INT(10) NOT NULL DEFAULT '0',
-	`date_added` INT(11) NOT NULL,
-	PRIMARY KEY (`id`),
-	INDEX `landing_pages_id` (`landing_pages_id`),
-	INDEX `fk_sfl_segments_id` (`sfl_segment_id`),
-	CONSTRAINT `fk_sfl_segments_id` FOREIGN KEY (`sfl_segment_id`) REFERENCES `sfl_segment` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION,
-	CONSTRAINT `fk_sfl_segments_landing_pages` FOREIGN KEY (`landing_pages_id`) REFERENCES `landing_pages` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION
-)
-COLLATE='utf8_general_ci'
-ENGINE=InnoDB
-;
-
 
 

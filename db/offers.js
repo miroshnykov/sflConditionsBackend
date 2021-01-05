@@ -4,8 +4,18 @@ const getOffer = async (id) => {
 
     try {
         let result = await dbMysql.query(` 
-            SELECT id, name, status,payin,payout FROM sfl_offers WHERE id ="${id}"
-        `)
+             SELECT id, 
+                   name AS name, 
+                   status AS status, 
+                   payin AS payIn, 
+                   payout AS payOut, 
+                   conversion_type AS conversionType,
+                   advertiser AS advertiser, 
+                   date_added AS dateAdded
+            FROM   sfl_offers 
+            WHERE id = ?
+
+        `,[id])
         await dbMysql.end()
 
         console.log('getOffer count :', result.length, ' by id:', id)
