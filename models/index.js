@@ -3,6 +3,7 @@ const {AdvCampaign} = require('./AdvCampaign')
 const {AdvCampaigns} = require('./AdvCampaigns')
 const {Campaigns} = require('./Campaigns')
 const {Offers} = require('./Offers')
+const {Offer} = require('./Offer')
 const {Targeting} = require('./Targeting')
 const {PublisherTargeting} = require('./PublisherTargeting')
 const {Countries} = require('./Countries')
@@ -20,6 +21,7 @@ module.exports = {
     AdvCampaigns,
     Campaigns,
     Offers,
+    Offer,
     Targeting,
     PublisherTargeting,
     Countries,
