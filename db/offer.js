@@ -34,25 +34,35 @@ const update = async (data) => {
     try {
         await db.beginTransaction()
 
-
         const updateOffer = await db.query(`
             UPDATE sfl_offers 
-            SET name=?, advertiser=?, status=?, conversion_type=?, payin=?, payout=? , user=?
+            SET name=?, advertiser=?, status=?, conversion_type=?, payin=?, payout=?, user=?
             WHERE  id=?`,
             [name, advertiser, status, conversionType, payIn, payOut, email, id]
         )
 
         console.log(`\nupdateOffer:${JSON.stringify(updateOffer)}`)
 
-        const updateGeoRules = await db.query(`
-            UPDATE sfl_offer_geo 
-            SET rules=? WHERE  sfl_offer_id=?`,
-            [geoRules, id]
+        const checkGeoRules = await db.query(`
+            select count(*) as countRules from sfl_offer_geo WHERE sfl_offer_id=?`,
+            [id]
         )
+        if (checkGeoRules[0].countRules === 0) {
+            const insertGeoRules = await db.query(`
+                INSERT INTO sfl_offer_geo (rules, sfl_offer_id) VALUES (?, ?)`,
+                [geoRules, id]
+            )
+            console.log(`\ninsertGeoRules:${JSON.stringify(insertGeoRules)}`)
+        } else {
+            const updateGeoRules = await db.query(`
+                UPDATE sfl_offer_geo 
+                SET rules=? WHERE  sfl_offer_id=?`,
+                [geoRules, id]
+            )
+            console.log(`\nupdateGeoRules:${JSON.stringify(updateGeoRules)}`)
+        }
 
-        console.log(`\nupdateGeoRules:${JSON.stringify(updateGeoRules)}`)
         await db.commit()
-
         result.id = id
         return result
 
