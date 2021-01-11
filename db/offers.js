@@ -4,16 +4,19 @@ const getOffer = async (id) => {
 
     try {
         let result = await dbMysql.query(` 
-             SELECT id, 
-                   name AS name, 
-                   status AS status, 
-                   payin AS payIn, 
-                   payout AS payOut, 
-                   conversion_type AS conversionType,
-                   advertiser AS advertiser, 
-                   date_added AS dateAdded
-            FROM   sfl_offers 
-            WHERE id = ?
+            SELECT o.id, 
+                   o.name            AS name,
+                   o.status          AS status, 
+                   o.payin           AS payIn, 
+                   o.payout          AS payOut, 
+                   o.conversion_type AS conversionType, 
+                   o.advertiser      AS advertiser, 
+                   o.date_added      AS dateAdded, 
+                   g.rules           AS geoRules 
+            FROM   sfl_offers o 
+                   LEFT JOIN sfl_offer_geo g 
+                          ON g.sfl_offer_id = o.id 
+            WHERE o.id = ?
 
         `,[id])
         await dbMysql.end()

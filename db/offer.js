@@ -1,4 +1,5 @@
 let dbMysql = require('./mysqlDb').get()
+let dbTransaction = require('./mysqlTransaction').get()
 
 const create = async (data) => {
 
@@ -23,6 +24,49 @@ const create = async (data) => {
     }
 }
 
+const update = async (data) => {
+
+    console.log(`\nupdate data:${JSON.stringify(data)}`)
+
+    const {id, name, status, advertiser, email, conversionType, payIn, payOut, geoRules} = data
+    let result = []
+    const db = dbTransaction()
+    try {
+        await db.beginTransaction()
+
+
+        const updateOffer = await db.query(`
+            UPDATE sfl_offers 
+            SET name=?, advertiser=?, status=?, conversion_type=?, payin=?, payout=? , user=?
+            WHERE  id=?`,
+            [name, advertiser, status, conversionType, payIn, payOut, email, id]
+        )
+
+        console.log(`\nupdateOffer:${JSON.stringify(updateOffer)}`)
+
+        const updateGeoRules = await db.query(`
+            UPDATE sfl_offer_geo 
+            SET rules=? WHERE  sfl_offer_id=?`,
+            [geoRules, id]
+        )
+
+        console.log(`\nupdateGeoRules:${JSON.stringify(updateGeoRules)}`)
+        await db.commit()
+
+        result.id = id
+        return result
+
+    } catch (err) {
+        console.log('Updae offer Rollback err:', err)
+        await db.rollback()
+        return result
+    } finally {
+        await db.close()
+    }
+
+
+}
+
 const del = async (id) => {
 
     try {
@@ -41,5 +85,6 @@ const del = async (id) => {
 
 module.exports = {
     create,
+    update,
     del
 }
