@@ -15,6 +15,8 @@ const offers = gql`
         payIn: Float
         advertiser: String
         geoRules: String
+        defaultLp: Int
+        customLPRules: String
         payOut: Float
         dateAdded: Int
   }
