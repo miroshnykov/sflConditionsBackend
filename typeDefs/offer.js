@@ -18,6 +18,7 @@ const offer = gql`
         payIn: Float!
         payOut: Float!
         status: String!
+        defaultLp: Int!
      ): SaveOffer
           
     delOffer(

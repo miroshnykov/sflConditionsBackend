@@ -28,7 +28,7 @@ const update = async (data) => {
 
     console.log(`\nupdate data:${JSON.stringify(data)}`)
 
-    const {id, name, status, advertiser, email, conversionType, payIn, payOut, geoRules, customLPRules} = data
+    const {id, name, status, advertiser, email, conversionType, payIn, payOut, geoRules, customLPRules, defaultLp} = data
     let result = []
     const db = dbTransaction()
     try {
@@ -36,9 +36,9 @@ const update = async (data) => {
 
         const updateOffer = await db.query(`
             UPDATE sfl_offers 
-            SET name=?, advertiser=?, status=?, conversion_type=?, payin=?, payout=?, user=?
+            SET name=?, advertiser=?, status=?, conversion_type=?, payin=?, payout=?, user=?, sfl_offer_landing_page_id=?
             WHERE  id=?`,
-            [name, advertiser, status, conversionType, payIn, payOut, email, id]
+            [name, advertiser, status, conversionType, payIn, payOut, email, defaultLp, id]
         )
 
         console.log(`\nupdateOffer:${JSON.stringify(updateOffer)}`)
