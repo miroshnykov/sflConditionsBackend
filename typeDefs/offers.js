@@ -10,8 +10,14 @@ const offers = gql`
   type Offer {
         id: Int
         name: String  
+        conversionType: String
         status: String  
         payIn: Float
+        advertiser: String
+        geoRules: String
+        defaultLp: Int
+        offerIdRedirect: Int
+        customLPRules: String
         payOut: Float
         dateAdded: Int
   }

@@ -5,6 +5,8 @@ const { advCampaign } = require('./advCampaign')
 const { advCampaigns } = require('./advCampaigns')
 const { campaigns } = require('./campaigns')
 const { offers } = require('./offers')
+const { offer } = require('./offer')
+const { lpOffers } = require('./lpOffers')
 const { targeting } = require('./targeting')
 const { publisherTargeting } = require('./publisherTargeting')
 const { countries } = require('./countries')
@@ -23,6 +25,8 @@ const typeDefs = [
     user,
     campaigns,
     offers,
+    offer,
+    lpOffers,
     advCampaign,
     advCampaigns,
     targeting,

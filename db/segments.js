@@ -25,7 +25,10 @@ const all = async (type) => {
         }
         let idsString = ids.slice(0, -1)
 
-        let lpList = await dbMysql.query(`
+        console.log('idsString:', idsString)
+        let lpList = []
+        if (idsString) {
+            lpList = await dbMysql.query(`
             SELECT 
                 sl.id as id,
                 sl.sfl_segment_id as segmentId, 
@@ -35,7 +38,8 @@ const all = async (type) => {
             from sfl_segment_landing_page sl , landing_pages l
             WHERE l.id = sl.landing_pages_id AND sl.sfl_segment_id IN (${idsString})
         `)
-        await dbMysql.end()
+            await dbMysql.end()
+        }
 
 
         let segmentLp = []
