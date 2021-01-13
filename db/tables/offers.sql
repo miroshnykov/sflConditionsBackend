@@ -1,6 +1,7 @@
 CREATE TABLE `sfl_offer_landing_pages` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`sfl_offer_id` INT(10) UNSIGNED NOT NULL,
+	`name` VARCHAR(150) NOT NULL DEFAULT '',
 	`url` TEXT NOT NULL,
 	`params` VARCHAR(128) NOT NULL,
 	`status` ENUM('active','inactive') NOT NULL DEFAULT 'inactive',
