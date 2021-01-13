@@ -19,6 +19,7 @@ const offer = gql`
         payOut: Float!
         status: String!
         defaultLp: Int!
+        offerIdRedirect: Int!
      ): SaveOffer
           
     delOffer(

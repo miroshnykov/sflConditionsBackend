@@ -13,6 +13,7 @@ const getOffer = async (id) => {
                    o.advertiser      AS advertiser, 
                    o.date_added      AS dateAdded,
                    o.sfl_offer_landing_page_id AS defaultLp, 
+                   o.offer_id_redirect AS offerIdRedirect,
                    g.rules           AS geoRules, 
                    clp.rules         AS customLPRules                    
             FROM   sfl_offers o 
