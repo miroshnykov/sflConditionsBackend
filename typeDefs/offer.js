@@ -14,6 +14,7 @@ const offer = gql`
         advertiser: String!
         conversionType: String!
         geoRules: String!
+        customLPRules: String!        
         payIn: Float!
         payOut: Float!
         status: String!

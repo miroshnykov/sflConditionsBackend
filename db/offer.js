@@ -28,7 +28,7 @@ const update = async (data) => {
 
     console.log(`\nupdate data:${JSON.stringify(data)}`)
 
-    const {id, name, status, advertiser, email, conversionType, payIn, payOut, geoRules} = data
+    const {id, name, status, advertiser, email, conversionType, payIn, payOut, geoRules, customLPRules} = data
     let result = []
     const db = dbTransaction()
     try {
@@ -60,6 +60,25 @@ const update = async (data) => {
                 [geoRules, id]
             )
             console.log(`\nupdateGeoRules:${JSON.stringify(updateGeoRules)}`)
+        }
+
+        const checkCustomLPRules = await db.query(`
+            select count(*) as countRules from sfl_offer_custom_landing_pages WHERE sfl_offer_id=?`,
+            [id]
+        )
+        if (checkCustomLPRules[0].countRules === 0) {
+            const insertCustomLpRules = await db.query(`
+                INSERT INTO sfl_offer_custom_landing_pages (rules, sfl_offer_id) VALUES (?, ?)`,
+                [customLPRules, id]
+            )
+            console.log(`\nInsert checkCustomLPRules:${JSON.stringify(insertCustomLpRules)}`)
+        } else {
+            const updateCustomLpRules = await db.query(`
+                UPDATE sfl_offer_custom_landing_pages 
+                SET rules=? WHERE  sfl_offer_id=?`,
+                [customLPRules, id]
+            )
+            console.log(`\nupdateCustomLpRules:${JSON.stringify(updateCustomLpRules)}`)
         }
 
         await db.commit()
