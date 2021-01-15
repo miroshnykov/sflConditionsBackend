@@ -56,7 +56,22 @@ const update = async (data) => {
 
     console.log(`\nupdate data:${JSON.stringify(data)}`)
 
-    const {id, name, status, advertiser, email, conversionType, payIn, payOut, geoRules, customLPRules, defaultLp, offerIdRedirect} = data
+    const {
+        id,
+        name,
+        status,
+        advertiser,
+        email,
+        conversionType,
+        payIn,
+        payOut,
+        geoRules,
+        customLPRules,
+        defaultLp,
+        caps,
+        offerIdRedirect
+    } = data
+
     let result = []
     const db = dbTransaction()
     try {
@@ -64,7 +79,15 @@ const update = async (data) => {
 
         const updateOffer = await db.query(`
             UPDATE sfl_offers 
-            SET name=?, advertiser=?, status=?, conversion_type=?, payin=?, payout=?, user=?, sfl_offer_landing_page_id=?, offer_id_redirect=?
+            SET name=?, 
+                advertiser=?, 
+                status=?, 
+                conversion_type=?, 
+                payin=?, 
+                payout=?, 
+                user=?, 
+                sfl_offer_landing_page_id=?, 
+                offer_id_redirect=?
             WHERE  id=?`,
             [name, advertiser, status, conversionType, payIn, payOut, email, defaultLp, offerIdRedirect, id]
         )
@@ -72,41 +95,118 @@ const update = async (data) => {
         console.log(`\nupdateOffer:${JSON.stringify(updateOffer)}`)
 
         const checkGeoRules = await db.query(`
-            select count(*) as countRules from sfl_offer_geo WHERE sfl_offer_id=?`,
-            [id]
+            select count(*) as countRules from sfl_offer_geo WHERE sfl_offer_id=?`,[id]
         )
         if (checkGeoRules[0].countRules === 0) {
             const insertGeoRules = await db.query(`
-                INSERT INTO sfl_offer_geo (rules, sfl_offer_id) VALUES (?, ?)`,
-                [geoRules, id]
+                INSERT INTO sfl_offer_geo (rules, sfl_offer_id) VALUES (?, ?)`,[geoRules, id]
             )
             console.log(`\ninsertGeoRules:${JSON.stringify(insertGeoRules)}`)
         } else {
             const updateGeoRules = await db.query(`
-                UPDATE sfl_offer_geo 
-                SET rules=? WHERE  sfl_offer_id=?`,
-                [geoRules, id]
+                UPDATE sfl_offer_geo SET rules=? WHERE  sfl_offer_id=?`,[geoRules, id]
             )
             console.log(`\nupdateGeoRules:${JSON.stringify(updateGeoRules)}`)
         }
 
         const checkCustomLPRules = await db.query(`
-            select count(*) as countRules from sfl_offer_custom_landing_pages WHERE sfl_offer_id=?`,
-            [id]
+            select count(*) as countRules from sfl_offer_custom_landing_pages WHERE sfl_offer_id=?`,[id]
         )
         if (checkCustomLPRules[0].countRules === 0) {
             const insertCustomLpRules = await db.query(`
-                INSERT INTO sfl_offer_custom_landing_pages (rules, sfl_offer_id) VALUES (?, ?)`,
-                [customLPRules, id]
+                INSERT INTO sfl_offer_custom_landing_pages (rules, sfl_offer_id) VALUES (?, ?)`,[customLPRules, id]
             )
             console.log(`\nInsert checkCustomLPRules:${JSON.stringify(insertCustomLpRules)}`)
         } else {
             const updateCustomLpRules = await db.query(`
-                UPDATE sfl_offer_custom_landing_pages 
-                SET rules=? WHERE  sfl_offer_id=?`,
-                [customLPRules, id]
+                UPDATE sfl_offer_custom_landing_pages SET rules=? WHERE  sfl_offer_id=?`,[customLPRules, id]
             )
             console.log(`\nupdateCustomLpRules:${JSON.stringify(updateCustomLpRules)}`)
+        }
+
+        if (caps) {
+            const checkCaps = await db.query(`
+                SELECT COUNT(*) as countCap  FROM sfl_offers_cap c WHERE c.sfl_offer_id = ?`,[id]
+            )
+
+            let capsObj = JSON.parse(caps)
+            const {
+                clickDay,
+                clickWeek,
+                clickMonth,
+                clicksRedirectStatus,
+                clicksRedirectOfferId,
+                salesDay,
+                salesWeek,
+                salesMonth,
+                salesRedirectStatus,
+                salesRedirectOfferId
+            } = capsObj
+
+
+            if (checkCaps[0].countCap === 0) {
+                const insertCaps = await db.query(`
+                    INSERT INTO sfl_offers_cap (
+                        sfl_offer_id,
+                        clicks_day, 
+                        clicks_week, 
+                        clicks_month, 
+                        clicks_redirect_status,
+                        clicks_redirect_offer_id, 
+                        sales_day, 
+                        sales_week, 
+                        sales_month, 
+                        sales_redirect_status, 
+                        sales_redirect_offer_id
+                        ) 
+                    VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?,?);`,
+                    [
+                        id,
+                        clickDay || 0,
+                        clickWeek || 0,
+                        clickMonth || 0,
+                        clicksRedirectStatus || 'default',
+                        clicksRedirectOfferId,
+                        salesDay || 0,
+                        salesWeek || 0,
+                        salesMonth || 0,
+                        salesRedirectStatus || 'default',
+                        salesRedirectOfferId
+                    ]
+                )
+                console.log(`\n insertCaps:${JSON.stringify(insertCaps)}`)
+            } else {
+                const updateCaps = await db.query(`
+                    UPDATE sfl_offers_cap 
+                    SET 
+                        clicks_day=?, 
+                        clicks_week=?, 
+                        clicks_month=?,
+                        clicks_redirect_status=?,
+                        clicks_redirect_offer_id=?,
+                        sales_day=?,                        
+                        sales_week=?, 
+                        sales_month=?, 
+                        sales_redirect_status=?, 
+                        sales_redirect_offer_id=? 
+                    WHERE sfl_offer_id=?`,
+                    [
+                        clickDay || 0,
+                        clickWeek || 0,
+                        clickMonth || 0,
+                        clicksRedirectStatus || 'default',
+                        clicksRedirectOfferId,
+                        salesDay || 0,
+                        salesWeek || 0,
+                        salesMonth || 0,
+                        salesRedirectStatus || 'default',
+                        salesRedirectOfferId,
+                        id
+                    ]
+                )
+                console.log(`\nupdateCaps:${JSON.stringify(updateCaps)}`)
+            }
+
         }
 
         await db.commit()

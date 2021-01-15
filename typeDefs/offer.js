@@ -32,6 +32,7 @@ const offer = gql`
         conversionType: String!
         geoRules: String!
         customLPRules: String!        
+        caps: String!
         payIn: Float!
         payOut: Float!
         status: String!
