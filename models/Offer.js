@@ -1,4 +1,4 @@
-const {create, update, del} = require('../db/offer')
+const {create, update, cap, del} = require('../db/offer')
 
 class Offer {
     static async create(data) {
@@ -7,6 +7,10 @@ class Offer {
 
     static async update(data) {
         return await update(data)
+    }
+
+    static async cap(offerId) {
+        return await cap(offerId)
     }
 
     static async del(id) {

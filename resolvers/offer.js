@@ -3,11 +3,10 @@ const checkUser = require('../helper/perm')
 
 module.exports = {
     Query: {
-        // getOffer: (_, {id}, ctx) => {
-        //     checkUser(ctx.user)
-        //     return Offers.getOffer(id)
-        // },
-
+        getOfferCap: (_, {offerId}, ctx) => {
+            checkUser(ctx.user)
+            return Offer.cap(offerId)
+        }
     },
     Mutation: {
         createOffer: async (_, data, ctx) => {

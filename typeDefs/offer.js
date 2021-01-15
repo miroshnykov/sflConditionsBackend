@@ -2,7 +2,24 @@ const {gql} = require('apollo-server')
 
 const offer = gql`
   
-          
+  extend type Query{
+    getOfferCap(offerId:Int!): [CapOffer]
+  }     
+  
+    type CapOffer {
+        offerId: Int
+        clickDay: Int  
+        clickWeek: Int  
+        clickMonth: Int  
+        clicksRedirectStatus: String  
+        clicksRedirectOfferId: Int  
+        salesDay: Int  
+        salesWeek: Int  
+        salesMonth: Int  
+        salesRedirectStatus: String  
+        salesRedirectOfferId: Int 
+  }
+  
   extend type Mutation {
     createOffer(
         name: String!, 

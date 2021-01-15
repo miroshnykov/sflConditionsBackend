@@ -24,6 +24,34 @@ const create = async (data) => {
     }
 }
 
+const cap = async (offerId) => {
+
+    try {
+
+        let result = await dbMysql.query(` 
+            SELECT c.sfl_offer_id             AS offerId, 
+                   c.clicks_day               AS clickDay, 
+                   c.clicks_week              AS clickWeek, 
+                   c.clicks_month             AS clickMonth, 
+                   c.clicks_redirect_status   AS clicksRedirectStatus, 
+                   c.clicks_redirect_offer_id AS clicksRedirectOfferId, 
+                   c.sales_day                AS salesDay, 
+                   c.sales_week               AS salesWeek, 
+                   c.sales_month              AS salesMonth, 
+                   c.sales_redirect_status    AS salesRedirectStatus, 
+                   c.sales_redirect_offer_id  AS salesRedirectOfferId 
+            FROM   sfl_offers_cap c 
+            WHERE  c.sfl_offer_id = ?
+        `, [offerId])
+        await dbMysql.end()
+
+        console.log(`\n get Cap per offer:${offerId}, result:${JSON.stringify(result)}`)
+        return result
+    } catch (e) {
+        console.log(e)
+    }
+}
+
 const update = async (data) => {
 
     console.log(`\nupdate data:${JSON.stringify(data)}`)
@@ -115,5 +143,6 @@ const del = async (id) => {
 module.exports = {
     create,
     update,
+    cap,
     del
 }
