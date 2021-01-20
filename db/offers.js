@@ -56,7 +56,7 @@ const getOffers = async () => {
 
         console.timeEnd('getOffers')
 
-        console.log(`getOffers count:${result.length}\n`)
+        console.log(`getOffers count:${result.length}`)
         return result
     } catch (e) {
         console.log(e)
