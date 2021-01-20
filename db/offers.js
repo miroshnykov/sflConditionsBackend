@@ -42,7 +42,9 @@ const getOffers = async () => {
                    name as name,
                    status as status,
                    payin as payIn,
-                   payout as payOut 
+                   payout as payOut,
+                   date_added as dateAdded,
+                   date_updated as dateUpdated 
             FROM sfl_offers       
         `)
         await dbMysql.end()
