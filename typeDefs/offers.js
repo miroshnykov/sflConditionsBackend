@@ -29,6 +29,8 @@ const offers = gql`
         payOut: Float 
         dateAdded: Int 
         dateUpdated: String 
+        defaultLandingPageId: Int 
+        nameLandingPage: String 
   }
 `;
 

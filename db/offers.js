@@ -38,14 +38,19 @@ const getOffers = async () => {
     try {
         console.time('getOffers')
         let result = await dbMysql.query(` 
-            SELECT id as id, 
-                   name as name,
-                   status as status,
-                   payin as payIn,
-                   payout as payOut,
-                   date_added as dateAdded,
-                   date_updated as dateUpdated 
-            FROM sfl_offers       
+            SELECT o.id                        AS id, 
+                   o.name                      AS name, 
+                   o.status                    AS status, 
+                   o.payin                     AS payIn, 
+                   o.payout                    AS payOut, 
+                   o.date_added                AS dateAdded, 
+                   o.date_updated              AS dateUpdated, 
+                   o.sfl_offer_landing_page_id AS defaultLandingPageId, 
+                   lp.name                     AS nameLandingPage 
+            FROM   sfl_offers o 
+                   LEFT JOIN sfl_offer_landing_pages lp 
+                          ON o.sfl_offer_landing_page_id = lp.id 
+            ORDER  BY o.date_updated  DESC    
         `)
         await dbMysql.end()
 
