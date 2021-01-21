@@ -22,6 +22,7 @@ const segments = gql`
         lpId: Int
         name: String
         weight: Int
+        productId: Int
   }
     
   extend type Mutation {

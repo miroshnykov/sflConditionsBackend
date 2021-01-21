@@ -34,6 +34,7 @@ const all = async (type) => {
                 sl.sfl_segment_id as segmentId, 
                 sl.landing_pages_id as lpId,
                 l.name as name, 
+                l.product_id as productId,
                 sl.weight as weight 
             from sfl_segment_landing_page sl , landing_pages l
             WHERE l.id = sl.landing_pages_id AND sl.sfl_segment_id IN (${idsString})

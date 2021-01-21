@@ -8,6 +8,7 @@ const lp = gql`
   
   type Lp {
     id: Int
+    productId: Int
     name: String
   }
   
