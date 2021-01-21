@@ -243,6 +243,9 @@ const del = async (id) => {
         console.log(`\ndelete customLpDel ID:${id}, result:${JSON.stringify(customLpDel)} `)
 
 
+        let capCurrentDataDel = await dbMysql.query(`DELETE FROM sfl_offers_cap_current_data WHERE  sfl_offer_id=?`, [id])
+        console.log(`\ndelete capCurrentDataDel ID:${id}, result:${JSON.stringify(capCurrentDataDel)} `)
+
         let capDel = await dbMysql.query(`DELETE FROM sfl_offers_cap WHERE  sfl_offer_id=?`, [id])
         console.log(`\ndelete capDel ID:${id}, result:${JSON.stringify(capDel)} `)
 
