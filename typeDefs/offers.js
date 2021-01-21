@@ -31,6 +31,7 @@ const offers = gql`
         dateUpdated: String 
         defaultLandingPageId: Int 
         nameLandingPage: String 
+        countOfCampaigns: Int
   }
 `;
 
