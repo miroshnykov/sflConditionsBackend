@@ -231,25 +231,24 @@ const del = async (id) => {
 
         await db.beginTransaction()
 
-        let lpDel = await dbMysql.query(`DELETE FROM sfl_offer_landing_pages  WHERE  sfl_offer_id = ?`, [id])
+        let lpDel = await dbMysql.query(`DELETE FROM sfl_offer_landing_pages WHERE sfl_offer_id = ?`, [id])
         console.log(`\ndelete lp ID:${id}, result:${JSON.stringify(lpDel)} `)
 
 
-
-        let geoDel = await dbMysql.query(`DELETE FROM sfl_offer_geo WHERE  sfl_offer_id=?`, [id])
+        let geoDel = await dbMysql.query(`DELETE FROM sfl_offer_geo WHERE sfl_offer_id = ?`, [id])
         console.log(`\ndelete GEO ID:${id}, result:${JSON.stringify(geoDel)} `)
 
-        let customLpDel = await dbMysql.query(`DELETE FROM sfl_offer_custom_landing_pages WHERE  sfl_offer_id=?`, [id])
+        let customLpDel = await dbMysql.query(`DELETE FROM sfl_offer_custom_landing_pages WHERE sfl_offer_id = ?`, [id])
         console.log(`\ndelete customLpDel ID:${id}, result:${JSON.stringify(customLpDel)} `)
 
 
-        let capCurrentDataDel = await dbMysql.query(`DELETE FROM sfl_offers_cap_current_data WHERE  sfl_offer_id=?`, [id])
+        let capCurrentDataDel = await dbMysql.query(`DELETE FROM sfl_offers_cap_current_data WHERE sfl_offer_id = ?`, [id])
         console.log(`\ndelete capCurrentDataDel ID:${id}, result:${JSON.stringify(capCurrentDataDel)} `)
 
-        let capDel = await dbMysql.query(`DELETE FROM sfl_offers_cap WHERE  sfl_offer_id=?`, [id])
+        let capDel = await dbMysql.query(`DELETE FROM sfl_offers_cap WHERE sfl_offer_id = ?`, [id])
         console.log(`\ndelete capDel ID:${id}, result:${JSON.stringify(capDel)} `)
 
-        let offerDel = await dbMysql.query(`DELETE FROM sfl_offers WHERE  id=?`, [id])
+        let offerDel = await dbMysql.query(`DELETE FROM sfl_offers WHERE id = ?`, [id])
         console.log(`\ndelete offer ID:${id}, result:${JSON.stringify(offerDel)} `)
 
 
