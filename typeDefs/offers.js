@@ -27,7 +27,11 @@ const offers = gql`
         status: String  
         payIn: Float
         payOut: Float 
-        dateAdded: Int  
+        dateAdded: Int 
+        dateUpdated: String 
+        defaultLandingPageId: Int 
+        nameLandingPage: String 
+        countOfCampaigns: Int
   }
 `;
 
