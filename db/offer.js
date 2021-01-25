@@ -67,15 +67,59 @@ const update = async (data) => {
         payOut,
         geoRules,
         customLPRules,
-        defaultLp,
         caps,
+        lp,
         offerIdRedirect
     } = data
 
+    let {defaultLp} = data
     let result = []
     const db = dbTransaction()
     try {
         await db.beginTransaction()
+
+        // landing pages
+        let lpData = JSON.parse(lp)
+        if (lpData.length !== 0) {
+
+            const defaultLpInfo = lpData.filter(item => (item.id === defaultLp))
+            console.log('defaultLpInfo:', defaultLpInfo)
+
+            const deleteLP = await db.query(`DELETE FROM sfl_offer_landing_pages WHERE sfl_offer_id = ?`, [id])
+            console.log(`\ndeleteLp:${JSON.stringify(deleteLP)}`)
+
+            console.log('lp:', lp)
+
+            for (const item of lpData) {
+                console.log(`Item LP:${JSON.stringify(item)}`)
+
+                const {name, url} = item
+                let date = new Date()
+                let dateAdded = ~~(date.getTime() / 1000)
+
+                const insertLP = await db.query(`
+                    INSERT INTO sfl_offer_landing_pages (sfl_offer_id, name, url, user, date_added)
+                    VALUES (?, ?, ?, ?, ?)`,
+                    [
+                        id,
+                        name,
+                        url,
+                        email,
+                        dateAdded
+                    ])
+
+                console.log(`\ninsertLP:${JSON.stringify(insertLP)}`)
+            }
+            const newDefaultLpInfo = await db.query(`
+                select id 
+                FROM sfl_offer_landing_pages 
+                WHERE url = '${defaultLpInfo[0].url}'  AND name ='${defaultLpInfo[0].name}'`)
+
+            //
+            if (newDefaultLpInfo) {
+                defaultLp = newDefaultLpInfo[0].id
+            }
+        }
 
         const updateOffer = await db.query(`
             UPDATE sfl_offers 

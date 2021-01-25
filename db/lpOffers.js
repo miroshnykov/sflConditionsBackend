@@ -1,7 +1,7 @@
 let dbMysql = require('./mysqlDb').get()
 
 
-const getLpOffers = async () => {
+const getLpOffers = async (offerId) => {
 
     try {
         let result = await dbMysql.query(` 
@@ -11,8 +11,9 @@ const getLpOffers = async () => {
                    lp.url            AS url, 
                    lp.status as status, 
                    lp.date_added     AS dateAdded 
-            FROM   sfl_offer_landing_pages lp     
-        `)
+            FROM   sfl_offer_landing_pages lp  
+            WHERE lp.sfl_offer_id = ?   
+        `,[offerId])
         await dbMysql.end()
 
 
