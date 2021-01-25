@@ -66,13 +66,12 @@ const update = async (data) => {
         payIn,
         payOut,
         geoRules,
-        customLPRules,
         caps,
         lp,
         offerIdRedirect
     } = data
 
-    let {defaultLp} = data
+    let {defaultLp, customLPRules} = data
     let result = []
     const db = dbTransaction()
     try {
@@ -80,6 +79,8 @@ const update = async (data) => {
 
         // landing pages
         let lpData = JSON.parse(lp)
+
+        console.log('lpData:', lpData)
         if (lpData.length !== 0) {
 
             const defaultLpInfo = lpData.filter(item => (item.id === defaultLp))
@@ -88,8 +89,7 @@ const update = async (data) => {
             const deleteLP = await db.query(`DELETE FROM sfl_offer_landing_pages WHERE sfl_offer_id = ?`, [id])
             console.log(`\ndeleteLp:${JSON.stringify(deleteLP)}`)
 
-            console.log('lp:', lp)
-
+            let newLpId = []
             for (const item of lpData) {
                 console.log(`Item LP:${JSON.stringify(item)}`)
 
@@ -109,13 +109,42 @@ const update = async (data) => {
                     ])
 
                 console.log(`\ninsertLP:${JSON.stringify(insertLP)}`)
+                let newId = insertLP.insertId
+                newLpId.push({id: newId, name: name, url: url})
             }
+
+            let customLPRules_ = JSON.parse(customLPRules)
+            console.log('\n customLPRules:', customLPRules_.customLPRules)
+            let newCustomLPRules = []
+            customLPRules_.customLPRules.forEach(item => {
+                let found = newLpId.filter(i => (i.name === item.lpName && i.url === item.lpUrl))
+
+                let obj = {}
+                obj.id = found && found[0].id
+                obj.pos = item.pos
+                obj.country = item.country
+                obj.lpName = item.lpName
+                obj.lpUrl = item.lpUrl
+                newCustomLPRules.push(obj)
+
+            })
+            console.log('\n NewLpId:', newLpId)
+
+            console.log('\n newCustomLPRules:', newCustomLPRules)
             const newDefaultLpInfo = await db.query(`
                 select id 
                 FROM sfl_offer_landing_pages 
                 WHERE url = '${defaultLpInfo[0].url}'  AND name ='${defaultLpInfo[0].name}'`)
 
-            //
+
+            const customLPRulesFormat = (customLPRules) => {
+                let customLp = {}
+                customLp.customLPRules = customLPRules
+                return JSON.stringify(customLp)
+            }
+
+            customLPRules = customLPRulesFormat(newCustomLPRules)
+
             if (newDefaultLpInfo) {
                 defaultLp = newDefaultLpInfo[0].id
             }
