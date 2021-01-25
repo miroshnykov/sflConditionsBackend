@@ -4,9 +4,9 @@ const {getDataCache, setDataCache} = require('../redis/redis')
 
 module.exports = {
     Query: {
-        getLpOffers: (_, {}, ctx) => {
+        getLpOffers: (_, {offerId}, ctx) => {
             checkUser(ctx.user)
-            return LpOffers.getLpOffers()
+            return LpOffers.getLpOffers(offerId)
         }
     },
     Mutation: {
