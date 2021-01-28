@@ -19,9 +19,10 @@ config = {
         database: ''
     },
     aws: {
-        key: '',
+        secret_key: '',
         access_key: '',
-        region: ''
+        region: '',
+        queue_url: ''
     },
     googleSso: {
         url: 'https://am-ssoauth.surge.systems/'

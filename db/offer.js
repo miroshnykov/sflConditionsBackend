@@ -1,5 +1,7 @@
 let dbMysql = require('./mysqlDb').get()
 let dbTransaction = require('./mysqlTransaction').get()
+const {sendMessageToQueue} = require('../helper/sqs')
+const {getOffer} = require('./offers')
 
 const create = async (data) => {
 
@@ -283,6 +285,19 @@ const update = async (data) => {
         }
 
         await db.commit()
+
+        let offerSqs = await offerForSqs(id)
+        let obj = {}
+        obj._comments = 'offer handling insert'
+        obj.type = 'offer'
+        obj.id = id
+        obj.action = 'insert'
+        obj.body = `${JSON.stringify(offerSqs)}`
+
+        console.log(`Added update to redis Body:${JSON.stringify(obj)}`)
+        let sqsData = await sendMessageToQueue(obj)
+        console.log(`Added update to redis sqs:${JSON.stringify(sqsData)}`)
+
         result.id = id
         return result
 
@@ -327,6 +342,15 @@ const del = async (id) => {
 
         await db.commit()
 
+        let objSqs = {}
+        objSqs._comments = 'offer handling delete'
+        objSqs.type = 'offer'
+        objSqs.id = id
+        objSqs.action = 'delete'
+        objSqs.body = ''
+        let sqsData = await sendMessageToQueue(objSqs)
+        console.log(`Added delete from Recipe to sqs:${JSON.stringify(sqsData)}`)
+
         let res = {}
         res.id = id
         return res
@@ -335,6 +359,81 @@ const del = async (id) => {
         await db.rollback()
     } finally {
         await db.close()
+    }
+}
+
+const offerForSqs = async (offerId) => {
+
+    try {
+        let offerResult = await dbMysql.query(` 
+            SELECT o.id                            AS offerId, 
+                   o.name                          AS name, 
+                   o.advertiser                    AS advertiser, 
+                   o.status                        AS status, 
+                   o.payin                         AS payin, 
+                   o.payout                        AS payout, 
+                   lp.id                           AS landingPageId, 
+                   lp.url                          AS landingPageUrl, 
+                   o.sfl_offer_geo_id              AS sflOfferGeoId, 
+                   g.rules                         AS geoRules, 
+                   g.sfl_offer_id                  AS geoOfferId, 
+                   lps.rules                       AS customLpRules,
+--                   (SELECT c.clicks_day FROM   sfl_offers_cap_current_data c WHERE  c.sfl_offer_id = o.id) AS capDayCurrentData,
+                   (SELECT c1.clicks_day FROM   sfl_offers_cap c1 WHERE  c1.sfl_offer_id = o.id AND c1.clicks_day !=0) AS capDaySetup, 
+                   (SELECT c.clicks_day FROM   sfl_offers_cap_current_data c WHERE  c.sfl_offer_id = o.id)- 
+                   (SELECT c1.clicks_day FROM   sfl_offers_cap c1 WHERE  c1.sfl_offer_id = o.id)                    
+                        AS capDayCalculate,
+
+--                   (SELECT c.clicks_week FROM   sfl_offers_cap_current_data c WHERE  c.sfl_offer_id = o.id) AS capWeekCurrentData,
+                   (SELECT c1.clicks_week FROM   sfl_offers_cap c1 WHERE  c1.sfl_offer_id = o.id AND c1.clicks_day !=0) AS capWeekSetup, 
+                                      (SELECT c.clicks_week FROM   sfl_offers_cap_current_data c WHERE  c.sfl_offer_id = o.id) -
+                   (SELECT c1.clicks_week FROM   sfl_offers_cap c1 WHERE  c1.sfl_offer_id = o.id) 
+                        AS capWeekCalculate,                    
+                   
+--                   (SELECT c.clicks_month FROM   sfl_offers_cap_current_data c WHERE  c.sfl_offer_id = o.id) AS capMonthCurrentData,
+                   (SELECT c1.clicks_month FROM   sfl_offers_cap c1 WHERE  c1.sfl_offer_id = o.id AND c1.clicks_day !=0) AS capMonthSetup, 
+                   (SELECT c.clicks_month FROM   sfl_offers_cap_current_data c WHERE  c.sfl_offer_id = o.id) -                   
+                   (SELECT c1.clicks_month FROM   sfl_offers_cap c1 WHERE  c1.sfl_offer_id = o.id) 
+
+                        AS capMonthCalculate,
+                                        
+                   (SELECT c1.clicks_redirect_offer_id  FROM   sfl_offers_cap c1 WHERE  c1.sfl_offer_id = o.id) AS capRedirect                
+            FROM   sfl_offers o 
+                   left join sfl_offer_landing_pages lp 
+                          ON lp.id = o.sfl_offer_landing_page_id 
+                   left join sfl_offer_geo g 
+                          ON g.sfl_offer_id = o.id  
+                   left join sfl_offer_custom_landing_pages lps
+                          ON o.id = lps.sfl_offer_id
+            WHERE o.id = ${offerId}                                         
+        `)
+        await dbMysql.end()
+        // console.log(`\nget offerInfo count: ${result.length}`)
+
+        let offer = offerResult[0]
+        const {capDaySetup, capWeekSetup, capMonthSetup, capDayCalculate, capWeekCalculate, capMonthCalculate, capRedirect} = offer
+        if (
+            capDaySetup
+            || capWeekSetup
+            || capMonthSetup) {
+
+            if (capDayCalculate < 0 || capWeekCalculate < 0 || capMonthCalculate < 0) {
+                let offerInfo = await getOffer(capRedirect)
+                console.log(`\n *** Cap by offerId { ${offer.offerId} } offerInfo:${JSON.stringify(offer)}`)
+                offer.landingPageIdOrigin = offer.landingPageId
+                offer.landingPageUrlOrigin = offer.landingPageUrl
+                offer.landingPageId = offerInfo && offerInfo[0].landingPageId || 0
+                offer.landingPageUrl = offerInfo && offerInfo[0].landingPageUrl || 0
+                offer.capOverrideOfferId = offerInfo && offerInfo[0].offerId || 0
+            }
+
+        }
+
+        // console.log(offer)
+
+        return offer
+    } catch (e) {
+        console.log(e)
     }
 }
 
