@@ -18,6 +18,7 @@ const sendMessageToQueue = async (body) => {
         MessageGroupId: `MessageGroupId`
     };
 
+    console.log('sendMessageToQueue PARAMS:', JSON.stringify(params))
     return sqs.sendMessage(params).promise()
         .then(data => {
             return data
