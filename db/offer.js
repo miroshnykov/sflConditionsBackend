@@ -154,17 +154,28 @@ const update = async (data) => {
 
         const updateOffer = await db.query(`
             UPDATE sfl_offers 
-            SET name=?, 
-                advertiser=?, 
-                status=?, 
-                conversion_type=?, 
-                payin=?, 
-                payout=?, 
-                user=?, 
-                sfl_offer_landing_page_id=?, 
-                offer_id_redirect=?
-            WHERE  id=?`,
-            [name, advertiser, status, conversionType, payIn, payOut, email, defaultLp, offerIdRedirect, id]
+            SET name = ?, 
+                advertiser = ?, 
+                status = ?, 
+                conversion_type = ?, 
+                payin = ?, 
+                payout = ?, 
+                user = ?, 
+                sfl_offer_landing_page_id = ?, 
+                offer_id_redirect = ?
+            WHERE  id = ?`,
+            [
+                name,
+                advertiser,
+                status,
+                conversionType,
+                payIn,
+                payOut,
+                email,
+                defaultLp,
+                offerIdRedirect,
+                id
+            ]
         )
 
         console.log(`\nupdateOffer:${JSON.stringify(updateOffer)}`)
