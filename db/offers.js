@@ -47,6 +47,7 @@ const getOffers = async () => {
                    o.date_updated              AS dateUpdated, 
                    o.sfl_offer_landing_page_id AS defaultLandingPageId, 
                    lp.name                     AS nameLandingPage,
+                   lp.url                      AS urlLandingPage,
                    (SELECT COUNT(*) FROM sfl_offer_campaigns c WHERE c.sfl_offer_id = o.id) AS countOfCampaigns 
             FROM   sfl_offers o 
                    LEFT JOIN sfl_offer_landing_pages lp 
