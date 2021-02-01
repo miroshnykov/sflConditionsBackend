@@ -11,6 +11,7 @@ const getOffer = async (id) => {
                    o.payout          AS payOut, 
                    o.conversion_type AS conversionType, 
                    o.advertiser      AS advertiser, 
+                   o.verticals       AS verticals, 
                    o.date_added      AS dateAdded,
                    o.sfl_offer_landing_page_id AS defaultLp, 
                    o.offer_id_redirect AS offerIdRedirect,

@@ -228,7 +228,7 @@ app.get('/salesProcessing', async (req, res) => {
 server.applyMiddleware({app})
 
 app.listen({port: 4001}, () =>
-    console.log(`\n🚀\x1b[35m Server ready at http://localhost:4001${server.graphqlPath} \x1b[0m \n`)
+    console.log(`\n🚀\x1b[35m Server ready at http://localhost:4001${server.graphqlPath}  Using node ${process.version} \x1b[0m \n`)
 )
 
 
