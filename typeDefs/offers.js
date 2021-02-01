@@ -14,6 +14,7 @@ const offers = gql`
         status: String  
         payIn: Float
         advertiser: String
+        verticals: String
         geoRules: String
         defaultLp: Int
         offerIdRedirect: Int
@@ -31,6 +32,7 @@ const offers = gql`
         dateUpdated: String 
         defaultLandingPageId: Int 
         nameLandingPage: String 
+        urlLandingPage: String 
         countOfCampaigns: Int
   }
 `;

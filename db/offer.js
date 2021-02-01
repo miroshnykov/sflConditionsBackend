@@ -63,6 +63,7 @@ const update = async (data) => {
         name,
         status,
         advertiser,
+        verticals,
         email,
         conversionType,
         payIn,
@@ -156,6 +157,7 @@ const update = async (data) => {
             UPDATE sfl_offers 
             SET name = ?, 
                 advertiser = ?, 
+                verticals = ?, 
                 status = ?, 
                 conversion_type = ?, 
                 payin = ?, 
@@ -167,6 +169,7 @@ const update = async (data) => {
             [
                 name,
                 advertiser,
+                verticals,
                 status,
                 conversionType,
                 payIn,
