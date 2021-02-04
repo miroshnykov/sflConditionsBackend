@@ -13,11 +13,14 @@ const getOffer = async (id) => {
                    o.advertiser      AS advertiser, 
                    o.verticals       AS verticals, 
                    o.date_added      AS dateAdded,
-                   o.sfl_offer_landing_page_id AS defaultLp, 
+                   o.sfl_offer_landing_page_id AS defaultLp,
+                   lp.url                    AS defaultLpUrl,                 
                    o.offer_id_redirect AS offerIdRedirect,
                    g.rules           AS geoRules, 
                    clp.rules         AS customLPRules                    
             FROM   sfl_offers o 
+                   left join sfl_offer_landing_pages lp 
+                          ON lp.id = o.sfl_offer_landing_page_id             
                    LEFT JOIN sfl_offer_geo g 
                           ON g.sfl_offer_id = o.id 
                    LEFT JOIN sfl_offer_custom_landing_pages clp 
