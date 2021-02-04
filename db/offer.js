@@ -436,14 +436,18 @@ const offerForSqs = async (offerId) => {
             || capMonthSetup) {
 
             if (capDayCalculate > 0 || capWeekCalculate > 0 || capMonthCalculate > 0) {
-                let offerInfo = await getOffer(capRedirect)
-                console.log(`\n *** Cap by offerId { ${offer.offerId} } offerInfo:${JSON.stringify(offerInfo)}`)
-                offerToSend.landingPageIdOrigin = offer.landingPageId
-                offerToSend.landingPageUrlOrigin = offer.landingPageUrl
-                offerToSend.landingPageId = offerInfo && offerInfo[0].defaultLp || 0
-                offerToSend.landingPageUrl = offerInfo && offerInfo[0].defaultLpUrl || 0
-                offerToSend.capOverrideOfferId = capRedirect
-                // console.log(offerToSend)
+                let offerRedirectInfo = await getOffer(capRedirect)
+                console.log(`\n *** Cap by offerId { ${offer.offerId} } redirectOffer { ${capRedirect} } offerInfo:${JSON.stringify(offer)}`)
+                console.log(` *** offerRedirectInfo:${JSON.stringify(offerRedirectInfo)} \n`)
+                if (offerRedirectInfo.length !== 0) {
+                    offer.landingPageIdOrigin = offer.landingPageId
+                    offer.landingPageUrlOrigin = offer.landingPageUrl
+                    offer.landingPageId = offerRedirectInfo[0].landingPageId
+                    offer.landingPageUrl = offerRedirectInfo[0].landingPageUrl
+                    offer.capOverrideOfferId = capRedirect
+                } else {
+                    console.log(`\n *** No cap redirect offer  { ${capRedirect} } offer:${JSON.stringify(offer)}`)
+                }
             }
 
         }
