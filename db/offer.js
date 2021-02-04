@@ -383,6 +383,8 @@ const offerForSqs = async (offerId) => {
             SELECT o.id                            AS offerId, 
                    o.name                          AS name, 
                    o.advertiser                    AS advertiser, 
+                   o.verticals                     AS verticals,                   
+                   o.conversion_type               AS conversionType,                     
                    o.status                        AS status, 
                    o.payin                         AS payin, 
                    o.payout                        AS payout, 
@@ -433,7 +435,7 @@ const offerForSqs = async (offerId) => {
             || capWeekSetup
             || capMonthSetup) {
 
-            if (capDayCalculate < 0 || capWeekCalculate < 0 || capMonthCalculate < 0) {
+            if (capDayCalculate > 0 || capWeekCalculate > 0 || capMonthCalculate > 0) {
                 let offerInfo = await getOffer(capRedirect)
                 console.log(`\n *** Cap by offerId { ${offer.offerId} } offerInfo:${JSON.stringify(offerInfo)}`)
                 offerToSend.landingPageIdOrigin = offer.landingPageId
