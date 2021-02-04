@@ -425,6 +425,8 @@ const offerForSqs = async (offerId) => {
         // console.log(`\nget offerInfo count: ${result.length}`)
 
         let offer = offerResult[0]
+
+        let offerToSend = Object.assign({}, offer)
         const {capDaySetup, capWeekSetup, capMonthSetup, capDayCalculate, capWeekCalculate, capMonthCalculate, capRedirect} = offer
         if (
             capDaySetup
@@ -433,19 +435,19 @@ const offerForSqs = async (offerId) => {
 
             if (capDayCalculate < 0 || capWeekCalculate < 0 || capMonthCalculate < 0) {
                 let offerInfo = await getOffer(capRedirect)
-                console.log(`\n *** Cap by offerId { ${offer.offerId} } offerInfo:${JSON.stringify(offer)}`)
-                offer.landingPageIdOrigin = offer.landingPageId
-                offer.landingPageUrlOrigin = offer.landingPageUrl
-                offer.landingPageId = offerInfo && offerInfo[0].landingPageId || 0
-                offer.landingPageUrl = offerInfo && offerInfo[0].landingPageUrl || 0
-                offer.capOverrideOfferId = offerInfo && offerInfo[0].offerId || 0
+                console.log(`\n *** Cap by offerId { ${offer.offerId} } offerInfo:${JSON.stringify(offerInfo)}`)
+                offerToSend.landingPageIdOrigin = offer.landingPageId
+                offerToSend.landingPageUrlOrigin = offer.landingPageUrl
+                offerToSend.landingPageId = offerInfo && offerInfo[0].defaultLp || 0
+                offerToSend.landingPageUrl = offerInfo && offerInfo[0].defaultLpUrl || 0
+                offerToSend.capOverrideOfferId = capRedirect
+                // console.log(offerToSend)
             }
 
         }
+        console.log('offerToSend:', offerToSend)
 
-        // console.log(offer)
-
-        return offer
+        return offerToSend
     } catch (e) {
         console.log(e)
     }
