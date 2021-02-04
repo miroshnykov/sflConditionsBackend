@@ -383,6 +383,8 @@ const offerForSqs = async (offerId) => {
             SELECT o.id                            AS offerId, 
                    o.name                          AS name, 
                    o.advertiser                    AS advertiser, 
+                   o.verticals                     AS verticals,                   
+                   o.conversion_type               AS conversionType,                     
                    o.status                        AS status, 
                    o.payin                         AS payin, 
                    o.payout                        AS payout, 
