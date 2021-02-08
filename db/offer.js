@@ -397,6 +397,8 @@ const offerForSqs = async (offerId) => {
                    o.status                        AS status, 
                    o.payin                         AS payin, 
                    o.payout                        AS payout, 
+                   o.payout_percent                AS payoutPercent,
+                   o.is_cpm_option_enabled         AS isCpmOptionEnabled,                     
                    lp.id                           AS landingPageId, 
                    lp.url                          AS landingPageUrl, 
                    o.sfl_offer_geo_id              AS sflOfferGeoId, 
