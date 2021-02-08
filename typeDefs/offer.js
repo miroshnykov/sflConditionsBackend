@@ -40,6 +40,8 @@ const offer = gql`
         status: String!
         defaultLp: Int!
         offerIdRedirect: Int!
+        payoutPercent: Int!
+        isCpmOptionEnabled: Int!
      ): SaveOffer
           
     delOffer(
