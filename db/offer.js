@@ -66,6 +66,8 @@ const update = async (data) => {
         verticals,
         email,
         conversionType,
+        payoutPercent,
+        isCpmOptionEnabled,
         payIn,
         payOut,
         geoRules,
@@ -153,6 +155,7 @@ const update = async (data) => {
             }
         }
 
+        console.log(' \n\n DIMON is_cpm_option_enabled: ', isCpmOptionEnabled)
         const updateOffer = await db.query(`
             UPDATE sfl_offers 
             SET name = ?, 
@@ -160,6 +163,8 @@ const update = async (data) => {
                 verticals = ?, 
                 status = ?, 
                 conversion_type = ?, 
+                payout_percent = ?, 
+                is_cpm_option_enabled = ?, 
                 payin = ?, 
                 payout = ?, 
                 user = ?, 
@@ -172,6 +177,8 @@ const update = async (data) => {
                 verticals,
                 status,
                 conversionType,
+                payoutPercent,
+                isCpmOptionEnabled,
                 payIn,
                 payOut,
                 email,
@@ -308,6 +315,8 @@ const update = async (data) => {
         obj.action = 'insert'
         obj.body = `${JSON.stringify(offerSqs)}`
 
+        console.log(obj)
+        console.log(offerSqs)
         console.log(`Added update to redis Body:${JSON.stringify(obj)}`)
         let sqsData = await sendMessageToQueue(obj)
         console.log(`Added update to redis sqs:${JSON.stringify(sqsData)}`)
@@ -388,6 +397,8 @@ const offerForSqs = async (offerId) => {
                    o.status                        AS status, 
                    o.payin                         AS payin, 
                    o.payout                        AS payout, 
+                   o.payout_percent                AS payoutPercent,
+                   o.is_cpm_option_enabled         AS isCpmOptionEnabled,                     
                    lp.id                           AS landingPageId, 
                    lp.url                          AS landingPageUrl, 
                    o.sfl_offer_geo_id              AS sflOfferGeoId, 

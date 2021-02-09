@@ -17,6 +17,8 @@ const offers = gql`
         verticals: String
         geoRules: String
         defaultLp: Int
+        isCpmOptionEnabled: Int
+        payoutPercent: Int
         offerIdRedirect: Int
         customLPRules: String
         payOut: Float
@@ -31,6 +33,8 @@ const offers = gql`
         dateAdded: Int 
         dateUpdated: String 
         defaultLandingPageId: Int 
+        isCpmOptionEnabled: Int
+        payoutPercent: Int        
         nameLandingPage: String 
         urlLandingPage: String 
         countOfCampaigns: Int
