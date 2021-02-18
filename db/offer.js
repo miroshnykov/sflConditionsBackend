@@ -85,11 +85,11 @@ const update = async (data) => {
         // landing pages
         let lpData = JSON.parse(lp)
 
-        console.log('lpData:', lpData)
+        console.log('\nlpData:', JSON.stringify(lpData))
         if (lpData.length !== 0) {
 
             const defaultLpInfo = lpData.filter(item => (item.id === defaultLp))
-            console.log('defaultLpInfo:', defaultLpInfo)
+            console.log('defaultLpInfo:', JSON.stringify(defaultLpInfo))
 
             const deleteLP = await db.query(`DELETE FROM sfl_offer_landing_pages WHERE sfl_offer_id = ?`, [id])
             console.log(`\ndeleteLp:${JSON.stringify(deleteLP)}`)
@@ -124,13 +124,16 @@ const update = async (data) => {
             customLPRules_.customLPRules.forEach(item => {
                 let found = newLpId.filter(i => (i.name === item.lpName && i.url === item.lpUrl))
 
-                let obj = {}
-                obj.id = found && found[0].id
-                obj.pos = item.pos
-                obj.country = item.country
-                obj.lpName = item.lpName
-                obj.lpUrl = item.lpUrl
-                newCustomLPRules.push(obj)
+                if (found.length !==0){
+                    let obj = {}
+                    obj.id = found && found[0].id
+                    obj.pos = item.pos
+                    obj.country = item.country
+                    obj.lpName = item.lpName
+                    obj.lpUrl = item.lpUrl
+                    newCustomLPRules.push(obj)
+                }
+
 
             })
             console.log('\n NewLpId:', newLpId)
@@ -155,7 +158,7 @@ const update = async (data) => {
             }
         }
 
-        console.log(' \n\n DIMON is_cpm_option_enabled: ', isCpmOptionEnabled)
+        // console.log(' \n\n DIMON is_cpm_option_enabled: ', isCpmOptionEnabled)
         const updateOffer = await db.query(`
             UPDATE sfl_offers 
             SET name = ?, 
@@ -315,8 +318,8 @@ const update = async (data) => {
         obj.action = 'insert'
         obj.body = `${JSON.stringify(offerSqs)}`
 
-        console.log(obj)
-        console.log(offerSqs)
+        // console.log(obj)
+        // console.log(offerSqs)
         console.log(`Added update to redis Body:${JSON.stringify(obj)}`)
         let sqsData = await sendMessageToQueue(obj)
         console.log(`Added update to redis sqs:${JSON.stringify(sqsData)}`)
@@ -462,7 +465,7 @@ const offerForSqs = async (offerId) => {
             }
 
         }
-        console.log('offerToSend:', offerToSend)
+        console.log('offerToSend:', JSON.stringify(offerToSend))
 
         return offerToSend
     } catch (e) {
