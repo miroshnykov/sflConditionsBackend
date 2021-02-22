@@ -1,4 +1,4 @@
-const {getOffer, getOffers} = require('../db/offers')
+const {getOffer, getOffers, getOfferHistory} = require('../db/offers')
 
 class Offers {
     static async getOffer(id) {
@@ -7,6 +7,10 @@ class Offers {
 
     static async getOffers() {
         return await getOffers()
+    }
+
+    static async getOfferHistory(id) {
+        return await getOfferHistory(id)
     }
 
 }

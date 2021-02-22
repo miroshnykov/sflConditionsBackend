@@ -57,6 +57,8 @@ const cap = async (offerId) => {
 const update = async (data) => {
 
     console.log(`\nupdate data:${JSON.stringify(data)}`)
+    let date = new Date()
+    let dateAdd = ~~(date.getTime() / 1000)
 
     const {
         id,
@@ -81,6 +83,78 @@ const update = async (data) => {
     const db = dbTransaction()
     try {
         await db.beginTransaction()
+
+
+        let changesData = {
+            name: name,
+            status: status,
+            advertiser: advertiser,
+            verticals: verticals,
+            email: email,
+            payoutPercent: payoutPercent,
+            conversionType: conversionType,
+            payIn: payIn,
+            payOut: payOut,
+            offerIdRedirect: offerIdRedirect,
+        }
+
+        const originOffer = await db.query(`
+            SELECT
+                   o.name            AS name, 
+                   o.status          AS status, 
+                   o.payin           AS payIn, 
+                   o.payout          AS payOut, 
+                   o.conversion_type AS conversionType, 
+                   o.advertiser      AS advertiser, 
+                    o.user      AS email,
+                   o.verticals       AS verticals, 
+                   o.date_added      AS dateAdded,
+                   o.is_cpm_option_enabled     AS isCpmOptionEnabled,
+                   o.payout_percent            AS payoutPercent,                    
+                   o.sfl_offer_landing_page_id AS defaultLp,
+                   o.offer_id_redirect AS offerIdRedirect
+            FROM   sfl_offers o 
+            WHERE  o.id = ?`, [id])
+
+        console.log('originOffer:', originOffer)
+
+        let originData = {
+            name: originOffer[0].name,
+            status: originOffer[0].status,
+            advertiser: originOffer[0].advertiser,
+            verticals: originOffer[0].verticals,
+            email: originOffer[0].email,
+            payoutPercent: originOffer[0].payoutPercent,
+            conversionType: originOffer[0].conversionType,
+            payIn: originOffer[0].payIn,
+            payOut: originOffer[0].payOut,
+            offerIdRedirect: originOffer[0].offerIdRedirect,
+        }
+        console.log('\n changesData:', changesData)
+        console.log('\n originData:', originData)
+
+        let objKeys = Object.keys(changesData)
+        let diff = []
+        objKeys.forEach(key => {
+            if (changesData[key] !== originData[key]) {
+                diff.push({field: key, newValue: changesData[key], oldValue:originData[key]})
+            }
+        })
+
+        console.log('\n DIFF:', diff)
+        const insertHistory = await db.query(`
+                INSERT INTO sfl_offers_history (sfl_offer_id, user, date_added, logs) 
+                VALUES (?, ?, ?, ?)`,
+            [
+                id,
+                email,
+                dateAdd,
+                JSON.stringify(diff)
+            ])
+
+        console.log(`\ninsertHistory:${JSON.stringify(insertHistory)}`)
+
+
 
         // landing pages
         let lpData = JSON.parse(lp)
@@ -124,7 +198,7 @@ const update = async (data) => {
             customLPRules_.customLPRules.forEach(item => {
                 let found = newLpId.filter(i => (i.name === item.lpName && i.url === item.lpUrl))
 
-                if (found.length !==0){
+                if (found.length !== 0) {
                     let obj = {}
                     obj.id = found && found[0].id
                     obj.pos = item.pos

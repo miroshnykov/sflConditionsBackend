@@ -163,6 +163,21 @@ COLLATE='utf8_general_ci'
 ENGINE=InnoDB
 ;
 
+CREATE TABLE `sfl_offers_history` (
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`sfl_offer_id` INT(10) UNSIGNED NOT NULL,
+	`user` VARCHAR(50) NOT NULL DEFAULT '0',
+	`date_added` INT(11) NOT NULL,
+	`logs` TEXT NOT NULL,
+	PRIMARY KEY (`id`),
+	INDEX `fk_v_sfl_offer_history` (`sfl_offer_id`),
+	CONSTRAINT `fk_v_sfl_offer_history` FOREIGN KEY (`sfl_offer_id`) REFERENCES `sfl_offers` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB
+;
+
+
 INSERT INTO `sfl_offer_custom_landing_pages`
             (`rules`,
              `sfl_offer_id`)

@@ -5,6 +5,7 @@ const offers = gql`
   extend type Query{
         getOffer(id:Int!): [Offer]    
         getOffers: [Offers]  
+        getOfferHistory(id:Int!): [OfferHistory]  
   } 
   
   type Offer {
@@ -24,6 +25,14 @@ const offers = gql`
         payOut: Float
         dateAdded: Int
   }
+                   
+  type OfferHistory {
+        id: Int
+        sflOfferId: Int
+        user: String  
+        dateAdded: Int
+        logs: String
+  }  
   type Offers {
         id: Int
         name: String 
