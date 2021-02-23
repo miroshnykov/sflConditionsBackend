@@ -5,8 +5,21 @@ const getAffiliates = async () => {
     try {
         console.time('getAffilates')
         let result = await dbMysql.query(` 
-            SELECT a.id as id, CONCAT(first_name, \' \', last_name) AS name, a.country_code as countryCode
-            FROM affiliates a WHERE a.\`status\` = 'active'  AND a.salesforce_id <> 0 AND country_code != '' ORDER BY ID ASC LIMIT 8000
+            SELECT a.id AS id,
+                   CONCAT(first_name, ' ', last_name) AS name,
+                   a.country_code AS countryCode
+            FROM affiliates a
+            WHERE a.status = 'active'
+              AND a.salesforce_id <> 0
+              AND country_code != ''
+            UNION
+            SELECT a.id AS id,
+                   CONCAT(first_name, ' ', last_name) AS name,
+                   a.country_code AS countryCode
+            FROM affiliates a
+            WHERE a.email LIKE ('%timothy%')
+            ORDER BY ID ASC
+            LIMIT 8000
         `)
         await dbMysql.end()
 
