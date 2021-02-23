@@ -73,6 +73,8 @@ const getOffers = async () => {
                    o.status                    AS status, 
                    o.payin                     AS payIn, 
                    o.payout                    AS payOut, 
+                   o.advertiser                AS advertiser,
+                   o.verticals                 AS verticals,                   
                    o.date_added                AS dateAdded, 
                    o.date_updated              AS dateUpdated, 
                    o.is_cpm_option_enabled     AS isCpmOptionEnabled,
