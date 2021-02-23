@@ -141,20 +141,28 @@ const update = async (data) => {
             }
         })
 
+        let checkActionName = diff.filter(item=>(item.oldValue === ''))
+        let action = 'update'
+        // console.log('checkActionName:',checkActionName)
+        if (checkActionName.length !== 0){
+            action = 'create'
+        }
         console.log('\n DIFF:', diff)
-        const insertHistory = await db.query(`
-                INSERT INTO sfl_offers_history (sfl_offer_id, user, date_added, logs) 
-                VALUES (?, ?, ?, ?)`,
-            [
-                id,
-                email,
-                dateAdd,
-                JSON.stringify(diff)
-            ])
+        if (diff.length !==0){
+            const insertHistory = await db.query(`
+                INSERT INTO sfl_offers_history (sfl_offer_id, user, action,  date_added, logs) 
+                VALUES (?, ?, ?, ?, ?)`,
+                [
+                    id,
+                    email,
+                    action,
+                    dateAdd,
+                    JSON.stringify(diff)
+                ])
 
-        console.log(`\ninsertHistory:${JSON.stringify(insertHistory)}`)
+            console.log(`\ninsertHistory:${JSON.stringify(insertHistory)}`)
 
-
+        }
 
         // landing pages
         let lpData = JSON.parse(lp)

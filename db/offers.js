@@ -47,6 +47,7 @@ const getOfferHistory = async (id) => {
                    h.sfl_offer_id AS sflOfferId,
                    h.user AS user,
                    h.date_added AS dateAdded,
+                   h.action AS action,
                    h.logs AS logs
             FROM sfl_offers_history h
             WHERE h.sfl_offer_id =?

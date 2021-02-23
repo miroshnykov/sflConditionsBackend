@@ -30,7 +30,8 @@ const offers = gql`
         id: Int
         sflOfferId: Int
         user: String  
-        dateAdded: Int
+        action: String  
+        dateAdded: Int        
         logs: String
   }  
   type Offers {
