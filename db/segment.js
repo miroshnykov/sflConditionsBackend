@@ -79,6 +79,7 @@ const getSegmentStatus = async (id) => {
                 SELECT 
                     s.name, 
                     s.status, 
+                    s.is_override_product as isOverrideProduct,
                     s.date_added as dateAdded,
                     s.date_updated as dateUpdated
                 FROM sfl_segment s 
@@ -211,7 +212,7 @@ const deleteSegment = async (segmentId, user) => {
 
 const saveConditions = async (data) => {
 
-    const {id, name, status, filters, email} = data
+    const {id, name, status, filters, email, isOverrideProduct} = data
 
     console.log(`\nsaveConditions data:${JSON.stringify(data)}`)
     let result = []
@@ -223,7 +224,7 @@ const saveConditions = async (data) => {
         const deleteSegmentsConditions = await db.query(`DELETE FROM sfl_segment_dimension WHERE sfl_segment_id = ?`, [id])
 
         console.log(`\ndeleteSegmentsConditions:${JSON.stringify(deleteSegmentsConditions)}`)
-        const updateSegmentsNameStatus = await db.query(`UPDATE sfl_segment SET name= ?, status= ? WHERE id=?`, [name, status, id])
+        const updateSegmentsNameStatus = await db.query(`UPDATE sfl_segment SET name= ?, status= ?, is_override_product=? WHERE id=?`, [name, status, isOverrideProduct, id])
         console.log(`\nupdateSegmentsNameStatus:${JSON.stringify(updateSegmentsNameStatus)}`)
 
         for (const item of filters) {
