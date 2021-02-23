@@ -52,7 +52,7 @@ const getOfferHistory = async (id) => {
             FROM sfl_offers_history h
             WHERE h.sfl_offer_id =?
             ORDER BY  h.date_added desc
-            LIMIT 10
+            LIMIT 25
         `, [id])
         await dbMysql.end()
 

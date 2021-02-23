@@ -167,6 +167,7 @@ CREATE TABLE `sfl_offers_history` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`sfl_offer_id` INT(10) UNSIGNED NOT NULL,
 	`user` VARCHAR(50) NOT NULL DEFAULT '0',
+	`action` VARCHAR(50) NOT NULL DEFAULT '',
 	`date_added` INT(11) NOT NULL,
 	`logs` TEXT NOT NULL,
 	PRIMARY KEY (`id`),
@@ -176,7 +177,6 @@ CREATE TABLE `sfl_offers_history` (
 COLLATE='utf8_general_ci'
 ENGINE=InnoDB
 ;
-
 
 INSERT INTO `sfl_offer_custom_landing_pages`
             (`rules`,
