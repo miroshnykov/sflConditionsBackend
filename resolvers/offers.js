@@ -13,5 +13,9 @@ module.exports = {
             return await Offers.getOffers()
 
         },
+        getOfferHistory: async (_, {id}, ctx) => {
+            checkUser(ctx.user)
+            return await Offers.getOfferHistory(id)
+        },
     },
 }

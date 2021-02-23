@@ -29,10 +29,34 @@ const getOffer = async (id) => {
                           ON clp.sfl_offer_id = o.id 
             WHERE  o.id = ?
 
-        `,[id])
+        `, [id])
         await dbMysql.end()
 
         console.log('getOffer count :', result.length, ' by id:', id)
+        return result
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+const getOfferHistory = async (id) => {
+
+    try {
+        let result = await dbMysql.query(` 
+            SELECT h.id as id,
+                   h.sfl_offer_id AS sflOfferId,
+                   h.user AS user,
+                   h.date_added AS dateAdded,
+                   h.action AS action,
+                   h.logs AS logs
+            FROM sfl_offers_history h
+            WHERE h.sfl_offer_id =?
+            ORDER BY  h.date_added desc
+            LIMIT 25
+        `, [id])
+        await dbMysql.end()
+
+        console.log('getOffer history count :', result.length, ' by id:', id)
         return result
     } catch (e) {
         console.log(e)
@@ -75,5 +99,6 @@ const getOffers = async () => {
 
 module.exports = {
     getOffer,
-    getOffers
+    getOffers,
+    getOfferHistory
 }
