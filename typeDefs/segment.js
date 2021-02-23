@@ -14,6 +14,7 @@ const segment = gql`
                 id: Int!,
                 name: String!,
                 status: String!,
+                isOverrideProduct: Int!,
                 filters: [FiltersInput]): Filters
               
                 updateLandingPage(
@@ -66,6 +67,7 @@ const segment = gql`
       type SegmentStatus {
             name: String
             status: String
+            isOverrideProduct: Int
             dateAdded: String
             dateUpdated: String
       }
