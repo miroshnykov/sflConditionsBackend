@@ -40,6 +40,8 @@ const offers = gql`
         status: String  
         payIn: Float
         payOut: Float 
+        verticals: String
+        advertiser: String
         dateAdded: Int 
         dateUpdated: String 
         defaultLandingPageId: Int 
