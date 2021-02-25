@@ -450,6 +450,9 @@ const del = async (id) => {
         let capDel = await dbMysql.query(`DELETE FROM sfl_offers_cap WHERE sfl_offer_id = ?`, [id])
         console.log(`\ndelete capDel ID:${id}, result:${JSON.stringify(capDel)} `)
 
+        let offerhistoryDel = await dbMysql.query(`DELETE FROM sfl_offers_history WHERE sfl_offer_id = ?`, [id])
+        console.log(`\ndelete offer history  ID:${id}, result:${JSON.stringify(offerhistoryDel)} `)
+
         let offerDel = await dbMysql.query(`DELETE FROM sfl_offers WHERE id = ?`, [id])
         console.log(`\ndelete offer ID:${id}, result:${JSON.stringify(offerDel)} `)
 

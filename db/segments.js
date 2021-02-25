@@ -123,10 +123,11 @@ const deleteSegment = async (data) => {
     try {
         let result = await dbMysql.transaction()
             .query(`DELETE FROM sfl_segment_landing_page WHERE sfl_segment_id=${id} `)
+            .query(`DELETE FROM sfl_segment_dimension WHERE sfl_segment_id = ${id} `)
             .query(`DELETE FROM sfl_segment WHERE id=${id}`)
             .commit()
 
-        console.log(`deleteSegment id ${id} affectRows:${JSON.stringify(result)}`)
+        console.log(`\ndeleteSegment id ${id} affectRows:${JSON.stringify(result)}`)
 
         let segments = await dbMysql.query(` 
             SELECT 
@@ -144,10 +145,11 @@ const deleteSegment = async (data) => {
             let updPosition = await dbMysql.query(` 
                 UPDATE sfl_segment SET position=${count} WHERE id=${item.id} 
             `)
-            console.log(`update id ${item.id} to position ${count} affectRows:${updPosition.affectedRows}`)
+            // console.log(`update id ${item.id} to position ${count} affectRows:${updPosition.affectedRows}`)
             await dbMysql.end()
             count++
         }
+        console.log(`\n Re-Update postion after delete `)
 
         result.id = id
         return result
