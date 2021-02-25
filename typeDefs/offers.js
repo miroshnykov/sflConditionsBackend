@@ -15,6 +15,7 @@ const offers = gql`
         status: String  
         payIn: Float
         advertiser: String
+        descriptions: String
         verticals: String
         geoRules: String
         defaultLp: Int
@@ -42,6 +43,7 @@ const offers = gql`
         payOut: Float 
         verticals: String
         advertiser: String
+        descriptions: String        
         dateAdded: Int 
         dateUpdated: String 
         defaultLandingPageId: Int 
