@@ -141,18 +141,18 @@ const update = async (data) => {
         let diff = []
         objKeys.forEach(key => {
             if (changesData[key] !== originData[key]) {
-                diff.push({field: key, newValue: changesData[key], oldValue:originData[key]})
+                diff.push({field: key, newValue: changesData[key], oldValue: originData[key]})
             }
         })
 
-        let checkActionName = diff.filter(item=>(item.oldValue === ''))
+        let checkActionName = diff.filter(item => (item.oldValue === '' && item.field !== 'descriptions'))
         let action = 'update'
         // console.log('checkActionName:',checkActionName)
-        if (checkActionName.length !== 0){
+        if (checkActionName.length !== 0) {
             action = 'create'
         }
         console.log('\n DIFF:', diff)
-        if (diff.length !==0){
+        if (diff.length !== 0) {
             const insertHistory = await db.query(`
                 INSERT INTO sfl_offers_history (sfl_offer_id, user, action,  date_added, logs) 
                 VALUES (?, ?, ?, ?, ?)`,
