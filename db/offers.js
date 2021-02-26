@@ -12,6 +12,7 @@ const getOffer = async (id) => {
                    o.conversion_type AS conversionType, 
                    o.advertiser      AS advertiser, 
                    o.verticals       AS verticals, 
+                   o.descriptions    AS descriptions, 
                    o.date_added      AS dateAdded,
                    o.is_cpm_option_enabled     AS isCpmOptionEnabled,
                    o.payout_percent            AS payoutPercent,                    

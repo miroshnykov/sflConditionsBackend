@@ -66,6 +66,7 @@ const update = async (data) => {
         status,
         advertiser,
         verticals,
+        descriptions,
         email,
         conversionType,
         payoutPercent,
@@ -93,6 +94,7 @@ const update = async (data) => {
             email: email,
             payoutPercent: payoutPercent,
             conversionType: conversionType,
+            descriptions: descriptions,
             payIn: payIn,
             payOut: payOut,
             offerIdRedirect: offerIdRedirect,
@@ -106,7 +108,8 @@ const update = async (data) => {
                    o.payout          AS payOut, 
                    o.conversion_type AS conversionType, 
                    o.advertiser      AS advertiser, 
-                    o.user      AS email,
+                   o.descriptions    AS descriptions, 
+                   o.user            AS email,
                    o.verticals       AS verticals, 
                    o.date_added      AS dateAdded,
                    o.is_cpm_option_enabled     AS isCpmOptionEnabled,
@@ -123,6 +126,7 @@ const update = async (data) => {
             status: originOffer[0].status,
             advertiser: originOffer[0].advertiser,
             verticals: originOffer[0].verticals,
+            descriptions: originOffer[0].descriptions,
             email: originOffer[0].email,
             payoutPercent: originOffer[0].payoutPercent,
             conversionType: originOffer[0].conversionType,
@@ -137,18 +141,18 @@ const update = async (data) => {
         let diff = []
         objKeys.forEach(key => {
             if (changesData[key] !== originData[key]) {
-                diff.push({field: key, newValue: changesData[key], oldValue:originData[key]})
+                diff.push({field: key, newValue: changesData[key], oldValue: originData[key]})
             }
         })
 
-        let checkActionName = diff.filter(item=>(item.oldValue === ''))
+        let checkActionName = diff.filter(item => (item.oldValue === '' && item.field !== 'descriptions'))
         let action = 'update'
         // console.log('checkActionName:',checkActionName)
-        if (checkActionName.length !== 0){
+        if (checkActionName.length !== 0) {
             action = 'create'
         }
         console.log('\n DIFF:', diff)
-        if (diff.length !==0){
+        if (diff.length !== 0) {
             const insertHistory = await db.query(`
                 INSERT INTO sfl_offers_history (sfl_offer_id, user, action,  date_added, logs) 
                 VALUES (?, ?, ?, ?, ?)`,
@@ -246,6 +250,7 @@ const update = async (data) => {
             SET name = ?, 
                 advertiser = ?, 
                 verticals = ?, 
+                descriptions = ?, 
                 status = ?, 
                 conversion_type = ?, 
                 payout_percent = ?, 
@@ -260,6 +265,7 @@ const update = async (data) => {
                 name,
                 advertiser,
                 verticals,
+                descriptions,
                 status,
                 conversionType,
                 payoutPercent,
@@ -443,6 +449,9 @@ const del = async (id) => {
 
         let capDel = await dbMysql.query(`DELETE FROM sfl_offers_cap WHERE sfl_offer_id = ?`, [id])
         console.log(`\ndelete capDel ID:${id}, result:${JSON.stringify(capDel)} `)
+
+        let offerhistoryDel = await dbMysql.query(`DELETE FROM sfl_offers_history WHERE sfl_offer_id = ?`, [id])
+        console.log(`\ndelete offer history  ID:${id}, result:${JSON.stringify(offerhistoryDel)} `)
 
         let offerDel = await dbMysql.query(`DELETE FROM sfl_offers WHERE id = ?`, [id])
         console.log(`\ndelete offer ID:${id}, result:${JSON.stringify(offerDel)} `)
