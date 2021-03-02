@@ -18,6 +18,7 @@ const { dimensions } = require('./dimensions')
 const { lp } = require('./lp')
 const { prod } = require('./prod')
 const { affiliateWebsites } = require('./affiliateWebsites')
+const { advertisers } = require('./advertisers')
 
 const typeDefs = [
     query,
@@ -38,7 +39,8 @@ const typeDefs = [
     affiliates,
     lp,
     prod,
-    affiliateWebsites
+    affiliateWebsites,
+    advertisers
 ]
 
 module.exports = {
