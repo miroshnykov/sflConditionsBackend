@@ -9,7 +9,7 @@ const getAffiliates = async () => {
                    CONCAT(first_name, ' ', last_name) AS name,
                    a.country_code AS countryCode
             FROM affiliates a
-            WHERE a.status = 'active'
+            WHERE a.status in ('active', 'suspended')
               AND a.salesforce_id <> 0
               AND country_code != ''
             UNION

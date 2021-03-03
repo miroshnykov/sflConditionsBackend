@@ -27,7 +27,7 @@ const getCampaigns = async () => {
                    affiliates a 
             WHERE  a.id = c.affiliate_id 
                    AND c.status = 'active' 
-                   AND a.status = 'active' 
+                   AND a.status in ('active','suspended')
                    AND a.salesforce_id <> 0         
         `)
         await dbMysql.end()
