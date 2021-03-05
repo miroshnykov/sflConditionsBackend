@@ -19,7 +19,6 @@ const getAffiliates = async () => {
             FROM affiliates a
             WHERE a.email LIKE ('%timothy%')
             ORDER BY ID ASC
-            LIMIT 8000
         `)
         await dbMysql.end()
 
