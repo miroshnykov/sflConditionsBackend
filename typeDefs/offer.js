@@ -13,11 +13,13 @@ const offer = gql`
         clickMonth: Int  
         clicksRedirectStatus: String  
         clicksRedirectOfferId: Int  
+        clicksRedirectOfferUseDefault: Int
         salesDay: Int  
         salesWeek: Int  
         salesMonth: Int  
         salesRedirectStatus: String  
         salesRedirectOfferId: Int 
+        salesRedirectOfferUseDefault:Int
   }
   
   extend type Mutation {

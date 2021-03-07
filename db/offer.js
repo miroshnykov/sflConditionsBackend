@@ -37,11 +37,13 @@ const cap = async (offerId) => {
                    c.clicks_month             AS clickMonth, 
                    c.clicks_redirect_status   AS clicksRedirectStatus, 
                    c.clicks_redirect_offer_id AS clicksRedirectOfferId, 
+                   c.clicks_redirect_offer_use_default AS clicksRedirectOfferUseDefault,
                    c.sales_day                AS salesDay, 
                    c.sales_week               AS salesWeek, 
                    c.sales_month              AS salesMonth, 
                    c.sales_redirect_status    AS salesRedirectStatus, 
-                   c.sales_redirect_offer_id  AS salesRedirectOfferId 
+                   c.sales_redirect_offer_id  AS salesRedirectOfferId,
+                   c.sales_redirect_offer_use_default AS salesRedirectOfferUseDefault 
             FROM   sfl_offers_cap c 
             WHERE  c.sfl_offer_id = ?
         `, [offerId])
@@ -323,11 +325,13 @@ const update = async (data) => {
                 clickMonth,
                 clicksRedirectStatus,
                 clicksRedirectOfferId,
+                clicksRedirectOfferUseDefault,
                 salesDay,
                 salesWeek,
                 salesMonth,
                 salesRedirectStatus,
-                salesRedirectOfferId
+                salesRedirectOfferId,
+                salesRedirectOfferUseDefault
             } = capsObj
 
 
@@ -340,13 +344,15 @@ const update = async (data) => {
                         clicks_month, 
                         clicks_redirect_status,
                         clicks_redirect_offer_id, 
+                        clicks_redirect_offer_use_default,
                         sales_day, 
                         sales_week, 
                         sales_month, 
                         sales_redirect_status, 
-                        sales_redirect_offer_id
+                        sales_redirect_offer_id,
+                        sales_redirect_offer_use_default
                         ) 
-                    VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?,?);`,
+                    VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
                     [
                         id,
                         clickDay || 0,
@@ -354,11 +360,13 @@ const update = async (data) => {
                         clickMonth || 0,
                         clicksRedirectStatus || 'default',
                         clicksRedirectOfferId,
+                        clicksRedirectOfferUseDefault || 0,
                         salesDay || 0,
                         salesWeek || 0,
                         salesMonth || 0,
                         salesRedirectStatus || 'default',
-                        salesRedirectOfferId
+                        salesRedirectOfferId,
+                        salesRedirectOfferUseDefault || 0
                     ]
                 )
                 console.log(`\n insertCaps:${JSON.stringify(insertCaps)}`)
@@ -371,11 +379,13 @@ const update = async (data) => {
                         clicks_month=?,
                         clicks_redirect_status=?,
                         clicks_redirect_offer_id=?,
+                        clicks_redirect_offer_use_default=?,
                         sales_day=?,                        
                         sales_week=?, 
                         sales_month=?, 
                         sales_redirect_status=?, 
-                        sales_redirect_offer_id=? 
+                        sales_redirect_offer_id=?,
+                        sales_redirect_offer_use_default=? 
                     WHERE sfl_offer_id=?`,
                     [
                         clickDay || 0,
@@ -383,11 +393,13 @@ const update = async (data) => {
                         clickMonth || 0,
                         clicksRedirectStatus || 'default',
                         clicksRedirectOfferId,
+                        clicksRedirectOfferUseDefault || 0,
                         salesDay || 0,
                         salesWeek || 0,
                         salesMonth || 0,
                         salesRedirectStatus || 'default',
                         salesRedirectOfferId,
+                        salesRedirectOfferUseDefault || 0,
                         id
                     ]
                 )
