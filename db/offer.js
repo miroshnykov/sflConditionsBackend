@@ -328,7 +328,8 @@ const update = async (data) => {
             )
 
             let capsObj = JSON.parse(caps)
-            const {
+            // console.log(`\n caps obj:${JSON.stringify(capsObj)}`)
+            let {
                 clickDay,
                 clickWeek,
                 clickMonth,
@@ -343,6 +344,10 @@ const update = async (data) => {
                 salesRedirectOfferUseDefault
             } = capsObj
 
+            clicksRedirectOfferUseDefault = clicksRedirectOfferUseDefault === null ? 1 : clicksRedirectOfferUseDefault
+            salesRedirectOfferUseDefault = salesRedirectOfferUseDefault === null ? 1 : salesRedirectOfferUseDefault
+            // console.log('\nclicksRedirectOfferUseDefault:', clicksRedirectOfferUseDefault)
+            // console.log('\nsalesRedirectOfferUseDefault:', salesRedirectOfferUseDefault)
 
             if (checkCaps[0].countCap === 0) {
                 const insertCaps = await db.query(`
@@ -369,13 +374,13 @@ const update = async (data) => {
                         clickMonth || 0,
                         clicksRedirectStatus || 'default',
                         clicksRedirectOfferId || 0,
-                        clicksRedirectOfferUseDefault || 0,
+                        clicksRedirectOfferUseDefault,
                         salesDay || 0,
                         salesWeek || 0,
                         salesMonth || 0,
                         salesRedirectStatus || 'default',
                         salesRedirectOfferId || 0,
-                        salesRedirectOfferUseDefault || 0
+                        salesRedirectOfferUseDefault
                     ]
                 )
                 console.log(`\n insertCaps:${JSON.stringify(insertCaps)}`)
@@ -402,17 +407,17 @@ const update = async (data) => {
                         clickMonth || 0,
                         clicksRedirectStatus || 'default',
                         clicksRedirectOfferId || 0,
-                        clicksRedirectOfferUseDefault || 0,
+                        clicksRedirectOfferUseDefault,
                         salesDay || 0,
                         salesWeek || 0,
                         salesMonth || 0,
                         salesRedirectStatus || 'default',
                         salesRedirectOfferId || 0,
-                        salesRedirectOfferUseDefault || 0,
+                        salesRedirectOfferUseDefault,
                         id
                     ]
                 )
-                console.log(`\nupdateCaps:${JSON.stringify(updateCaps)}`)
+                console.log(`\nupdateCaps:${JSON.stringify(updateCaps)}\n`)
             }
 
         }
