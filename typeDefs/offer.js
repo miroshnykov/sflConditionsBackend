@@ -3,7 +3,7 @@ const {gql} = require('apollo-server')
 const offer = gql`
   
   extend type Query{
-    getOfferCap(offerId:Int!): [CapOffer]
+    getOfferCap(offerId:Int!): CapOffer
   }     
   
     type CapOffer {

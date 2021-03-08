@@ -50,7 +50,8 @@ const cap = async (offerId) => {
         await dbMysql.end()
 
         console.log(`\n get Cap per offer:${offerId}, result:${JSON.stringify(result)}`)
-        return result
+
+        return result.length !== 0 && result[0] || {}
     } catch (e) {
         console.log(e)
     }
@@ -359,13 +360,13 @@ const update = async (data) => {
                         clickWeek || 0,
                         clickMonth || 0,
                         clicksRedirectStatus || 'default',
-                        clicksRedirectOfferId,
+                        clicksRedirectOfferId || 0,
                         clicksRedirectOfferUseDefault || 0,
                         salesDay || 0,
                         salesWeek || 0,
                         salesMonth || 0,
                         salesRedirectStatus || 'default',
-                        salesRedirectOfferId,
+                        salesRedirectOfferId || 0,
                         salesRedirectOfferUseDefault || 0
                     ]
                 )
@@ -392,13 +393,13 @@ const update = async (data) => {
                         clickWeek || 0,
                         clickMonth || 0,
                         clicksRedirectStatus || 'default',
-                        clicksRedirectOfferId,
+                        clicksRedirectOfferId || 0,
                         clicksRedirectOfferUseDefault || 0,
                         salesDay || 0,
                         salesWeek || 0,
                         salesMonth || 0,
                         salesRedirectStatus || 'default',
-                        salesRedirectOfferId,
+                        salesRedirectOfferId || 0,
                         salesRedirectOfferUseDefault || 0,
                         id
                     ]
