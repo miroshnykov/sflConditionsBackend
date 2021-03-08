@@ -34,7 +34,7 @@ const getOffer = async (id) => {
         await dbMysql.end()
 
         console.log('getOffer count :', result.length, ' by id:', id)
-        return result
+        return result.length !==0 && result[0] || {}
     } catch (e) {
         console.log(e)
     }

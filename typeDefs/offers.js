@@ -3,7 +3,7 @@ const {gql} = require('apollo-server')
 const offers = gql`
   
   extend type Query{
-        getOffer(id:Int!): [Offer]    
+        getOffer(id:Int!): Offer    
         getOffers: [Offers]  
         getOfferHistory(id:Int!): [OfferHistory]  
   } 

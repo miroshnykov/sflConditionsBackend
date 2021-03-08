@@ -82,12 +82,13 @@ const update = async (data) => {
         offerIdRedirect
     } = data
 
-    let {defaultLp, customLPRules} = data
+    let {defaultLp, defaultSiteName, customLPRules} = data
+
+    let oldDefaultLp = defaultLp
     let result = []
     const db = dbTransaction()
     try {
         await db.beginTransaction()
-
 
         let changesData = {
             name: name,
@@ -100,6 +101,7 @@ const update = async (data) => {
             descriptions: descriptions,
             payIn: payIn,
             payOut: payOut,
+            defaultSiteName: defaultSiteName,
             offerIdRedirect: offerIdRedirect,
         }
 
@@ -117,7 +119,8 @@ const update = async (data) => {
                    o.date_added      AS dateAdded,
                    o.is_cpm_option_enabled     AS isCpmOptionEnabled,
                    o.payout_percent            AS payoutPercent,                    
-                   o.sfl_offer_landing_page_id AS defaultLp,
+                   --o.sfl_offer_landing_page_id AS defaultLp,
+                   (SELECT  name FROM sfl_offer_landing_pages WHERE id = o.sfl_offer_landing_page_id) AS defaultSiteName,
                    o.offer_id_redirect AS offerIdRedirect
             FROM   sfl_offers o 
             WHERE  o.id = ?`, [id])
@@ -135,6 +138,7 @@ const update = async (data) => {
             conversionType: originOffer[0].conversionType,
             payIn: originOffer[0].payIn,
             payOut: originOffer[0].payOut,
+            defaultSiteName: originOffer[0].defaultSiteName,
             offerIdRedirect: originOffer[0].offerIdRedirect,
         }
         console.log('\n changesData:', changesData)
@@ -171,6 +175,7 @@ const update = async (data) => {
 
         }
 
+
         // landing pages
         let lpData = JSON.parse(lp)
 
@@ -178,14 +183,15 @@ const update = async (data) => {
         if (lpData.length !== 0) {
 
             const defaultLpInfo = lpData.filter(item => (item.id === defaultLp))
-            console.log('defaultLpInfo:', JSON.stringify(defaultLpInfo))
+            // console.log('defaultLpInfo:', JSON.stringify(defaultLpInfo))
+
 
             const deleteLP = await db.query(`DELETE FROM sfl_offer_landing_pages WHERE sfl_offer_id = ?`, [id])
-            console.log(`\ndeleteLp:${JSON.stringify(deleteLP)}`)
+            // console.log(`\ndeleteLp:${JSON.stringify(deleteLP)}`)
 
             let newLpId = []
             for (const item of lpData) {
-                console.log(`Item LP:${JSON.stringify(item)}`)
+                console.log(`\nItem LP:${JSON.stringify(item)}`)
 
                 const {name, url} = item
                 let date = new Date()
@@ -202,13 +208,13 @@ const update = async (data) => {
                         dateAdded
                     ])
 
-                console.log(`\ninsertLP:${JSON.stringify(insertLP)}`)
+                // console.log(`\ninsertLP:${JSON.stringify(insertLP)}`)
                 let newId = insertLP.insertId
                 newLpId.push({id: newId, name: name, url: url})
             }
 
             let customLPRules_ = JSON.parse(customLPRules)
-            console.log('\n customLPRules:', customLPRules_.customLPRules)
+            // console.log('\n customLPRules:', customLPRules_.customLPRules)
             let newCustomLPRules = []
             customLPRules_.customLPRules.forEach(item => {
                 let found = newLpId.filter(i => (i.name === item.lpName && i.url === item.lpUrl))
@@ -231,7 +237,7 @@ const update = async (data) => {
             const newDefaultLpInfo = await db.query(`
                 select id 
                 FROM sfl_offer_landing_pages 
-                WHERE url = '${defaultLpInfo[0].url}'  AND name ='${defaultLpInfo[0].name}'`)
+                WHERE url = '${defaultLpInfo[0].url}'  AND name ='${defaultLpInfo[0].name}' AND sfl_offer_id =${id} `)
 
 
             const customLPRulesFormat = (customLPRules) => {
@@ -244,8 +250,10 @@ const update = async (data) => {
 
             if (newDefaultLpInfo) {
                 defaultLp = newDefaultLpInfo[0].id
+                console.log(`\ndefaultLp UPDATE to ${defaultLpInfo[0].url} ID ${defaultLp} was ID:${oldDefaultLp}`)
             }
         }
+
 
         // console.log(' \n\n DIMON is_cpm_option_enabled: ', isCpmOptionEnabled)
         const updateOffer = await db.query(`

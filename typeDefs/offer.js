@@ -42,6 +42,7 @@ const offer = gql`
         payOut: Float!
         status: String!
         defaultLp: Int!
+        defaultSiteName: String!
         offerIdRedirect: Int!
         payoutPercent: Int!
         isCpmOptionEnabled: Int!
