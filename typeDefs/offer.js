@@ -3,7 +3,7 @@ const {gql} = require('apollo-server')
 const offer = gql`
   
   extend type Query{
-    getOfferCap(offerId:Int!): [CapOffer]
+    getOfferCap(offerId:Int!): CapOffer
   }     
   
     type CapOffer {
@@ -13,11 +13,13 @@ const offer = gql`
         clickMonth: Int  
         clicksRedirectStatus: String  
         clicksRedirectOfferId: Int  
+        clicksRedirectOfferUseDefault: Int
         salesDay: Int  
         salesWeek: Int  
         salesMonth: Int  
         salesRedirectStatus: String  
         salesRedirectOfferId: Int 
+        salesRedirectOfferUseDefault:Int
   }
   
   extend type Mutation {
@@ -40,6 +42,7 @@ const offer = gql`
         payOut: Float!
         status: String!
         defaultLp: Int!
+        defaultSiteName: String!
         offerIdRedirect: Int!
         payoutPercent: Int!
         isCpmOptionEnabled: Int!
