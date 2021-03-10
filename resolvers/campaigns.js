@@ -8,16 +8,17 @@ module.exports = {
             checkUser(ctx.user)
             return Campaigns.getCampaign(affiliateId)
         },
-        getCampaigns: async (_, {}, ctx) => {
+        getCampaigns: async (_, {segmentId}, ctx) => {
             checkUser(ctx.user)
-            let campaignsCache = await getDataCache(`campaigns`)
-            if (campaignsCache) {
-                return campaignsCache
-            } else {
-                let campaigns = await Campaigns.getCampaigns()
-                await setDataCache(`campaigns`, campaigns)
-                return campaigns
-            }
+            return await Campaigns.getCampaigns(segmentId)
+            // let campaignsCache = await getDataCache(`campaigns`)
+            // if (campaignsCache) {
+            //     return campaignsCache
+            // } else {
+            //     let campaigns = await Campaigns.getCampaigns()
+            //     await setDataCache(`campaigns`, campaigns)
+            //     return campaigns
+            // }
         },
     },
 }

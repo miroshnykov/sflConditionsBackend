@@ -4,12 +4,13 @@ const campaigns = gql`
   
   extend type Query{
         getCampaign(affiliateId:Int!): [Campaign]    
-        getCampaigns: [Campaigns]  
+        getCampaigns(segmentId:Int!): [Campaigns]  
   } 
   
   type Campaign {
         id: Int
-        name: String    
+        name: String 
+        affiliateId: Int   
   }
   type Campaigns {
         id: Int
