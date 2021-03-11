@@ -4,6 +4,8 @@ const affiliates = gql`
   
   extend type Query{
     affiliates: [Affiliates]    
+    getAffiliatesByFilter(filter:String!): [AffiliatesFilter]    
+    getAffiliatesBySegmentId(segmentId:Int!): [AffiliatesFilter]    
   } 
   
   type Affiliates {
@@ -11,6 +13,12 @@ const affiliates = gql`
     name: String    
     countryCode: String
   }
+  
+  type AffiliatesFilter {
+    id: Int
+    name: String    
+    countryCode: String
+  }  
 `;
 
 module.exports = {
