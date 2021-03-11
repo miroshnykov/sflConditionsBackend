@@ -67,9 +67,6 @@ const getCampaigns = async (segmentId) => {
     }
 }
 
-
-
-
 module.exports = {
     getCampaign,
     getCampaigns
