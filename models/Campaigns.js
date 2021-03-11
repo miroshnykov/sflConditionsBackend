@@ -5,8 +5,8 @@ class Campaigns {
         return await getCampaign(affiliateId)
     }
 
-    static async getCampaigns() {
-        return await getCampaigns()
+    static async getCampaigns(segmentId) {
+        return await getCampaigns(segmentId)
     }
 
 }

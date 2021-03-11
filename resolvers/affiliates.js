@@ -16,5 +16,13 @@ module.exports = {
             }
 
         },
+        getAffiliatesByFilter: async (_, {filter}, ctx) => {
+            checkUser(ctx.user)
+            return await Affiliates.getAffiliatesByFilter(filter)
+        },
+        getAffiliatesBySegmentId: async (_, {segmentId}, ctx) => {
+            checkUser(ctx.user)
+            return await Affiliates.getAffiliatesBySegmentId(segmentId)
+        },
     },
 }
