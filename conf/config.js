@@ -35,7 +35,8 @@ config = {
         redirectToOptiPlatformsuccess: '',
         clientId: '',
         clientSecret: ''
-    }
+    },
+    hyunaRandomSites: 'http://admin-wt.jomediainc.com/api/getRandomSites.php'
 }
 
 module.exports = config

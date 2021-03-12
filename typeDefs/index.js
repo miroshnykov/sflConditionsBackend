@@ -19,6 +19,7 @@ const { lp } = require('./lp')
 const { prod } = require('./prod')
 const { affiliateWebsites } = require('./affiliateWebsites')
 const { advertisers } = require('./advertisers')
+const { getMediaSites } = require('./mediaSites')
 
 const typeDefs = [
     query,
@@ -40,7 +41,8 @@ const typeDefs = [
     lp,
     prod,
     affiliateWebsites,
-    advertisers
+    advertisers,
+    getMediaSites
 ]
 
 module.exports = {
