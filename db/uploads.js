@@ -54,7 +54,7 @@ const uploadAdvertisers = async (data) => {
         let date = new Date()
         let dateAdd = ~~(date.getTime() / 1000)
         let result = await dbMysql.query(`
-            INSERT INTO sfl_advertiser (name, status, advertiser_manager_id, origin_id, website, tags,descriptions,date_added) 
+            INSERT INTO sfl_advertisers (name, status, advertiser_manager_id, origin_id, website, tags,descriptions,date_added) 
             VALUES (?,?,?,?,?,?,?,?) 
 
         `, [advertiserName, status, advManagerId, advertiserId, website, tags, descriptions, dateAdd])
