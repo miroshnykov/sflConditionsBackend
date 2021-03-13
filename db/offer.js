@@ -9,13 +9,13 @@ const create = async (data) => {
 
     let date = new Date()
     let dateAdd = ~~(date.getTime() / 1000)
-
+    let sflAdvertiserId = 1 // default
     try {
 
         let result = await dbMysql.query(` 
-            INSERT INTO sfl_offers (name, user,date_added) VALUES (?,?,?);
+            INSERT INTO sfl_offers (name, user,sfl_advertiser_id,date_added) VALUES (?,?,?,?);
 
-        `, [name, email, dateAdd])
+        `, [name, email, sflAdvertiserId, dateAdd])
         await dbMysql.end()
         result.id = result.insertId || 0
 
@@ -67,7 +67,8 @@ const update = async (data) => {
         id,
         name,
         status,
-        advertiser,
+        advertiserId,
+        advertiserName,
         verticals,
         descriptions,
         email,
@@ -93,7 +94,7 @@ const update = async (data) => {
         let changesData = {
             name: name,
             status: status,
-            advertiser: advertiser,
+            advertiserName: advertiserName,
             verticals: verticals,
             email: email,
             payoutPercent: payoutPercent,
@@ -112,7 +113,8 @@ const update = async (data) => {
                    o.payin           AS payIn, 
                    o.payout          AS payOut, 
                    o.conversion_type AS conversionType, 
-                   o.advertiser      AS advertiser, 
+                   a.id              AS advertiserId,
+                   a.name            AS advertiserName,
                    o.descriptions    AS descriptions, 
                    o.user            AS email,
                    o.verticals       AS verticals, 
@@ -123,14 +125,16 @@ const update = async (data) => {
                    (SELECT  name FROM sfl_offer_landing_pages WHERE id = o.sfl_offer_landing_page_id) AS defaultSiteName,
                    o.offer_id_redirect AS offerIdRedirect
             FROM   sfl_offers o 
+                   left join sfl_advertisers a 
+                          ON a.id = o.sfl_advertiser_id               
             WHERE  o.id = ?`, [id])
 
-        console.log('originOffer:', originOffer)
+        // console.log('originOffer:', originOffer)
 
         let originData = {
             name: originOffer[0].name,
             status: originOffer[0].status,
-            advertiser: originOffer[0].advertiser,
+            advertiserName: originOffer[0].advertiserName,
             verticals: originOffer[0].verticals,
             descriptions: originOffer[0].descriptions,
             email: originOffer[0].email,
@@ -259,7 +263,7 @@ const update = async (data) => {
         const updateOffer = await db.query(`
             UPDATE sfl_offers 
             SET name = ?, 
-                advertiser = ?, 
+                sfl_advertiser_id = ?, 
                 verticals = ?, 
                 descriptions = ?, 
                 status = ?, 
@@ -274,7 +278,7 @@ const update = async (data) => {
             WHERE  id = ?`,
             [
                 name,
-                advertiser,
+                advertiserId,
                 verticals,
                 descriptions,
                 status,
@@ -511,7 +515,7 @@ const offerForSqs = async (offerId) => {
         let offerResult = await dbMysql.query(` 
             SELECT o.id                            AS offerId, 
                    o.name                          AS name, 
-                   o.advertiser                    AS advertiser, 
+                   a.name                          AS advertiserName,
                    o.verticals                     AS verticals,                   
                    o.conversion_type               AS conversionType,                     
                    o.status                        AS status, 
@@ -532,13 +536,13 @@ const offerForSqs = async (offerId) => {
                         AS capDayCalculate,
 
 --                   (SELECT c.clicks_week FROM   sfl_offers_cap_current_data c WHERE  c.sfl_offer_id = o.id) AS capWeekCurrentData,
-                   (SELECT c1.clicks_week FROM   sfl_offers_cap c1 WHERE  c1.sfl_offer_id = o.id AND c1.clicks_day !=0) AS capWeekSetup, 
+                   (SELECT c1.clicks_week FROM   sfl_offers_cap c1 WHERE  c1.sfl_offer_id = o.id AND c1.clicks_week !=0) AS capWeekSetup, 
                                       (SELECT c.clicks_week FROM   sfl_offers_cap_current_data c WHERE  c.sfl_offer_id = o.id) -
                    (SELECT c1.clicks_week FROM   sfl_offers_cap c1 WHERE  c1.sfl_offer_id = o.id) 
                         AS capWeekCalculate,                    
                    
 --                   (SELECT c.clicks_month FROM   sfl_offers_cap_current_data c WHERE  c.sfl_offer_id = o.id) AS capMonthCurrentData,
-                   (SELECT c1.clicks_month FROM   sfl_offers_cap c1 WHERE  c1.sfl_offer_id = o.id AND c1.clicks_day !=0) AS capMonthSetup, 
+                   (SELECT c1.clicks_month FROM   sfl_offers_cap c1 WHERE  c1.sfl_offer_id = o.id AND c1.clicks_month !=0) AS capMonthSetup, 
                    (SELECT c.clicks_month FROM   sfl_offers_cap_current_data c WHERE  c.sfl_offer_id = o.id) -                   
                    (SELECT c1.clicks_month FROM   sfl_offers_cap c1 WHERE  c1.sfl_offer_id = o.id) 
 
@@ -552,6 +556,8 @@ const offerForSqs = async (offerId) => {
                           ON g.sfl_offer_id = o.id  
                    left join sfl_offer_custom_landing_pages lps
                           ON o.id = lps.sfl_offer_id
+                   left join sfl_advertisers a 
+                          ON a.id = o.sfl_advertiser_id                              
             WHERE o.id = ${offerId}                                         
         `)
         await dbMysql.end()

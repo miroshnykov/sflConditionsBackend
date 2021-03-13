@@ -21,6 +21,27 @@ const getAdvertisers = async () => {
     }
 }
 
+const getSflAdvertisers = async () => {
+
+    try {
+        console.time('getSflAdvertisers')
+        let result = await dbMysql.query(` 
+            SELECT a.id,
+                   a.name,
+                   a.descriptions,
+                   a.website
+            FROM sfl_advertisers a
+        `)
+        await dbMysql.end()
+
+        console.timeEnd('getSflAdvertisers')
+        console.log(`getSflAdvertisers count:${result.length}\n`)
+        return result
+    } catch (e) {
+        console.log(e)
+    }
+}
+
 const getAdvertisersProducts = async () => {
 
     try {
@@ -51,5 +72,6 @@ const getAdvertisersProducts = async () => {
 
 module.exports = {
     getAdvertisers,
-    getAdvertisersProducts
+    getAdvertisersProducts,
+    getSflAdvertisers
 }

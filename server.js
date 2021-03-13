@@ -17,7 +17,9 @@ const {v4} = require('uuid')
 const base64 = require('base-64')
 const utf8 = require('utf8')
 const {setUser} = require('./db/user')
+const {uploadManagers, uploadAdvertisers, uploadOffers} = require('./db/uploads')
 const axios = require('axios')
+const parserCsv = require('csv-parse')
 
 const cors = require('cors')
 const server = new ApolloServer({
@@ -152,7 +154,7 @@ app.get('/verifyLP', async (req, res) => {
 
         let prefix = 'http'
         if (domain.substr(0, prefix.length) !== prefix) {
-            domain = prefix + '://'+ domain
+            domain = prefix + '://' + domain
         }
 
         let requestValidate = axios.create({
@@ -224,6 +226,243 @@ app.get('/salesProcessing', async (req, res) => {
     res.send(archiveRecords);
 
 })
+
+const checkToken = async (req, res, next) => {
+    try {
+
+        let tokenInfo = jwt.verify(req.headers.authorization, config.jwt_secret)
+        if (tokenInfo && tokenInfo.email) {
+            req.email = tokenInfo.email
+            next()
+        }
+
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+app.post('/upload', checkToken, async (req, res, next) => {
+
+    let result = {}
+    try {
+        let typeFile = [
+            'First Name',
+            'Advertiser ID',
+            'Offer ID'
+        ]
+        let typeFile_ = [
+            'managers',
+            'advertisers',
+            'offers'
+        ]
+
+        // console.log('req.body.dataFile:', req.body.dataFile.substr(0, 15))
+        let fileDataStr = req.body.dataFile.substr(0, 15)
+        let findType = []
+        typeFile.forEach((item, index) => {
+            if (fileDataStr.includes(item)) {
+                findType.push(typeFile_[index])
+            }
+        })
+
+        if (findType.length !== 0) {
+            console.log('findType:', findType[0])
+            switch (findType[0]) {
+                case `managers`:
+                    // console.log('managers')
+                    let managers_ = await parserDataAM(req.body.dataFile)
+                    // managers_ = managers_.shift()
+                    // console.log('managers:', managers_)
+                    let inserted = []
+                    let managerOrigin = []
+                    if (managers_.length !== 0) {
+                        let count = 0
+
+                        for (const i of managers_) {
+                            if (count !== 0) {
+                                managerOrigin.push(i)
+                                let res = await uploadManagers(i)
+                                if (res && res.id) {
+                                    inserted.push(i)
+                                }
+                            }
+                            count++
+                        }
+
+                    }
+                    result.type = 'managers'
+                    result.insertRecords = JSON.stringify(inserted)
+                    result.insertRecordsCount = inserted.length
+                    result.totalRecords = managerOrigin.length
+                    result.success = true
+                    break
+
+                case `advertisers`:
+                    // console.log(' advertisers')
+                    let advertisers_ = await parserDataAdvertisers(req.body.dataFile)
+                    // console.log(advertisers_.length)
+                    let insertedAdv = []
+                    let advOrigin = []
+                    let errors = []
+                    if (advertisers_.length !== 0) {
+                        let count = 0
+                        for (const i of advertisers_) {
+                            if (count !== 0) {
+                                advOrigin.push(i)
+                                let res = await uploadAdvertisers(i)
+                                if (res && res.id) {
+                                    insertedAdv.push(i)
+                                } else if (res && res.error) {
+                                    errors.push(res.error)
+                                }
+                                // console.log('advertisers_:', i)
+                            }
+                            count++
+                        }
+
+                    }
+                    result.type = 'advertisers'
+                    result.insertRecords = JSON.stringify(insertedAdv)
+                    result.insertRecordsCount = insertedAdv.length
+                    result.errors = JSON.stringify(errors)
+                    result.totalRecords = advOrigin.length
+                    result.success = true
+                    break
+                case `offers`:
+                    console.log('offers')
+                    let offers = await parserDataOffers(req.body.dataFile)
+                    // console.log(offers)
+                    let insertedOffers = []
+                    let originOffers = []
+                    let errorsOffers = []
+                    if (offers.length !== 0) {
+                        let count = 0
+                        for (const i of offers) {
+                            if (count !== 0) {
+                                originOffers.push(i)
+                                i.email = req.email
+                                let res = await uploadOffers(i)
+                                if (res && res.id) {
+                                    insertedOffers.push(i)
+                                } else if (res && res.error) {
+                                    errorsOffers.push(res.error)
+                                }
+                                // console.log('advertisers_:', i)
+                            }
+                            count++
+                        }
+
+                    }
+                    result.type = 'offers'
+                    result.insertRecords = JSON.stringify(insertedOffers)
+                    result.insertRecordsCount = insertedOffers.length
+                    result.errors = JSON.stringify(errorsOffers)
+                    result.totalRecords = originOffers.length
+                    result.success = true
+
+                    break
+                default:
+            }
+        }
+
+        console.log(`Result:`, result)
+        res.send(result)
+
+    } catch (e) {
+        result.success = false
+        result.error = JSON.stringify(e)
+        res.send(result)
+    }
+})
+
+const parserData = (data) => {
+    return new Promise(async (resolve, reject) =>
+        parserCsv(
+            data,
+            {},
+            (err, output) => err ? reject(err) : resolve(output.map(record => ({
+                firstName: record[0].trim(),
+                lastName: record[1].trim(),
+                email: record[2].trim(),
+                role: record[3].trim(),
+            })))
+        )
+    )
+};
+
+const parserDataAM = (data) => {
+    return new Promise(async (resolve, reject) =>
+        parserCsv(
+            data,
+            {},
+            (err, output) => err ? reject(err) : resolve(output.map(record => ({
+                firstName: record[0].trim(),
+                lastName: record[1].trim(),
+                email: record[2].trim(),
+                role: record[3].trim(),
+            })))
+        )
+    )
+}
+
+const parserDataAdvertisers = (data) => {
+    return new Promise(async (resolve, reject) =>
+        parserCsv(
+            data,
+            {},
+            (err, output) => err ? reject(err) : resolve(output.map(record => ({
+                advertiserId: record[0].trim(),
+                advertiserName: record[1].trim(),
+                status: record[2].trim(),
+                accountManagerId: record[3].trim(),
+                advertiserManager: record[4].trim(),
+                website: record[5].trim(),
+                tags: record[6].trim(),
+                dateAdded: record[7].trim(),
+                descriptions: record[8].trim(),
+            })))
+        )
+    )
+}
+
+const parserDataOffers = (data) => {
+    return new Promise(async (resolve, reject) =>
+        parserCsv(
+            data,
+            {},
+            (err, output) => err ? reject(err) : resolve(output.map(record => ({
+                offerIdOrigin: record[0].trim(),
+                offerName: record[1].trim(),
+                verticals: record[2].trim(),
+                advertiserId: record[3].trim(),
+                advertiserName: record[4].trim(),
+                conversionType: record[5].trim(),
+                offerType: record[6].trim(),
+                payOut: record[7].trim(),
+                payIn: record[8].trim(),
+                contracts: record[9].trim(),
+                lpUrl: record[10].trim(),
+                tags: record[11].trim(),
+                expirationDate: record[12].trim(),
+                hidden: record[13].trim(),
+                offerStatus: record[14].trim(),
+                clickCap: record[15].trim(),
+                clickCapInterval: record[16].trim(),
+                clickCapCustomStartDate: record[17].trim(),
+                conversionCap: record[18].trim(),
+                conversionCapInterval: record[19].trim(),
+                conversionCapCustomStartDate: record[20].trim(),
+                redirectOffer: record[21].trim(),
+                redirect404: record[22].trim(),
+                created: record[23].trim(),
+                notes: record[24].trim(),
+                description: record[25].trim(),
+                currency: record[26].trim(),
+            })))
+        )
+    )
+}
+
 
 server.applyMiddleware({app})
 

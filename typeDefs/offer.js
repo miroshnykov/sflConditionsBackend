@@ -30,7 +30,8 @@ const offer = gql`
     saveOffer(
         id: Int!
         name: String!
-        advertiser: String!
+        advertiserId: Int!
+        advertiserName: String!
         verticals: String!
         conversionType: String!
         geoRules: String!
