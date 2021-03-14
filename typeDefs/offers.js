@@ -15,6 +15,7 @@ const offers = gql`
         status: String  
         payIn: Float
         advertiserName: String
+        advertiserManagerId: Int
         advertiserId: Int
         descriptions: String
         verticals: String
@@ -44,6 +45,7 @@ const offers = gql`
         payOut: Float 
         verticals: String
         advertiserId: Int
+        advertiserManagerId: Int
         advertiserName: String
         descriptions: String        
         dateAdded: Int 

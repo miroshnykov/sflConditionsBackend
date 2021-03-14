@@ -103,19 +103,34 @@ const uploadOffers = async (data) => {
         // let advName = advertiserManager.split(' ')
         // let firstName = advName[0]
         // let lastName = advName[1]
-        let findAdvMenager = await dbMysql.query(`
+        let findAdvId = await dbMysql.query(`
            SELECT * FROM sfl_advertisers WHERE name LIKE '%${advertiserName}%'
 
         `)
         await dbMysql.end()
         //
-        let advManagerId = findAdvMenager.length !== 0 && findAdvMenager[0].id || 0
+        let findAdvId_ = findAdvId.length !== 0 && findAdvId[0].id || 0
+        let findAdvManagerId_ = findAdvId.length !== 0 && findAdvId[0].advertiser_manager_id || 0
         let res = {}
-        if (!advManagerId) {
+        if (!findAdvId_) {
             // console.log(`advertiser manager ${advertiserManager} doesnot exists in DB `)
-            res.error = `advertiser manager ${advertiserName} doesnot exists in DB `
+            res.error = `advertiser  ${advertiserName} doesnot exists in DB `
             return res
         }
+
+        // let findAdvMenager = await dbMysql.query(`
+        //    SELECT * FROM sfl_advertisers WHERE name LIKE '%${advertiserName}%'
+        //
+        // `)
+        // await dbMysql.end()
+        // //
+        // let advManagerId = findAdvMenager.length !== 0 && findAdvMenager[0].id || 0
+        // if (!advManagerId) {
+        //     // console.log(`advertiser manager ${advertiserManager} doesnot exists in DB `)
+        //     res.error = `advertiser manager ${advertiserName} doesnot exists in DB `
+        //     return res
+        // }
+        // advertiserManager
 
         console.log(data)
 
@@ -128,10 +143,10 @@ const uploadOffers = async (data) => {
         let dateAdd = ~~(date.getTime() / 1000)
         let result = await dbMysql.query(`
             INSERT INTO sfl_offers (
-                id, name, sfl_advertiser_id, verticals, descriptions, status, conversion_type, sfl_offer_landing_page_id, 
+                id, name, sfl_advertiser_id, advertiser_manager_id,verticals, descriptions, status, conversion_type, sfl_offer_landing_page_id, 
                 offer_id_redirect,  payin, payout, user, date_added)
-            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);
-        `, [offerIdOrigin, offerName, advManagerId, verticals, descriptions || '', statusFormat, conversionType, 0,
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);
+        `, [offerIdOrigin, offerName, findAdvId_,findAdvManagerId_, verticals, descriptions || '', statusFormat, conversionType, 0,
             '777', payInFormat, payOutFormat, email, dateAdd])
         await dbMysql.end()
 

@@ -1,4 +1,4 @@
-const {getAdvertisers,getSflAdvertisers} = require('../db/advertisers')
+const {getAdvertisers,getSflAdvertisers, getSflAdvertisersManagers} = require('../db/advertisers')
 
 class Advertisers {
     static async getAdvertisers() {
@@ -7,7 +7,9 @@ class Advertisers {
     static async getSflAdvertisers() {
         return await getSflAdvertisers()
     }
-
+    static async getSflAdvertisersManagers() {
+        return await getSflAdvertisersManagers()
+    }
 }
 
 module.exports = {

@@ -4,9 +4,18 @@ const advertisers = gql`
   
   extend type Query{
         getAdvertisers: [Advertisers],  
-        getSflAdvertisers: [Advertisers]
+        getSflAdvertisers: [Advertisers],
+        getSflAdvertisersManagers: [AdvManager]
   } 
                   
+                  
+  type AdvManager {
+        id: Int
+        firstName: String    
+        lastName: String    
+        email: String    
+        role: String    
+  }                
   type Advertisers {
         id: Int
         name: String    

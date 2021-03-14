@@ -31,6 +31,7 @@ const offer = gql`
         id: Int!
         name: String!
         advertiserId: Int!
+        advertiserManagerId: Int!,
         advertiserName: String!
         verticals: String!
         conversionType: String!
