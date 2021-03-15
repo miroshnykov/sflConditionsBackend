@@ -103,11 +103,10 @@ const uploadOffers = async (data) => {
         // let advName = advertiserManager.split(' ')
         // let firstName = advName[0]
         // let lastName = advName[1]
-        let findAdvId = await dbMysql.query(`
+        let findAdvId = await db.query(`
            SELECT * FROM sfl_advertisers WHERE name LIKE '%${advertiserName}%'
 
         `)
-        await dbMysql.end()
         //
         let findAdvId_ = findAdvId.length !== 0 && findAdvId[0].id || 0
         let findAdvManagerId_ = findAdvId.length !== 0 && findAdvId[0].advertiser_manager_id || 0
@@ -141,26 +140,23 @@ const uploadOffers = async (data) => {
         let payOutFormat = Number(payOut.replace(/^\D+/g, ''))
         let date = new Date()
         let dateAdd = ~~(date.getTime() / 1000)
-        let result = await dbMysql.query(`
+        let result = await db.query(`
             INSERT INTO sfl_offers (
                 id, name, sfl_advertiser_id, advertiser_manager_id,verticals, descriptions, status, conversion_type, sfl_offer_landing_page_id, 
                 offer_id_redirect,  payin, payout, user, date_added)
             VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);
-        `, [offerIdOrigin, offerName, findAdvId_,findAdvManagerId_, verticals, descriptions || '', statusFormat, conversionType, 0,
+        `, [offerIdOrigin, offerName, findAdvId_, findAdvManagerId_, verticals, descriptions || '', statusFormat, conversionType, 0,
             '777', payInFormat, payOutFormat, email, dateAdd])
-        await dbMysql.end()
 
         console.log(`Create Offer affectRows:${result.affectedRows}, result:${JSON.stringify(data)}`)
-        let insertLp = await dbMysql.query(`
+        let insertLp = await db.query(`
             INSERT INTO sfl_offer_landing_pages (sfl_offer_id, name, url, user, date_added )
             VALUES (?,?,?,?,?)`, [offerIdOrigin, lpUrl, lpUrl, email, dateAdd])
-        await dbMysql.end()
         //
         let lpId = insertLp.insertId
 
-        let updateLpIdOffer = await dbMysql.query(`
+        let updateLpIdOffer = await db.query(`
             UPDATE sfl_offers SET sfl_offer_landing_page_id=${lpId} WHERE id=${offerIdOrigin}`)
-        await dbMysql.end()
 
         console.log(`updateLpIdOffer result:${JSON.stringify(updateLpIdOffer)}`)
 
@@ -186,8 +182,85 @@ const uploadOffers = async (data) => {
     }
 
 }
+
+const uploadAffiliates = async (data) => {
+    const db = dbTransaction()
+    let date = new Date()
+    let dateAdd = ~~(date.getTime() / 1000)
+    try {
+        await db.beginTransaction()
+        const {
+            affiliateIdOrigin, affiliateName, accountManagerName, status,
+            billingCycle, minimumPaymentThreshold, currency, created, notes, postbackURL, email
+        } = data
+
+        //
+        let affStatus = status.toLowerCase()
+        let affName = affiliateName.split(' ')
+        let affFirstName = affName[0]
+        let affLastName = affName[1]
+        let affEmailTest = 'timothy.jahn@actionmediamtl.com'
+
+        let amName = accountManagerName.split(' ')
+        let amFirstName = amName[0]
+        let amLastName = amName[1]
+        let findAaffiliateMenager = await db.query(` 
+           SELECT id FROM sfl_employees WHERE Lower(first_name) = LOWER('${amFirstName}') AND Lower(last_name) = LOWER('${amLastName}')
+        `)
+
+        console.log('findAaffiliateMenager:', findAaffiliateMenager)
+        let affManagerId = findAaffiliateMenager.length !== 0 && findAaffiliateMenager[0].id || 0
+        let res = {}
+        if (!affManagerId) {
+            // console.log(`advertiser manager ${advertiserManager} doesnot exists in DB `)
+            res.error = `affiliate manager ${accountManagerName} doesnot exists in DB `
+            return res
+        }
+        let insertAff = await db.query(`
+                INSERT INTO affiliates(
+                    email,
+                    first_name,
+                    last_name,
+                    payment_type,
+                    status,
+                    affiliate_type)
+                VALUES (?,?,?,?,?,?)`, [
+            affEmailTest, affFirstName, affLastName, 'paypal', affStatus, 'Trainee - Assistant'])
+        let affGeneratedId = insertAff.insertId
+
+        console.log('affGeneratedId:', affGeneratedId)
+        //
+        let insertsflAff = await db.query(`
+            INSERT INTO sfl_affiliates (
+             first_name, last_name, status, affiliate_manager_id, origin_id,
+             affiliate_id, payment_type, last_traffic_date, postback_url, date_added)
+         VALUES (?,?,?,?,?,?,?,?,?,?)`, [
+            affFirstName, affLastName, affStatus, affManagerId, affiliateIdOrigin,
+            affGeneratedId, 'paymentType', 1615766852, 'postBackUrl', dateAdd])
+        let affIdGenerated = insertsflAff.insertId
+        //
+        console.log('affIdGenerated:', affIdGenerated)
+        console.log(`insertsflAff result:${JSON.stringify(insertsflAff)}`)
+        res.id = affIdGenerated
+
+        await db.commit()
+        return res
+
+    } catch (e) {
+        console.log('uploadAffiliatesError:', e)
+        let res = {}
+        res.error = e.sqlMessage
+        await db.rollback()
+        return res
+    } finally {
+        await db.close()
+    }
+
+
+}
 module.exports = {
     uploadManagers,
     uploadAdvertisers,
-    uploadOffers
+    uploadOffers,
+    uploadAffiliates
 }
