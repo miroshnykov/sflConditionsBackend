@@ -9,8 +9,10 @@ const getOffer = async (id) => {
                    o.status          AS status, 
                    o.payin           AS payIn, 
                    o.payout          AS payOut, 
+                   o.advertiser_manager_id AS advertiserManagerId,
                    o.conversion_type AS conversionType, 
-                   o.advertiser      AS advertiser, 
+                   a.name            AS advertiserName,
+                   a.id              AS advertiserId,                   
                    o.verticals       AS verticals, 
                    o.descriptions    AS descriptions, 
                    o.date_added      AS dateAdded,
@@ -28,6 +30,8 @@ const getOffer = async (id) => {
                           ON g.sfl_offer_id = o.id 
                    LEFT JOIN sfl_offer_custom_landing_pages clp 
                           ON clp.sfl_offer_id = o.id 
+                   left join sfl_advertisers a 
+                          ON a.id = o.sfl_advertiser_id                            
             WHERE  o.id = ?
 
         `, [id])
@@ -74,7 +78,9 @@ const getOffers = async () => {
                    o.status                    AS status, 
                    o.payin                     AS payIn, 
                    o.payout                    AS payOut, 
-                   o.advertiser                AS advertiser,
+                   o.advertiser_manager_id     AS advertiserManagerId,
+                   a.id                        AS advertiserId,
+                   a.name                      AS advertiserName,  
                    o.verticals                 AS verticals,                   
                    o.date_added                AS dateAdded, 
                    o.date_updated              AS dateUpdated, 
@@ -87,6 +93,8 @@ const getOffers = async () => {
             FROM   sfl_offers o 
                    LEFT JOIN sfl_offer_landing_pages lp 
                           ON o.sfl_offer_landing_page_id = lp.id 
+                   left join sfl_advertisers a 
+                          ON a.id = o.sfl_advertiser_id                           
             ORDER  BY o.date_updated  DESC    
         `)
         await dbMysql.end()

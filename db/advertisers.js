@@ -21,6 +21,27 @@ const getAdvertisers = async () => {
     }
 }
 
+const getSflAdvertisers = async () => {
+
+    try {
+        console.time('getSflAdvertisers')
+        let result = await dbMysql.query(` 
+            SELECT a.id,
+                   a.name,
+                   a.descriptions,
+                   a.website
+            FROM sfl_advertisers a
+        `)
+        await dbMysql.end()
+
+        console.timeEnd('getSflAdvertisers')
+        console.log(`getSflAdvertisers count:${result.length}\n`)
+        return result
+    } catch (e) {
+        console.log(e)
+    }
+}
+
 const getAdvertisersProducts = async () => {
 
     try {
@@ -49,7 +70,33 @@ const getAdvertisersProducts = async () => {
     }
 }
 
+const getSflAdvertisersManagers = async () => {
+
+    try {
+        console.time('getSflAdvertisersManagers')
+        let result = await dbMysql.query(` 
+            SELECT 
+                e.id as id,
+                e.first_name as firstName,
+                e.last_name as lastName,
+                e.email as email,
+                e.role as role
+            FROM sfl_employees e 
+            WHERE e.role IN ('Advertiser Manager')
+        `)
+        await dbMysql.end()
+
+        console.timeEnd('getSflAdvertisersManagers')
+        console.log(`getSflAdvertisersManagers count:${result.length}\n`)
+        return result
+    } catch (e) {
+        console.log(e)
+    }
+}
+
 module.exports = {
     getAdvertisers,
-    getAdvertisersProducts
+    getAdvertisersProducts,
+    getSflAdvertisers,
+    getSflAdvertisersManagers
 }

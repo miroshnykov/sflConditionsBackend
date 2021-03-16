@@ -17,7 +17,9 @@ const {v4} = require('uuid')
 const base64 = require('base-64')
 const utf8 = require('utf8')
 const {setUser} = require('./db/user')
+
 const axios = require('axios')
+const {uploadProcessing} = require('./helper/upload')
 
 const cors = require('cors')
 const server = new ApolloServer({
@@ -152,7 +154,7 @@ app.get('/verifyLP', async (req, res) => {
 
         let prefix = 'http'
         if (domain.substr(0, prefix.length) !== prefix) {
-            domain = prefix + '://'+ domain
+            domain = prefix + '://' + domain
         }
 
         let requestValidate = axios.create({
@@ -224,6 +226,26 @@ app.get('/salesProcessing', async (req, res) => {
     res.send(archiveRecords);
 
 })
+
+const checkToken = async (req, res, next) => {
+    try {
+
+        let tokenInfo = jwt.verify(req.headers.authorization, config.jwt_secret)
+        if (tokenInfo && tokenInfo.email) {
+            req.email = tokenInfo.email
+            next()
+        }
+
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+app.post('/upload', checkToken, async (req, res, next) => {
+    let result = uploadProcessing(req, res)
+    return result
+})
+
 
 server.applyMiddleware({app})
 

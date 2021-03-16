@@ -14,7 +14,9 @@ const offers = gql`
         conversionType: String
         status: String  
         payIn: Float
-        advertiser: String
+        advertiserName: String
+        advertiserManagerId: Int
+        advertiserId: Int
         descriptions: String
         verticals: String
         geoRules: String
@@ -42,7 +44,9 @@ const offers = gql`
         payIn: Float
         payOut: Float 
         verticals: String
-        advertiser: String
+        advertiserId: Int
+        advertiserManagerId: Int
+        advertiserName: String
         descriptions: String        
         dateAdded: Int 
         dateUpdated: String 

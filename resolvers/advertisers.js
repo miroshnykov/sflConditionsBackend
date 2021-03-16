@@ -15,5 +15,15 @@ module.exports = {
                 return advertisers
             }
         },
+        getSflAdvertisers: async (_, {}, ctx) => {
+            checkUser(ctx.user)
+            return await Advertisers.getSflAdvertisers()
+
+        },
+        getSflAdvertisersManagers: async (_, {}, ctx) => {
+            checkUser(ctx.user)
+            return await Advertisers.getSflAdvertisersManagers()
+        },
+
     },
 }
