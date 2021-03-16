@@ -24,6 +24,7 @@ const uploadManagers = async (data) => {
     } catch (e) {
         console.log('uploadManagersError:', e)
         let res = {}
+        res.error = e.sqlMessage
         return res
     }
 
@@ -190,15 +191,15 @@ const uploadAffiliates = async (data) => {
     try {
         await db.beginTransaction()
         const {
-            affiliateIdOrigin, affiliateName, accountManagerName, status,
+            affiliateIdOrigin, affiliateName, accountManagerName, status, salesForceId, affFirstName, affLastName,
             billingCycle, minimumPaymentThreshold, currency, created, notes, postbackURL, email
         } = data
 
         //
         let affStatus = status.toLowerCase()
-        let affName = affiliateName.split(' ')
-        let affFirstName = affName[0]
-        let affLastName = affName[1]
+        // let affName = affiliateName.split(' ')
+        // let affFirstName = affName[0]
+        // let affLastName = affName[1]
         let affEmailTest = 'timothy.jahn@actionmediamtl.com'
 
         let amName = accountManagerName.split(' ')
@@ -216,27 +217,27 @@ const uploadAffiliates = async (data) => {
             res.error = `affiliate manager ${accountManagerName} doesnot exists in DB `
             return res
         }
-        let insertAff = await db.query(`
-                INSERT INTO affiliates(
-                    email,
-                    first_name,
-                    last_name,
-                    payment_type,
-                    status,
-                    affiliate_type)
-                VALUES (?,?,?,?,?,?)`, [
-            affEmailTest, affFirstName, affLastName, 'paypal', affStatus, 'Trainee - Assistant'])
-        let affGeneratedId = insertAff.insertId
-
-        console.log('affGeneratedId:', affGeneratedId)
+        // let insertAff = await db.query(`
+        //         INSERT INTO affiliates(
+        //             email,
+        //             first_name,
+        //             last_name,
+        //             payment_type,
+        //             status,
+        //             affiliate_type)
+        //         VALUES (?,?,?,?,?,?)`, [
+        //     affEmailTest, affFirstName, affLastName, 'paypal', affStatus, 'Trainee - Assistant'])
+        // let affGeneratedId = insertAff.insertId
+        //
+        // console.log('affGeneratedId:', affGeneratedId)
         //
         let insertsflAff = await db.query(`
             INSERT INTO sfl_affiliates (
              first_name, last_name, status, affiliate_manager_id, origin_id,
-             affiliate_id, payment_type, last_traffic_date, postback_url, date_added)
+             salesforce_id, payment_type, last_traffic_date, postback_url, date_added)
          VALUES (?,?,?,?,?,?,?,?,?,?)`, [
             affFirstName, affLastName, affStatus, affManagerId, affiliateIdOrigin,
-            affGeneratedId, 'paymentType', 1615766852, 'postBackUrl', dateAdd])
+            salesForceId, 'paymentType', 1615766852, 'postBackUrl', dateAdd])
         let affIdGenerated = insertsflAff.insertId
         //
         console.log('affIdGenerated:', affIdGenerated)

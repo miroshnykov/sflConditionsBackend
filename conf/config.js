@@ -35,7 +35,17 @@ config = {
         redirectToOptiPlatformsuccess: '',
         clientId: '',
         clientSecret: ''
+    },
+    salesforce: {
+        client_id: '',
+        client_secret: '',
+        auth_url: '',
+        username: '',
+        password: ''
     }
 }
+
+
+
 
 module.exports = config

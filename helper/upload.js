@@ -12,8 +12,10 @@ const {
     uploadAffiliates
 } = require('../db/uploads')
 
+const salesForce = require('../helper/salesForce')
+
 const uploadProcessing = async (req, res) => {
-    let result={}
+    let result = {}
     try {
         let typeFile = [
             'First Name',
@@ -47,6 +49,7 @@ const uploadProcessing = async (req, res) => {
                     // console.log('managers:', managers_)
                     let inserted = []
                     let managerOrigin = []
+                    let errorsAM = []
                     if (managers_.length !== 0) {
                         let count = 0
 
@@ -55,7 +58,9 @@ const uploadProcessing = async (req, res) => {
                                 managerOrigin.push(i)
                                 let res = await uploadManagers(i)
                                 if (res && res.id) {
-                                    inserted.push(i)
+                                    inserted.push(i.email)
+                                } else if (res && res.error) {
+                                    errorsAM.push(res.error)
                                 }
                             }
                             count++
@@ -67,6 +72,7 @@ const uploadProcessing = async (req, res) => {
                     result.insertRecordsCount = inserted.length
                     result.totalRecords = managerOrigin.length
                     result.success = true
+                    result.errors = JSON.stringify(errorsAM)
                     break
 
                 case `advertisers`:
@@ -83,7 +89,7 @@ const uploadProcessing = async (req, res) => {
                                 advOrigin.push(i)
                                 let res = await uploadAdvertisers(i)
                                 if (res && res.id) {
-                                    insertedAdv.push(i)
+                                    insertedAdv.push(i.advertiserName)
                                 } else if (res && res.error) {
                                     errors.push(res.error)
                                 }
@@ -115,7 +121,7 @@ const uploadProcessing = async (req, res) => {
                                 i.email = req.email
                                 let res = await uploadOffers(i)
                                 if (res && res.id) {
-                                    insertedOffers.push(i)
+                                    insertedOffers.push(i.offerIdOrigin)
                                 } else if (res && res.error) {
                                     errorsOffers.push(res.error)
                                 }
@@ -134,21 +140,46 @@ const uploadProcessing = async (req, res) => {
 
                     break
                 case `affiliates`:
-                    console.log('affiliates')
+                    // console.log('affiliates')
                     let affiliates = await parserDataAffiliates(req.body.dataFile)
-                    // console.log(offers)
+                    // console.log(affiliates)
                     let insertedAffiliates = []
                     let originAffiliates = []
                     let errorsAffiliates = []
+                    console.log('\nAffiliates count:', affiliates.length)
+                    // return
                     if (affiliates.length !== 0) {
                         let count = 0
                         for (const i of affiliates) {
                             if (count !== 0) {
                                 originAffiliates.push(i)
-                                i.email = req.email
+                                // i.email = req.email
+                                let affName = i.affiliateName.split(' ')
+                                let affFirstName = affName[0]
+                                let affLastName = affName[1]
+                                i.affFirstName = affFirstName
+                                i.affLastName = affLastName
+                                let checkAccountExists = await salesForce.findAccountsById(i.email)
+                                console.log(`checkAccountExists:${checkAccountExists.length} for email:${i.email}`)
+                                if (checkAccountExists.length !== 0) {
+                                    console.log(`Account exists on SF:${i.email} `)
+                                    let errorObj = {}
+                                    errorObj.message = `Account exists on SF email:${i.email}}`
+                                    errorsAffiliates.push(errorObj)
+                                    continue
+                                }
+
+                                const salesForceResult = await salesForce.createAccount(i)
+                                console.log('salesForceResult:', salesForceResult)
+                                let salesForceId = salesForceResult.id
+                                if (!salesForceId) {
+                                    console.log(`Account doesnot create on SF email:${i.email}`)
+                                    continue
+                                }
+                                i.salesForceId = salesForceId
                                 let res = await uploadAffiliates(i)
                                 if (res && res.id) {
-                                    insertedAffiliates.push(i)
+                                    insertedAffiliates.push(i.email)
                                 } else if (res && res.error) {
                                     errorsAffiliates.push(res.error)
                                 }
