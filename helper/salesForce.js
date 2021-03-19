@@ -25,7 +25,7 @@ const createAccount = (affiliate) => {
             Website: 'swsw',
             Description: notes,
             Payment_Type__c: 'paypal',
-            AdCenter_Account_Type__c: 'Publisher Account',
+            AdCenter_Account_Type__c: 'Gotcha',
             Registration_Date__c: 1615832271,
             Traffic_Blocked__c: false,
             Payment_Blocked__c: false,

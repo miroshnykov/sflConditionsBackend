@@ -75,14 +75,12 @@ const getSflAdvertisersManagers = async () => {
     try {
         console.time('getSflAdvertisersManagers')
         let result = await dbMysql.query(` 
-            SELECT 
-                e.id as id,
-                e.first_name as firstName,
-                e.last_name as lastName,
-                e.email as email,
-                e.role as role
-            FROM sfl_employees e 
-            WHERE e.role IN ('Advertiser Manager')
+            SELECT e.id         AS id,
+                   e.first_name AS firstName,
+                   e.last_name  AS lastName,
+                   e.email      AS email
+            FROM   sfl_advertiser_managers e
+            ORDER  BY 1 ASC 
         `)
         await dbMysql.end()
 

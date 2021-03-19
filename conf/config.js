@@ -18,6 +18,13 @@ config = {
         password: '',
         database: ''
     },
+    mysqlGotcha: {
+        host: '',
+        port: 0,
+        user: '',
+        password: '',
+        database: ''
+    },
     aws: {
         secret_key: '',
         access_key: '',

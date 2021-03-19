@@ -9,24 +9,24 @@ const create = async (data) => {
 
     let date = new Date()
     let dateAdd = ~~(date.getTime() / 1000)
-    let findAdvId = await dbMysql.query(`SELECT * FROM sfl_advertisers limit 1`)
-    await dbMysql.end()
-
-    let findAdvManagerId = await dbMysql.query(`
-           SELECT * FROM sfl_employees where role = 'Advertiser Manager' LIMIT 1`)
-    await dbMysql.end()
+    // let findAdvId = await dbMysql.query(`SELECT * FROM sfl_advertisers limit 1`)
+    // await dbMysql.end()
     //
-    let sflAdvertiserId = findAdvId.length !== 0 && findAdvId[0].id || 0
-    let advertiserManagerId = findAdvManagerId.length !== 0 && findAdvManagerId[0].id || 0
-
+    // let findAdvManagerId = await dbMysql.query(`
+    //        SELECT * FROM sfl_employees where role = 'Advertiser Manager' LIMIT 1`)
+    // await dbMysql.end()
+    // //
+    // let sflAdvertiserId = findAdvId.length !== 0 && findAdvId[0].id || 0
+    // let advertiserManagerId = findAdvManagerId.length !== 0 && findAdvManagerId[0].id || 0
+    //
 
     try {
 
         let result = await dbMysql.query(` 
             INSERT INTO sfl_offers (
-                name, user,sfl_advertiser_id,advertiser_manager_id,date_added
-            )VALUES (?,?,?,?,?)
-        `, [name, email, sflAdvertiserId,advertiserManagerId, dateAdd])
+                name, user,date_added
+            )VALUES (?,?,?)
+        `, [name, email, dateAdd])
         await dbMysql.end()
         result.id = result.insertId || 0
 
@@ -81,7 +81,8 @@ const update = async (data) => {
         advertiserId,
         advertiserName,
         advertiserManagerId,
-        verticals,
+        verticalId,
+        verticalName,
         descriptions,
         email,
         conversionType,
@@ -108,7 +109,7 @@ const update = async (data) => {
             status: status,
             advertiserName: advertiserName,
             advertiserManagerId: advertiserManagerId,
-            verticals: verticals,
+            verticalName: verticalName,
             email: email,
             payoutPercent: payoutPercent,
             conversionType: conversionType,
@@ -131,7 +132,8 @@ const update = async (data) => {
                    a.name            AS advertiserName,
                    o.descriptions    AS descriptions, 
                    o.user            AS email,
-                   o.verticals       AS verticals, 
+                   v.id AS verticalId,
+                   v.name AS verticalName,     
                    o.date_added      AS dateAdded,
                    o.is_cpm_option_enabled     AS isCpmOptionEnabled,
                    o.payout_percent            AS payoutPercent,                    
@@ -140,7 +142,10 @@ const update = async (data) => {
                    o.offer_id_redirect AS offerIdRedirect
             FROM   sfl_offers o 
                    left join sfl_advertisers a 
-                          ON a.id = o.sfl_advertiser_id               
+                          ON a.id = o.sfl_advertiser_id  
+                   left join sfl_vertical v 
+                          ON v.id = o.sfl_vertical_id              
+            
             WHERE  o.id = ?`, [id])
 
         // console.log('originOffer:', originOffer)
@@ -150,7 +155,7 @@ const update = async (data) => {
             status: originOffer[0].status,
             advertiserName: originOffer[0].advertiserName,
             advertiserManagerId: originOffer[0].advertiserManagerId,
-            verticals: originOffer[0].verticals,
+            verticalName: originOffer[0].verticalName,
             descriptions: originOffer[0].descriptions,
             email: originOffer[0].email,
             payoutPercent: originOffer[0].payoutPercent,
@@ -280,7 +285,7 @@ const update = async (data) => {
             SET name = ?, 
                 sfl_advertiser_id = ?, 
                 advertiser_manager_id = ?,
-                verticals = ?, 
+                sfl_vertical_id = ?, 
                 descriptions = ?, 
                 status = ?, 
                 conversion_type = ?, 
@@ -296,7 +301,7 @@ const update = async (data) => {
                 name,
                 advertiserId,
                 advertiserManagerId,
-                verticals,
+                verticalId,
                 descriptions,
                 status,
                 conversionType,
@@ -533,7 +538,8 @@ const offerForSqs = async (offerId) => {
             SELECT o.id                            AS offerId, 
                    o.name                          AS name, 
                    a.name                          AS advertiserName,
-                   o.verticals                     AS verticals,   
+                   v.id AS verticalId,
+                   v.name AS verticalName,    
                    o.advertiser_manager_id         AS advertiserManagerId,                
                    o.conversion_type               AS conversionType,                     
                    o.status                        AS status, 
@@ -575,7 +581,9 @@ const offerForSqs = async (offerId) => {
                    left join sfl_offer_custom_landing_pages lps
                           ON o.id = lps.sfl_offer_id
                    left join sfl_advertisers a 
-                          ON a.id = o.sfl_advertiser_id                              
+                          ON a.id = o.sfl_advertiser_id    
+                   left join sfl_vertical v 
+                          ON v.id = o.sfl_vertical_id                               
             WHERE o.id = ${offerId}                                         
         `)
         await dbMysql.end()
