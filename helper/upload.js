@@ -12,7 +12,7 @@ const {
     uploadAffiliates
 } = require('../db/uploads')
 
-const salesForce = require('../helper/salesForce')
+//const salesForce = require('../helper/salesForce')
 
 const uploadProcessing = async (req, res) => {
     let result = {}
