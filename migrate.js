@@ -5,7 +5,7 @@ const {getOffer, uploadOffers} = require('./db/migrate')
 
 // DELETE FROM sfl_offers_cap;
 // DELETE FROM sfl_offer_geo;
-// DELETE FROM sfl_offer_custom_landing_pages
+// DELETE FROM sfl_offer_custom_landing_pages;
 // DELETE FROM sfl_offers_history;
 // DELETE FROM sfl_offer_landing_pages;
 // DELETE FROM sfl_offers;

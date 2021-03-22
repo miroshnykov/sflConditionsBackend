@@ -19,6 +19,8 @@ const getOffer = async () => {
 --                       FROM Currency c1
 --                        WHERE c1.Currency_id =o.Currency_id ) AS convertionType,
                    -- o.OfferStatus_id,
+                   (SELECT p.amount FROM OfferContract c ,Payout p WHERE p.Payout_id = c.CurrentPayout_id  AND c.Offer_id = o.Offer_id limit 1) AS payOut,
+                   (SELECT p.amount FROM OfferContract c ,Payout p WHERE p.Payout_id = c.CurrentReceived_id  AND c.Offer_id = o.Offer_id limit 1) AS payIn,
                    (SELECT LOWER(s.name) FROM OfferStatus s WHERE s.OfferStatus_id = o.OfferStatus_id) AS offerStatus,
                    (SELECT c.offerLink FROM OfferContract c WHERE c.Offer_id = o.Offer_id LIMIT 1) AS offerLandingPageUrl,
                    (SELECT LOWER(p.name)  FROM PriceFormat p   WHERE p.PriceFormat_id IN (SELECT c.PriceFormat_id FROM OfferContract c WHERE c.Offer_id = o.Offer_id ) ) AS convertionType   
@@ -51,6 +53,8 @@ const uploadOffers = async (data) => {
             dateCreated,
             advertiserId,
             verticalId,
+            payOut,
+            payIn,
             offerStatus,
             offerLandingPageUrl,
             conversionType ,
@@ -64,9 +68,9 @@ const uploadOffers = async (data) => {
         let dateAdd = ~~(date.getTime() / 1000)
         let result = await db.query(`
             INSERT INTO sfl_offers (
-                id, name, user, conversion_type, sfl_advertiser_id, sfl_vertical_id, status,date_added)
-            VALUES (?,?,?,?,?,?,?,?);
-        `, [offerId, offerName, email, conversionType, advertiserId, verticalId, offerStatus, dateCreated])
+                id, name, user,payin, payout, conversion_type, sfl_advertiser_id, sfl_vertical_id, status,date_added)
+            VALUES (?,?,?,?,?,?,?,?,?,?);
+        `, [offerId, offerName, email,payIn,payOut,conversionType, advertiserId, verticalId, offerStatus, dateCreated])
 
         // console.log(`Create Offer affectRows:${result.affectedRows}, result:${JSON.stringify(data)}`)
         let insertLp = await db.query(`
