@@ -1,5 +1,8 @@
 const config = require('plain-config')()
-const {getOffer, uploadOffers} = require('./db/migrate')
+const {getOffer,
+    getCotchaAffiliates,
+    uploadOffers
+} = require('../db/migrate')
 
 
 
@@ -19,6 +22,7 @@ const run = async () => {
     let total = offer.length
     let errorsDetail = []
     for (const item of offer) {
+        console.log(item)
         let res = await uploadOffers(item)
         if (res && res.id === item.offerId) {
             console.log(`Added offerId:${item.offerId}`)

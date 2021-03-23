@@ -36,6 +36,7 @@ const offer = gql`
         verticalId: Int!
         verticalName: String!
         conversionType: String!
+        currencyId: Int!
         geoRules: String!
         customLPRules: String!   
         descriptions: String!             
