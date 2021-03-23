@@ -86,7 +86,7 @@ const getOffers = async () => {
                    a.name                      AS advertiserName,  
                    v.id                        AS verticalId,
                    v.name                      AS verticalName,  
-                   o.currency_id               AS currencyid,                
+                   o.currency_id               AS currencyId,                
                    o.date_added                AS dateAdded, 
                    o.date_updated              AS dateUpdated, 
                    o.is_cpm_option_enabled     AS isCpmOptionEnabled,
