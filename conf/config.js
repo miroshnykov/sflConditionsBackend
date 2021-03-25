@@ -18,6 +18,13 @@ config = {
         password: '',
         database: ''
     },
+    mysqlGotcha: {
+        host: '',
+        port: 0,
+        user: '',
+        password: '',
+        database: ''
+    },
     aws: {
         secret_key: '',
         access_key: '',
@@ -35,7 +42,17 @@ config = {
         redirectToOptiPlatformsuccess: '',
         clientId: '',
         clientSecret: ''
+    },
+    salesforce: {
+        client_id: '',
+        client_secret: '',
+        auth_url: '',
+        username: '',
+        password: ''
     }
 }
+
+
+
 
 module.exports = config

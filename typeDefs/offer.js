@@ -33,8 +33,10 @@ const offer = gql`
         advertiserId: Int!
         advertiserManagerId: Int!,
         advertiserName: String!
-        verticals: String!
+        verticalId: Int!
+        verticalName: String!
         conversionType: String!
+        currencyId: Int!
         geoRules: String!
         customLPRules: String!   
         descriptions: String!             

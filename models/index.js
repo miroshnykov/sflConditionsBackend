@@ -16,6 +16,7 @@ const {Lp} = require('./Lp')
 const {Prod} = require('./Prod')
 const {AffiliateWebsites} = require('./AffiliateWebsites')
 const {Advertisers} = require('./Advertisers')
+const {Verticals} = require('./Verticals')
 
 module.exports = {
     User,
@@ -35,5 +36,6 @@ module.exports = {
     Lp,
     Prod,
     AffiliateWebsites,
-    Advertisers
+    Advertisers,
+    Verticals
 }

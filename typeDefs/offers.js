@@ -12,13 +12,15 @@ const offers = gql`
         id: Int
         name: String  
         conversionType: String
+        currencyId: Int
         status: String  
         payIn: Float
         advertiserName: String
         advertiserManagerId: Int
         advertiserId: Int
         descriptions: String
-        verticals: String
+        verticalId: Int
+        verticalName: String
         geoRules: String
         defaultLp: Int
         isCpmOptionEnabled: Int
@@ -43,7 +45,9 @@ const offers = gql`
         status: String  
         payIn: Float
         payOut: Float 
-        verticals: String
+        currencyId: Int
+        verticalId: Int
+        verticalName: String
         advertiserId: Int
         advertiserManagerId: Int
         advertiserName: String

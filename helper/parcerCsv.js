@@ -102,8 +102,10 @@ const parserDataAffiliates = (data) => {
                 minimumPaymentThreshold: record[5].trim(),
                 currency: record[6].trim(),
                 created: record[7].trim(),
-                notes: record[8].trim(),
-                postbackURL: record[9].trim()
+                lastTrafficData: record[8].trim(),
+                notes: record[9].trim(),
+                postbackURL: record[10].trim(),
+                email: record[11].trim()
             })))
         )
     )

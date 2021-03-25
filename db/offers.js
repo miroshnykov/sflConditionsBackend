@@ -10,10 +10,12 @@ const getOffer = async (id) => {
                    o.payin           AS payIn, 
                    o.payout          AS payOut, 
                    o.advertiser_manager_id AS advertiserManagerId,
-                   o.conversion_type AS conversionType, 
+                   o.conversion_type AS conversionType,
+                   o.currency_id     AS currencyId,
                    a.name            AS advertiserName,
                    a.id              AS advertiserId,                   
-                   o.verticals       AS verticals, 
+                   v.id AS verticalId,
+                   v.name AS verticalName,
                    o.descriptions    AS descriptions, 
                    o.date_added      AS dateAdded,
                    o.is_cpm_option_enabled     AS isCpmOptionEnabled,
@@ -31,9 +33,10 @@ const getOffer = async (id) => {
                    LEFT JOIN sfl_offer_custom_landing_pages clp 
                           ON clp.sfl_offer_id = o.id 
                    left join sfl_advertisers a 
-                          ON a.id = o.sfl_advertiser_id                            
+                          ON a.id = o.sfl_advertiser_id   
+                   left join sfl_vertical v 
+                          ON v.id = o.sfl_vertical_id                             
             WHERE  o.id = ?
-
         `, [id])
         await dbMysql.end()
 
@@ -81,7 +84,9 @@ const getOffers = async () => {
                    o.advertiser_manager_id     AS advertiserManagerId,
                    a.id                        AS advertiserId,
                    a.name                      AS advertiserName,  
-                   o.verticals                 AS verticals,                   
+                   v.id                        AS verticalId,
+                   v.name                      AS verticalName,  
+                   o.currency_id               AS currencyId,                
                    o.date_added                AS dateAdded, 
                    o.date_updated              AS dateUpdated, 
                    o.is_cpm_option_enabled     AS isCpmOptionEnabled,
@@ -94,8 +99,10 @@ const getOffers = async () => {
                    LEFT JOIN sfl_offer_landing_pages lp 
                           ON o.sfl_offer_landing_page_id = lp.id 
                    left join sfl_advertisers a 
-                          ON a.id = o.sfl_advertiser_id                           
-            ORDER  BY o.date_updated  DESC    
+                          ON a.id = o.sfl_advertiser_id     
+                   left join sfl_vertical v 
+                          ON v.id = o.sfl_vertical_id                          
+            ORDER  BY o.date_updated  DESC     
         `)
         await dbMysql.end()
 
