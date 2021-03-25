@@ -4,7 +4,7 @@ const {getOffer,
     uploadOffers
 } = require('../db/migrate')
 
-
+// node migrate/migrateOffers.js
 
 // DELETE FROM sfl_offers_cap;
 // DELETE FROM sfl_offer_geo;
@@ -22,7 +22,7 @@ const run = async () => {
     let total = offer.length
     let errorsDetail = []
     for (const item of offer) {
-        console.log(item)
+        // console.log(item)
         let res = await uploadOffers(item)
         if (res && res.id === item.offerId) {
             console.log(`Added offerId:${item.offerId}`)
