@@ -46,6 +46,39 @@ const createAccount = (affiliate) => {
     })
 }
 
+const createAccount2 = (affiliate) => {
+    console.log('createAccount:', JSON.stringify(affiliate))
+    const {name,id, status, email} = affiliate
+    return new Promise((resolve, reject) => {
+        conn.sobject("Account").create({
+            Name: `${name}`,
+            Phone: 666,
+            ADCenterID__c: id,
+            Website: 'swsw',
+            Description: 'Description',
+            Payment_Type__c: 'paypal',
+            AdCenter_Account_Type__c: 'Gotcha',
+            Registration_Date__c: 1615832271,
+            Traffic_Blocked__c: false,
+            Payment_Blocked__c: false,
+            Type: 'gotcha',
+            // RecordTypeId: 1111,
+            Status__c: status,
+            Communication_email__c: email,
+            Country__c: 'CA',
+            BillingCountry__c: 'CA',
+        }, (err, res) => {
+            if (err || !res.success) {
+                console.log(err)
+                return reject(err)
+            }
+
+            return resolve(res)
+        })
+    })
+}
+
+
 const findAccountsById = (affiliateId) => {
     return new Promise((resolve, reject) => {
         conn.sobject("Account").find({Communication_email__c: `${affiliateId}`}).execute((err, user) => {
@@ -61,5 +94,6 @@ const findAccountsById = (affiliateId) => {
 
 module.exports = {
     createAccount,
+    createAccount2,
     findAccountsById
 }

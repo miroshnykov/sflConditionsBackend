@@ -13,7 +13,7 @@ const getCotchaAffiliates = async () => {
                    Unix_timestamp(a.created) AS dateAdded
             FROM Affiliate a
             ORDER BY 1 ASC
-            LIMIT 7000
+            LIMIT 7000  
         `)
         await dbGotchaMysql.end()
 
@@ -309,6 +309,35 @@ const updateEmailAffiliates2 = async (data) => {
     }
 }
 
+const getSflAffiliates = async () => {
+
+    try {
+
+        let result = await dbMysql.query(` 
+            SELECT id  FROM sfl_affiliates where id BETWEEN 13811 and 14795 ORDER BY 1 ASC LIMIT 10 
+        `)
+        await dbMysql.end()
+        return result
+
+    } catch (e) {
+        console.log('ugetSflAffiliatesError:', e)
+    }
+}
+
+const getSflAffiliatesInfo = async () => {
+
+    try {
+
+        let result = await dbMysql.query(` 
+            SELECT a.id, a.name, a.email,a.status  FROM sfl_affiliates a WHERE a.id BETWEEN 1 AND 1000 AND a.email <>'' ORDER BY 1 ASC  limit 10  
+        `)
+        await dbMysql.end()
+        return result
+
+    } catch (e) {
+        console.log('getSflAffiliatesInfoError:', e)
+    }
+}
 
 module.exports = {
     getOffer,
@@ -318,5 +347,7 @@ module.exports = {
     getCampaigns,
     uploadCampaigns,
     updateEmailAffiliates,
-    updateEmailAffiliates2
+    updateEmailAffiliates2,
+    getSflAffiliates,
+    getSflAffiliatesInfo
 }
