@@ -47,21 +47,24 @@ const createAccount = (affiliate) => {
 }
 
 const createAccount2 = (affiliate) => {
-    console.log('createAccount:', JSON.stringify(affiliate))
-    const {name,id, status, email} = affiliate
+    // console.log('createAccount:', JSON.stringify(affiliate))
+    const now = new Date()
+    const {name, id, status, email} = affiliate
     return new Promise((resolve, reject) => {
         conn.sobject("Account").create({
             Name: `${name}`,
             Phone: 666,
             ADCenterID__c: id,
+            GotzhaID__c: id,
             Website: 'swsw',
             Description: 'Description',
             Payment_Type__c: 'paypal',
             AdCenter_Account_Type__c: 'Gotcha',
-            Registration_Date__c: 1615832271,
+            Registration_Date__c: 1618329938,
+            GotzhaCreatedDate__c: now,
             Traffic_Blocked__c: false,
             Payment_Blocked__c: false,
-            Type: 'gotcha',
+            Type: 'Gotzha',
             // RecordTypeId: 1111,
             Status__c: status,
             Communication_email__c: email,
@@ -75,6 +78,34 @@ const createAccount2 = (affiliate) => {
 
             return resolve(res)
         })
+    })
+}
+
+const deleteAccount = (salesForceId) => {
+
+    return new Promise((resolve, reject) => {
+        conn.sobject("Account").destroy(salesForceId)
+            .then((res) => {
+                if (!res.success) {
+                    let err = {}
+                    err.message = 'error deleting account'
+                    console.log('error deleting account:', err)
+                    return reject(err)
+                }
+
+                console.log('deleted success:', res)
+                return resolve(res)
+            })
+    })
+}
+
+const getGotchaAccounts = () => {
+
+    return new Promise((resolve, reject) => {
+        conn.query("SELECT Id, Name FROM Account WHERE AdCenter_Account_Type__c = 'Gotzha'")
+            .then((res) => {
+                return resolve(res)
+            })
     })
 }
 
@@ -95,5 +126,7 @@ const findAccountsById = (affiliateId) => {
 module.exports = {
     createAccount,
     createAccount2,
-    findAccountsById
+    findAccountsById,
+    deleteAccount,
+    getGotchaAccounts
 }
