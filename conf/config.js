@@ -31,6 +31,7 @@ config = {
         region: '',
         queue_url: ''
     },
+    gotzhaApi:'',
     googleSso: {
         url: 'https://am-ssoauth.surge.systems/'
     },

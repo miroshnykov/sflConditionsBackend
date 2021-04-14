@@ -1,4 +1,5 @@
 const fs = require('fs')
+const config = require('plain-config')()
 const {
     updateEmailAffiliates,
     updateEmailAffiliates2,
@@ -11,8 +12,8 @@ const xmlParser = require('xml2json')
 const axios = require('axios')
 const getAffiliatesFromGotchaApi = async (affiliateID) => {
     try {
-        const {data} = await axios.get(`https://partners.gotzha.com/api/5/export.asmx/Affiliates?api_key=2ntTDFxwx9f1gsJP7MLyCPJfU5akEPM&affiliate_id=${affiliateID}&affiliate_name=&account_manager_id=0&tag_id=0&start_at_row=0&row_limit=0&sort_field=affiliate_id&sort_descending=FALSE`)
-        // console.log(data)
+        const {data} = await axios.get(`https://partners.gotzha.com/api/5/export.asmx/Affiliates?api_key=${config.gotzhaApi}&affiliate_id=${affiliateID}&affiliate_name=&account_manager_id=0&tag_id=0&start_at_row=0&row_limit=0&sort_field=affiliate_id&sort_descending=FALSE`)
+        console.log(data)
 
         let json = xmlParser.toJson(data)
         // console.log('JSON output', json)
@@ -59,10 +60,17 @@ const readJson = async () => {
         // console.log(item.id)
         let data = await getAffiliatesFromGotchaApi(item.id)
         const aff = JSON.parse(data)
+        // console.log(aff)
         let affEmail = ''
-        if (aff.affiliate_export_response.affiliates.affiliate){
+        if (aff.affiliate_export_response.success
+            && aff.affiliate_export_response.affiliates
+            && aff.affiliate_export_response.affiliates.affiliate
+        ){
             affEmail = aff.affiliate_export_response.affiliates.affiliate.contacts.contact_info && aff.affiliate_export_response.affiliates.affiliate.contacts.contact_info.email_address || ''
+        } else {
+            console.log(`API err message:${aff.affiliate_export_response.message}` )
         }
+
 
         let obj ={}
         obj.id = item.id
