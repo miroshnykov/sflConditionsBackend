@@ -62,7 +62,7 @@ const getOffer = async () => {
                     (SELECT c.offerLink FROM OfferContract c WHERE c.Offer_id = o.Offer_id LIMIT 1) AS offerLandingPageUrl,
                     (SELECT LOWER(p.name)  FROM PriceFormat p   WHERE p.PriceFormat_id IN (SELECT c.PriceFormat_id FROM OfferContract c WHERE c.Offer_id = o.Offer_id ) LIMIT 1 ) AS convertionType   
             FROM Offer o
-            WHERE o.OfferStatus_id <>4 
+            WHERE o.OfferStatus_id <>4  -- and o.Offer_id < 3926
             ORDER BY o.Offer_id DESC
             LIMIT 2000
         `)
@@ -298,11 +298,12 @@ const getCampaigns = async () => {
             FROM Campaign c
             WHERE c.AccountStatus_id = 1 
             -- AND c.Offer_id in (2,144,147,148,149,150,436,440,613,841,952,956,1050,1156,1186,1187,1239,1434,1441,1445,1509,1549,1568,1606,1664)
+            AND c.Campaign_id < 970512
             AND c.offer_id IN (SELECT o.offer_id
                       FROM   Offer o
                       WHERE  o.offerstatus_id <> 4) 
-            ORDER BY c.Campaign_id ASC
-            LIMIT 1000
+            ORDER BY c.Campaign_id DESC
+            LIMIT 5000
         `)
         await dbGotchaMysql.end()
 
@@ -426,12 +427,47 @@ const updateEmailAffiliates2 = async (data) => {
     }
 }
 
+const updateAffiliateFromSF = async (data) => {
+
+    // payment_type status email name
+    const db = dbTransaction()
+    try {
+        let affiliateName = data.sobject.Name
+        let affiliatePhone = data.sobject.Phone
+        let affiliateId = data.sobject.GotzhaID__c
+        let affiliatePaymentType = data.sobject.Payment_Type__c
+        let affiliateGotzhaCreatedDate = data.sobject.GotzhaCreatedDate__c
+        let affiliateStatus = data.sobject.Status__c
+        let affiliateEmail = data.sobject.Communication_email__c
+        let affiliateCountry = data.sobject.Country__c
+        await db.beginTransaction()
+
+        let result = await db.query(`
+           UPDATE sfl_affiliates SET name=?, payment_type=? , status=?, email=? WHERE  id=?            
+        `, [affiliateName, affiliatePaymentType, affiliateStatus, affiliateEmail, affiliateId])
+
+        // console.log(`result:${JSON.stringify(result)}`)
+        await db.commit()
+        result.affiliateId = affiliateId
+        return result
+
+    } catch (e) {
+        console.log('updateEmailAffiliatesError:', e)
+        let res = {}
+        res.error = e.sqlMessage
+        await db.rollback()
+        return res
+    } finally {
+        await db.close()
+    }
+
+}
 const getSflAffiliates = async () => {
 
     try {
 
         let result = await dbMysql.query(` 
-            SELECT id  FROM sfl_affiliates where id BETWEEN 1 and 1 ORDER BY 1 ASC LIMIT 10 
+            SELECT a.id  FROM sfl_affiliates a where a.email ='' and a.id >512 ORDER BY 1 ASC  -- LIMIT 10 
         `)
         await dbMysql.end()
         return result
@@ -472,5 +508,6 @@ module.exports = {
     updateEmailAffiliates2,
     getSflAffiliates,
     getSflAffiliatesInfo,
-    getCotzhaAdvertisers
+    getCotzhaAdvertisers,
+    updateAffiliateFromSF
 }

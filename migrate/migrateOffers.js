@@ -14,7 +14,8 @@ const {getOffer,
 // DELETE FROM sfl_offer_landing_pages;
 // DELETE FROM sfl_offers;
 
-
+// status 1-Public 2-Private 3-Apply To Run
+// 4 Inactive
 
 const run = async () => {
     let offer = await getOffer()

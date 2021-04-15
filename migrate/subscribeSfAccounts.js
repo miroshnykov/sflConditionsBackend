@@ -1,6 +1,7 @@
 const config = require('plain-config')()
 const {
-    getSflAffiliatesInfo
+    getSflAffiliatesInfo,
+    updateAffiliateFromSF
 } = require('../db/migrate')
 
 // node migrate/subscribeSfAccounts.js
@@ -27,11 +28,14 @@ const run = async () => {
             console.log(userInfo)
 
 
-            conn.streaming.topic("updateAccount").subscribe(function(message) {
-                console.log('Event Type : ' + message.event.type);
-                console.log('Event Created : ' + message.event.createdDate);
-                console.log('Object Id : ' + message.sobject.Id);
-                console.log('Event : ' + JSON.stringify(message));
+            conn.streaming.topic("updateAccount").subscribe((message) =>{
+                // console.log('Event Type : ' + message.event.type)
+                // console.log('Event Created : ' + message.event.createdDate)
+                // console.log('Object Id : ' + message.sobject.Id)
+                console.log('message from SalesForce:', message)
+                updateAffiliateFromSF(message).then(res =>{
+                    console.log(`Done updated, result:${JSON.stringify(res)}`)
+                })
             });
 
         })

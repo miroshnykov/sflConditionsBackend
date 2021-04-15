@@ -132,6 +132,33 @@ const {ExpressCurrentUser} = require('am-components-backend')
 
 const currentUser = ExpressCurrentUser(config.googleSso.url, config.am_app_key)
 const app = express()
+const {updateAffiliateFromSF} = require('./db/migrate')
+
+const jsforce = require('jsforce')
+
+let conn = new jsforce.Connection({
+    oauth2: {
+        clientId: config.salesforce.client_id,
+        clientSecret: config.salesforce.client_secret,
+        loginUrl: config.salesforce.auth_url
+    }
+})
+
+conn.login(config.salesforce.username, config.salesforce.password, (err, userInfo) => {
+    if (err) return console.log(err)
+    console.log(`SalesForce login success`)
+    console.log(userInfo)
+    conn.streaming.topic("updateAccount").subscribe((message) =>{
+        // console.log('Event Type : ' + message.event.type)
+        // console.log('Event Created : ' + message.event.createdDate)
+        // console.log('Object Id : ' + message.sobject.Id)
+        console.log(`message from SalesForce:${JSON.stringify(message)}`)
+        updateAffiliateFromSF(message).then(res =>{
+            console.log(`\nDone updated, result:${JSON.stringify(res)}`)
+        })
+    })
+})
+
 
 app.use(cors())
 

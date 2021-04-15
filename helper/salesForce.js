@@ -59,7 +59,7 @@ const createAccount2 = (affiliate) => {
             Website: 'swsw',
             Description: 'Description',
             Payment_Type__c: 'paypal',
-            AdCenter_Account_Type__c: 'Gotcha',
+            AdCenter_Account_Type__c: 'Gotzha',
             Registration_Date__c: 1618329938,
             GotzhaCreatedDate__c: now,
             Traffic_Blocked__c: false,
