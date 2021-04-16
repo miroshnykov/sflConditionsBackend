@@ -102,7 +102,8 @@ const getOffers = async () => {
                           ON a.id = o.sfl_advertiser_id     
                    left join sfl_vertical v 
                           ON v.id = o.sfl_vertical_id                          
-            ORDER  BY o.date_updated  DESC     
+            ORDER  BY o.date_updated  DESC  
+            LIMIT 5000   
         `)
         await dbMysql.end()
 

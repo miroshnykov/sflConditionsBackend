@@ -10,10 +10,11 @@ const getCotchaAffiliates = async () => {
                    a.name AS affiliateName,
                    a.accountManagerContactId AS accountManagerContactId,
                    (SELECT LOWER(s.name) FROM AccountStatus s WHERE s.AccountStatus_id = a.AccountStatus_id) AS statusName,
-                   Unix_timestamp(a.created) AS dateAdded
+                   a.created AS dateAdded
             FROM Affiliate a
+            -- where a.Affiliate_id = 2410
             ORDER BY 1 ASC
-            LIMIT 7000
+            LIMIT 7000  
         `)
         await dbGotchaMysql.end()
 
@@ -23,6 +24,26 @@ const getCotchaAffiliates = async () => {
         console.log(e)
     }
 }
+const getCotzhaAdvertisers = async () => {
+    try {
+
+        let result = await dbGotchaMysql.query(` 
+            SELECT a.Advertiser_id AS advertiserId,
+                   a.name AS advertiserName,
+                   a.accountManagerContactId AS advertiserManagerId,
+                   a.dateCreated AS dateAdded
+             FROM  Advertiser a
+             ORDER BY 1 DESC 
+        `)
+        await dbGotchaMysql.end()
+
+        console.log(`\ngetCotchaAdvertisers count:${result.length}`)
+        return result
+    } catch (e) {
+        console.log(e)
+    }
+}
+
 
 const getOffer = async () => {
 
@@ -39,11 +60,11 @@ const getOffer = async () => {
                     (SELECT p.amount FROM OfferContract c ,Payout p WHERE p.Payout_id = c.CurrentReceived_id  AND c.Offer_id = o.Offer_id limit 1) AS payIn,
                     (SELECT LOWER(s.name) FROM OfferStatus s WHERE s.OfferStatus_id = o.OfferStatus_id) AS offerStatus,
                     (SELECT c.offerLink FROM OfferContract c WHERE c.Offer_id = o.Offer_id LIMIT 1) AS offerLandingPageUrl,
-                    (SELECT LOWER(p.name)  FROM PriceFormat p   WHERE p.PriceFormat_id IN (SELECT c.PriceFormat_id FROM OfferContract c WHERE c.Offer_id = o.Offer_id ) ) AS convertionType   
+                    (SELECT LOWER(p.name)  FROM PriceFormat p   WHERE p.PriceFormat_id IN (SELECT c.PriceFormat_id FROM OfferContract c WHERE c.Offer_id = o.Offer_id ) LIMIT 1 ) AS convertionType   
             FROM Offer o
-            WHERE o.OfferStatus_id <>4 
-            ORDER BY o.Offer_id ASC
-            LIMIT 200
+            WHERE o.OfferStatus_id <>4  -- and o.Offer_id < 3926
+            ORDER BY o.Offer_id DESC
+            LIMIT 2000
         `)
         await dbGotchaMysql.end()
 
@@ -128,7 +149,7 @@ const uploadOffers = async (data) => {
 
 const uploadAffiliates = async (data) => {
 
-    // console.log('Data:', data)
+    console.log('Data:', data)
     let res = {}
     const db = dbTransaction()
     try {
@@ -155,7 +176,7 @@ const uploadAffiliates = async (data) => {
         return res
 
     } catch (e) {
-        // console.log('uploadAffiliatesError:', e)
+        console.log('uploadAffiliatesError:', e)
         let res = {}
         res.error = e.sqlMessage
         await db.rollback()
@@ -164,6 +185,98 @@ const uploadAffiliates = async (data) => {
         await db.close()
     }
 
+}
+
+const uploadAdevertisers = async (data) => {
+
+    // console.log('Data:', data)
+    let res = {}
+    const db = dbTransaction()
+    try {
+        await db.beginTransaction()
+        let {
+            advertiserId,
+            advertiserName,
+            advertiserManagerId,
+            dateAdded
+        } = data
+
+        let result = await db.query(`
+            INSERT INTO sfl_advertisers (id, name, advertiser_manager_id, date_added) VALUES (?,?,?,?);            
+        `, [advertiserId, advertiserName, advertiserManagerId, dateAdded])
+
+
+        await db.commit()
+        res.id = advertiserId
+        // console.log(`\nCreate advertiser:{ ${JSON.stringify(data)} },  affectRows:${result.affectedRows}`)
+        return res
+
+    } catch (e) {
+        console.log('uploadAdevertisersError:', e)
+        let res = {}
+        res.error = e.sqlMessage
+        await db.rollback()
+        return res
+    } finally {
+        await db.close()
+    }
+
+}
+
+const checkAdveriser = async (id) => {
+
+    try {
+        let result = await dbMysql.query(` 
+            SELECT COUNT(*) as count FROM sfl_advertisers a WHERE a.id = ${id}
+        `)
+        await dbMysql.end()
+        return result[0].count
+    } catch (e) {
+        console.log(e)
+
+    }
+}
+
+const checkAffiliate = async (id) => {
+
+    try {
+        let result = await dbMysql.query(` 
+            SELECT COUNT(*) as count FROM sfl_affiliates a WHERE a.id = ${id}
+        `)
+        await dbMysql.end()
+        return result[0].count
+    } catch (e) {
+        console.log(e)
+
+    }
+}
+const checkCampaignExists = async (id) => {
+
+    try {
+        let result = await dbMysql.query(` 
+            SELECT COUNT(*) as count FROM sfl_offer_campaigns a WHERE a.id = ${id}
+        `)
+        await dbMysql.end()
+        return result[0].count
+    } catch (e) {
+        console.log(e)
+
+    }
+}
+
+
+const checkOfferExists = async (id) => {
+
+    try {
+        let result = await dbMysql.query(` 
+            SELECT COUNT(*) as count FROM sfl_offers a WHERE a.id = ${id}
+        `)
+        await dbMysql.end()
+        return result[0].count
+    } catch (e) {
+        console.log(e)
+
+    }
 }
 
 const getCampaigns = async () => {
@@ -183,9 +296,14 @@ const getCampaigns = async () => {
                    (SELECT p.name FROM PriceFormat p WHERE p.PriceFormat_id =c.PriceFormat_id ) AS convertionType,
                    Unix_timestamp(c.created) AS dateAdded
             FROM Campaign c
-            WHERE c.AccountStatus_id = 1 AND c.Offer_id in (2,144,147,148,149,150,436,440,613,841,952,956,1050,1156,1186,1187,1239,1434,1441,1445,1509,1549,1568,1606,1664)
-            ORDER BY c.Campaign_id ASC
-            LIMIT 200
+            WHERE c.AccountStatus_id = 1 
+            -- AND c.Offer_id in (2,144,147,148,149,150,436,440,613,841,952,956,1050,1156,1186,1187,1239,1434,1441,1445,1509,1549,1568,1606,1664)
+            AND c.Campaign_id < 970512
+            AND c.offer_id IN (SELECT o.offer_id
+                      FROM   Offer o
+                      WHERE  o.offerstatus_id <> 4) 
+            ORDER BY c.Campaign_id DESC
+            LIMIT 5000
         `)
         await dbGotchaMysql.end()
 
@@ -309,14 +427,87 @@ const updateEmailAffiliates2 = async (data) => {
     }
 }
 
+const updateAffiliateFromSF = async (data) => {
+
+    // payment_type status email name
+    const db = dbTransaction()
+    try {
+        let affiliateName = data.sobject.Name
+        let affiliatePhone = data.sobject.Phone
+        let affiliateId = data.sobject.GotzhaID__c
+        let affiliatePaymentType = data.sobject.Payment_Type__c
+        let affiliateGotzhaCreatedDate = data.sobject.GotzhaCreatedDate__c
+        let affiliateStatus = data.sobject.Status__c
+        let affiliateEmail = data.sobject.Communication_email__c
+        let affiliateCountry = data.sobject.Country__c
+        await db.beginTransaction()
+
+        let result = await db.query(`
+           UPDATE sfl_affiliates SET name=?, payment_type=? , status=?, email=? WHERE  id=?            
+        `, [affiliateName, affiliatePaymentType, affiliateStatus, affiliateEmail, affiliateId])
+
+        // console.log(`result:${JSON.stringify(result)}`)
+        await db.commit()
+        result.affiliateId = affiliateId
+        return result
+
+    } catch (e) {
+        console.log('updateEmailAffiliatesError:', e)
+        let res = {}
+        res.error = e.sqlMessage
+        await db.rollback()
+        return res
+    } finally {
+        await db.close()
+    }
+
+}
+const getSflAffiliates = async () => {
+
+    try {
+
+        let result = await dbMysql.query(` 
+            SELECT a.id  FROM sfl_affiliates a where a.email ='' and a.id >512 ORDER BY 1 ASC  -- LIMIT 10 
+        `)
+        await dbMysql.end()
+        return result
+
+    } catch (e) {
+        console.log('ugetSflAffiliatesError:', e)
+    }
+}
+
+const getSflAffiliatesInfo = async () => {
+
+    try {
+
+        let result = await dbMysql.query(` 
+            SELECT a.id, a.name, a.email,a.status  FROM sfl_affiliates a WHERE a.id BETWEEN 1 AND 1000 AND a.email <>'' ORDER BY 1 ASC  limit 10  
+        `)
+        await dbMysql.end()
+        return result
+
+    } catch (e) {
+        console.log('getSflAffiliatesInfoError:', e)
+    }
+}
 
 module.exports = {
     getOffer,
     uploadOffers,
     getCotchaAffiliates,
     uploadAffiliates,
+    uploadAdevertisers,
+    checkAdveriser,
+    checkOfferExists,
+    checkCampaignExists,
+    checkAffiliate,
     getCampaigns,
     uploadCampaigns,
     updateEmailAffiliates,
-    updateEmailAffiliates2
+    updateEmailAffiliates2,
+    getSflAffiliates,
+    getSflAffiliatesInfo,
+    getCotzhaAdvertisers,
+    updateAffiliateFromSF
 }
