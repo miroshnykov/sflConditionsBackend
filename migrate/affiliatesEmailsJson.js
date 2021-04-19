@@ -12,7 +12,7 @@ const xmlParser = require('xml2json')
 const axios = require('axios')
 const getAffiliatesFromGotchaApi = async (affiliateID) => {
     try {
-        const {data} = await axios.get(`https://partners.gotzha.com/api/5/export.asmx/Affiliates?api_key=${config.gotzhaApi}&affiliate_id=${affiliateID}&affiliate_name=&account_manager_id=0&tag_id=0&start_at_row=0&row_limit=0&sort_field=affiliate_id&sort_descending=FALSE`)
+        const {data} = await axios.get(`https://partners.gotzha.com/api/5/export.asmx/Affiliates?api_key=${config.gotzhaApi}1&affiliate_id=${affiliateID}&affiliate_name=&account_manager_id=0&tag_id=0&start_at_row=0&row_limit=0&sort_field=affiliate_id&sort_descending=FALSE`)
         // console.log(data)
 
         let json = xmlParser.toJson(data)

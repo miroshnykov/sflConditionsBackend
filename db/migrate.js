@@ -462,12 +462,41 @@ const updateAffiliateFromSF = async (data) => {
     }
 
 }
+
+
+const updateAffiliateSFID = async (data) => {
+
+    const db = dbTransaction()
+    try {
+        let affiliateId = data.affiliateId
+        let salesForceId = data.salesForceId
+        await db.beginTransaction()
+
+        let result = await db.query(`
+           UPDATE sfl_affiliates SET salesforce_id=? WHERE id=?            
+        `, [salesForceId, affiliateId])
+
+        await db.commit()
+        result.affiliateId = affiliateId
+        return result
+
+    } catch (e) {
+        console.log(`updateAffiliateSFIDErr: ${e.toString()}`)
+        let res = {}
+        res.error = e.sqlMessage
+        await db.rollback()
+        return res
+    } finally {
+        await db.close()
+    }
+}
+
 const getSflAffiliates = async () => {
 
     try {
 
         let result = await dbMysql.query(` 
-            SELECT a.id  FROM sfl_affiliates a where a.email ='' and a.id >512 ORDER BY 1 ASC  -- LIMIT 10 
+            SELECT a.id  FROM sfl_affiliates a where a.email ='' and a.id  = 225 ORDER BY 1 ASC  -- LIMIT 10 
         `)
         await dbMysql.end()
         return result
@@ -482,7 +511,7 @@ const getSflAffiliatesInfo = async () => {
     try {
 
         let result = await dbMysql.query(` 
-            SELECT a.id, a.name, a.email,a.status  FROM sfl_affiliates a WHERE a.id BETWEEN 1 AND 1000 AND a.email <>'' ORDER BY 1 ASC  limit 10  
+            SELECT a.id, a.name, a.email,a.status  FROM sfl_affiliates a WHERE a.id BETWEEN 5000 AND 5012 AND a.email <>'' ORDER BY 1 ASC  -- limit 10  
         `)
         await dbMysql.end()
         return result
@@ -509,5 +538,6 @@ module.exports = {
     getSflAffiliates,
     getSflAffiliatesInfo,
     getCotzhaAdvertisers,
-    updateAffiliateFromSF
+    updateAffiliateFromSF,
+    updateAffiliateSFID
 }

@@ -1,6 +1,7 @@
 const config = require('plain-config')()
 const {
-    getSflAffiliatesInfo
+    getSflAffiliatesInfo,
+    updateAffiliateSFID
 } = require('../db/migrate')
 
 // node migrate/createAffonSF.js
@@ -50,21 +51,18 @@ const run = async () => {
                 errors++
                 continue
             } else {
-                console.log(`Created salesforce account:${salesForceId}`)
+                console.log(`Created salesforce account:${salesForceId}, username:${config.salesforce.username}`)
                 success++
+
+                let data = {}
+                data.affiliateId = item.id
+                data.salesForceId = salesForceId
+                let updateAffSFID = await updateAffiliateSFID(data)
+                if (updateAffSFID && updateAffSFID.affiliateId){
+                    console.log(`Update affiliate:${updateAffSFID.affiliateId} to salesforce_id${salesForceId} `)
+                }
+
             }
-
-
-            // console.log('affId-',item.id)
-            // console.log('email-',affEmail)
-            // let res = await updateEmailAffiliates(obj)
-            // if (res && res.id === item.id) {
-            //     console.log(`update email:{ ${obj.email} }  Id: { ${obj.id} }`)
-            //     success++
-            // } else {
-            //     errorsDetail.push(item.id)
-            //     errors++
-            // }
 
         }
         console.log(`Total records: { ${total} }, added: { ${success} } , errors: { ${errors} }`)
